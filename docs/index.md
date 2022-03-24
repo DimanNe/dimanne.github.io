@@ -4,7 +4,7 @@ title: MkDocs
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org/user-guide/writing-your-docs/).
 
-### Commands
+## Commands
 
 * `mkdocs new [dir-name]` - Create a new project.
 * `mkdocs serve --dev-addr 172.17.0.5:80` - Start the live-reloading docs server.
@@ -17,7 +17,7 @@ Lists of extensions:
 * [mkdocs-material](https://squidfunk.github.io/mkdocs-material/reference/abbreviations/)
 * [emojis](https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/)
 
-### Project layout
+## Project layout
 ```
 mkdocs.yml    # The configuration file.
 docs/
@@ -25,7 +25,7 @@ docs/
     ...       # Other markdown pages, images and other files.
 ```
 
-### Dashes
+## Dashes
 
 * qwer
 * asdf
@@ -35,14 +35,14 @@ docs/
 
 
 
-### :material-language-rust:{ .heart .twitter } Abbrs
+## :material-language-rust:{ .heart .twitter } Abbrs
 
 The HTML specification is maintained by the W3C.
 
 *[HTML]: Hyper Text Markup Language
 *[W3C]: World Wide Web Consortium
 
-### Math
+## Math
 
 $$
 \operatorname{ker} f=\{g\in G:f(g)=e_{H}\}{\mbox{.}}
@@ -52,7 +52,7 @@ The homomorphism $f$ is injective if and only if its kernel is only the
 singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$ such 
 that $f(a)=f(b)$.
 
-### Lists
+## Lists
 
 `Lorem ipsum dolor sit amet`
 
@@ -76,7 +76,7 @@ that $f(a)=f(b)$.
     * [ ] Praesent sed risus massa
 - [ ] Aenean pretium efficitur erat, donec pharetra, ligula non scelerisque
 
-### Formatting
+## Formatting
 
 {==Highlighting==} is also possible {>>and comments can be added inline<<}.
 
@@ -88,7 +88,7 @@ A^T^A
 
 ++ctrl+alt+del++
 
-### Tabs and code blocks
+## Tabs and code blocks
 
 
 === "Tab 1"
@@ -110,7 +110,7 @@ The `#!python range()` function is used to generate a sequence of numbers.
 
 
 
-### Admonitions
+## Admonitions
 
 !!! note "Phasellus posuere in sem ut cursus"
 
