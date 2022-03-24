@@ -5,7 +5,3 @@ permalink: /asdf/qwer
 
 # Test
 
-### Test2
-
-* qwer
-* asdf
