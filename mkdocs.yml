@@ -1,6 +1,15 @@
 site_name: My Docs
+
+
 theme:
   name: material
+  custom_dir: overrides
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.expand
+    - navigation.top
+    - content.tabs.link
   icon:
     admonition:
       note: octicons/tag-16
@@ -15,6 +24,7 @@ theme:
       bug: octicons/bug-16
       example: octicons/beaker-16
       quote: octicons/quote-16
+
 
 markdown_extensions:
     - toc:
@@ -47,8 +57,10 @@ markdown_extensions:
     - pymdownx.arithmatex:
         generic: true
 
+
 extra_css:
   - stylesheets/extra.css
+
 
 extra_javascript:
   - javascripts/mathjax.js

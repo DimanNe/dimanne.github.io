@@ -1,10 +1,19 @@
+---
 title: MkDocs
+---
+
 
 # **MkDocs**
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org/user-guide/writing-your-docs/).
 
-## Commands
+Docker:
+```
+sudo pip3 install mkdocs-material jinja2==3.0.3
+mkdocs serve --dev-addr 172.17.0.5:80
+```
+
+## **Commands**
 
 * `mkdocs new [dir-name]` - Create a new project.
 * `mkdocs serve --dev-addr 172.17.0.5:80` - Start the live-reloading docs server.
@@ -17,7 +26,8 @@ Lists of extensions:
 * [mkdocs-material](https://squidfunk.github.io/mkdocs-material/reference/abbreviations/)
 * [emojis](https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/)
 
-## Project layout
+
+## **Project layout**
 ```
 mkdocs.yml    # The configuration file.
 docs/
@@ -25,7 +35,8 @@ docs/
     ...       # Other markdown pages, images and other files.
 ```
 
-## Dashes
+
+## **Dashes**
 
 * qwer
 * asdf
@@ -35,14 +46,15 @@ docs/
 
 
 
-## :material-language-rust:{ .heart .twitter } Abbrs
+## **Abbrs** :material-language-rust:{ .heart .twitter }
 
 The HTML specification is maintained by the W3C.
 
 *[HTML]: Hyper Text Markup Language
 *[W3C]: World Wide Web Consortium
 
-## Math
+
+## **Math**
 
 $$
 \operatorname{ker} f=\{g\in G:f(g)=e_{H}\}{\mbox{.}}
@@ -52,7 +64,8 @@ The homomorphism $f$ is injective if and only if its kernel is only the
 singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$ such 
 that $f(a)=f(b)$.
 
-## Lists
+
+## **Lists**
 
 `Lorem ipsum dolor sit amet`
 
@@ -76,7 +89,16 @@ that $f(a)=f(b)$.
     * [ ] Praesent sed risus massa
 - [ ] Aenean pretium efficitur erat, donec pharetra, ligula non scelerisque
 
-## Formatting
+1. Loosely speaking, "CPU inside CPU" starts first. More precisely, Firmware inside PCH (platform controller hub) or BMC (baseboard management controller) is executed first. Intel Management Engine runs in the PCH and starts before the CPU.
+2. It performs basic hardware configuration and allows the CPU to come out of reset.
+3. The first instruction that CPU executes is the instruction from 16-bytes below 4GB.
+    - What is there?"
+        * SPI flash memory is mapped to the top of the 32-bit address space.
+        * Reads are forwarded by the chipset to the flash device.
+        * The instruction at 0xFFFFFFF0 is a JMP instruction to the start of the UEFI platform initialization code (SEC phase)
+
+
+## **Formatting**
 
 {==Highlighting==} is also possible {>>and comments can be added inline<<}.
 
@@ -88,7 +110,8 @@ A^T^A
 
 ++ctrl+alt+del++
 
-## Tabs and code blocks
+
+## **Tabs and code blocks**
 
 
 === "Tab 1"
@@ -110,7 +133,7 @@ The `#!python range()` function is used to generate a sequence of numbers.
 
 
 
-## Admonitions
+## **Admonitions**
 
 !!! note "Phasellus posuere in sem ut cursus"
 
