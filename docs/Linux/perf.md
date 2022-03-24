@@ -110,9 +110,11 @@ After it finishes, `perf record` started on the first terminal should produce `p
 
 ## **Dynamic tracing** --- `perf probe --add`
 
+[perf probe man](https://man7.org/linux/man-pages/man1/perf-probe.1.html).
+
 ### Collect `perf.data`
 
-Let's say our binary/library that has a symbol that we are interested in is:
+Let's say our binary/library that has a symbol that we are interested in, is:
 === "Bash"
     ```bash
     lib=$HOME/devel/build/archimedes-qtc-Gen2/lib/libkernelLib.so
@@ -124,7 +126,7 @@ Let's say our binary/library that has a symbol that we are interested in is:
     set lib $HOME/devel/build/archimedes-qtc-Gen2/lib/libkernelLib.so
     ```
 
-Firstly, find symbol name that we would like to trace. In case of C programs it easy, in the case of C++ we ask perf to
+Firstly, find symbol name that we would like to trace. In case of C programs it easy. In the case of C++ we ask perf to
 dump all symbols in mangled form:
 ```bash linenums="1"
 $ perf probe --exec $lib --funcs --no-demangle --filter='*' | grep ArenaAllocator | grep allocate
@@ -167,6 +169,15 @@ Added new event:
 You can now use it in all perf tools, such as:
         perf record -e probe_libkernelLib:_ZN14ArenaAllocator8allocateEm -aR sleep 1
 ```
+
+And then just record data is it suggested in the output above: `perf record -e probe_libkernelLib:_ZN14ArenaAllocator8allocateEm -aR sleep 1`.
+
+Cleanup:
+```bash
+sudo perf probe --list
+sudo perf probe --del probe_libkernelLib:_ZN14ArenaAllocator8allocateEm
+```
+
 
 ### View `perf.data`
 
