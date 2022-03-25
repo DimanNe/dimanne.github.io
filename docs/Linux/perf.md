@@ -9,10 +9,7 @@ title: perf
 
 If you want to see kernel symbols: `sudo sysctl -w kernel.kptr_restrict=0`
 
-Make sure you use these flags:
-```
--g2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer
-```
+Make sure you use these flags during compilation: `-g2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer`
 
 
 ## **Counting events** --- `perf stat`
@@ -159,7 +156,7 @@ Then we can inspect:
 
 And finally add probe:
 ```bash linenums="1"
-$ perf probe --exec $lib --no-demangle --add "_ZN14ArenaAllocator8allocateEm size"
+$ sudo perf probe --exec $lib --no-demangle --add "_ZN14ArenaAllocator8allocateEm size"
 Target program is compiled without optimization. Skipping prologue.
 Probe on address 0x2fefa0 to force probing at the function entry.
 
@@ -192,7 +189,20 @@ sudo perf probe --del probe_libkernelLib:_ZN14ArenaAllocator8allocateEm
     1569 x 48 = 75312
     ```
 
-=== "Larges allocations"
+=== "Histogram of sizes"
+    ```bash linenums="1"
+    $ perf script | awk 'match($0, /.*size=(.*)$/, a) {print strtonum(a[1]) }' | sort | uniq -c | sort -rn | head -40 | awk '!max {max=$1} {r=""; i = 80 * $1 / max; while(--i > 0) r=r"#"; printf "%-75s %s %s",$0,r,"\n";}'
+    87829 160                                                                 ###############################################################################
+    18607 136                                                                 ################
+     4640 264                                                                 ####
+     2319 128                                                                 ##
+     1600 262144                                                              #
+     1569 48                                                                  #
+     1528 40                                                                  #
+     1463 24                                                                  #
+    ```
+
+=== "Largest allocations"
     ```bash linenums="1"
     $ perf script | awk 'match($0, /.*size=(.*)$/, a) {print strtonum(a[1]) }' | sort | uniq -c | sort -rnk 1 | tr -s ' ' | awk '{print $1 " x " $2 " = " strtonum($1) * strtonum($2)}' | sort -rnk 5
     1600 x 262144 = 419430400
@@ -202,4 +212,8 @@ sudo perf probe --del probe_libkernelLib:_ZN14ArenaAllocator8allocateEm
     2 x 2097152 = 4194304
     ```
 
-
+=== "Total bytes (sum)"
+   ```bash linenums="1"
+   $ perf script | awk 'BEGIN {total = 0;} match($0, /.*size=(.*)$/, a) { total += strtonum(a[1]); } END {print total}'
+   981479078
+   ```
