@@ -1,6 +1,31 @@
-title: System utils
+title: Tools & Utils
 
-# **System utils**
+# **Tools & Utils**
+
+
+## **Compression**
+
+=== "zstd"
+
+    A directory:
+    ```bash
+    # Compress:
+    tar -I "zstd -T16 --ultra -22" -cf scripts.tar.zst scripts/
+    
+    # Decompress:
+    tar --zstd -xf scripts.tar.zst
+    ```
+
+    A single file:
+    ```bash
+    # Compress:
+    zstd --compress --threads 16 --ultra -22 -o file.txt.zstd file.txt
+
+    # Decompress:
+    zstd --decompress file.txt.zstd
+    ```
+
+
 
 ## **Permissions**
 
@@ -28,6 +53,8 @@ Restore default permissions (`x` for dirs, no `x` for files):
     ```bash
     setfacl -dm u::rws,g::rwx,o::rx /dir/
     ```
+
+
 
 ## **Hash of a directory**
 

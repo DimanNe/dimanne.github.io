@@ -22,7 +22,23 @@ It can count various (primarily cpu) events.
 
 ## **Profiling / Sampling** --- `perf top` & `perf record`
 
+### perf top
+
+You can use `perf` without recording `perf.data` (similarly to `top`/`htop`):
+
+```bash
+sudo perf top -t 739201 -d 5 --call-graph fp
+```
+where:
+
+* `-t` --- thread id, or `-p (pgrep -f "^/home/.*/bin/worker ")` --- process id.
+* `-d` --- update frequency in seconds.
+* `--call-graph dwarf` --- collect and show backtraces.
+
+
 ### Record `perf.data`
+
+Alternatively, you can record `perf.data` and then investigate it.
 
 ##### Automatically start and finish
 
@@ -111,7 +127,18 @@ perf record -e L1-dcache-load-misses -c 10000 -ag -- sleep 5
 
 ##### perf report
 
-`perf report --stdio`
+Use one of the:
+```bash
+perf report
+perf report --stdio
+perf report -g 'graph,0.5,caller'
+```
+
+##### perf annotate
+
+```bash
+perf annotate
+```
 
 
 

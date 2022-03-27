@@ -20,6 +20,13 @@ Reduce resolution of video:
 mencoder -aid 1 -slang eng  -ovc lavc -vf scale -zoom -xy 640 -oac mp3lame -lameopts cbr:br=160 Click.2006.720p.BluRay.ac3.x264-HqF.mkv -o click.avi
 ```
 
+### recordmydesktop
+
+Record video from desktop:
+```bash
+recordmydesktop --no-sound --v_bitrate=2000000 --width=1500 --height=1380 --fps 29 \
+                --full-shots --no-wm-check --workdir /mnt/freedata/home/Void -o myfile
+```
 
 
 ## **Codecs**
