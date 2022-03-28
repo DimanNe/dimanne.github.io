@@ -45,6 +45,23 @@ There is proper support for this workflow in ssh: read more about `-J`, `-W` fla
 
 
 
+## **Escape characters**
+
+`ssh` has [these](https://man7.org/linux/man-pages/man1/ssh.1.html) escape characters:
+
+* `~.` --- disconnect (useful if it hang).
+* `~^Z` --- background ssh.
+* `~#` --- list forwarded connections.
+* `~?` --- display a list of escape characters.
+* `~C` --- open command line.
+
+    Currently this allows the addition of port forwardings using the -L, -R and -D options.
+    It also allows the cancellation of existing portforwardings with `-KL[bind_address:]port` for local,
+    `-KR[bind_address:]port` for remote and `-KD[bind_address:]port` for dynamic port-forwardings.
+    `!command` allows the user to execute a local command if the `PermitLocalCommand` option is enabled in ssh_config.
+
+
+
 ## **Getting ssh fingerprint**
 
 When you ssh to a host first time, you are supposed to verify its key fingerprint.
