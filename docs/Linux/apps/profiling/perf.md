@@ -7,7 +7,7 @@ title: perf
 
 ## **Prerequisites**
 
-If you want to see kernel symbols: `sudo sysctl -w kernel.kptr_restrict=0`
+If you want to see kernel symbols: `#!bash sudo sysctl -w kernel.kptr_restrict=0`
 
 Make sure you use these flags during compilation: `-g2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer`
 
@@ -16,8 +16,8 @@ Make sure you use these flags during compilation: `-g2 -fno-omit-frame-pointer -
 
 It can count various (primarily cpu) events.
 
-* List all events: `perf list`.
-* Example: `perf stat -e cycles,instructions,cache-references,cache-misses,bus-cycles -a sleep 10`.
+* List all events: `#!bash perf list`.
+* Example: `#!bash perf stat -e cycles,instructions,cache-references,cache-misses,bus-cycles -a sleep 10`.
 
 
 ## **Profiling / Sampling** --- `perf top` & `perf record`
@@ -31,7 +31,7 @@ sudo perf top -t 739201 -d 5 --call-graph fp
 ```
 where:
 
-* `-t` --- thread id, or `-p (pgrep -f "^/home/.*/bin/worker ")` --- process id.
+* `-t` --- thread id, or `#!fish -p (pgrep -f "^/home/.*/bin/worker ")` --- process id.
 * `-d` --- update frequency in seconds.
 * `--call-graph dwarf` --- collect and show backtraces.
 
@@ -160,7 +160,7 @@ Let's say our binary/library that has a symbol that we are interested in, is:
 
 === "Fish"
 
-    ```bash
+    ```fish
     set lib $HOME/devel/build/archimedes-qtc-Gen2/lib/libkernelLib.so
     ```
 
@@ -208,7 +208,7 @@ You can now use it in all perf tools, such as:
         perf record -e probe_libkernelLib:_ZN14ArenaAllocator8allocateEm -aR sleep 1
 ```
 
-And then just record data is it suggested in the output above: `perf record -e probe_libkernelLib:_ZN14ArenaAllocator8allocateEm -aR sleep 1`.
+And then just record data is it suggested in the output above: `#!bash perf record -e probe_libkernelLib:_ZN14ArenaAllocator8allocateEm -aR sleep 1`.
 
 Cleanup:
 ```bash

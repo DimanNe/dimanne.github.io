@@ -3,9 +3,9 @@ title: git
 # **git**
 
 ## **grep history**
-Look for the given regex: `git log -G "#include <sys/ustat.h>"`
+Look for the given regex: `#!bash git log -G "#include <sys/ustat.h>"`
 
-Look at the number of occurrences: `git log -S "#include <sys/ustat.h>"`
+Look at the number of occurrences: `#!bash git log -S "#include <sys/ustat.h>"`
 
 
 
@@ -25,7 +25,7 @@ $ git show :2:hello.rb > hello.ours.rb
 $ git show :3:hello.rb > hello.theirs.rb
 ```
 
-Then you can change them and finally merge: `git merge-file -p hello.ours.rb hello.common.rb hello.theirs.rb > hello.rb`.
+Then you can change them and finally merge: `#!bash git merge-file -p hello.ours.rb hello.common.rb hello.theirs.rb > hello.rb`.
 
 
 ### Diff of the pending merge

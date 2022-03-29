@@ -212,7 +212,7 @@ Add the following file:
     will be ignored. Files in there are parsed in alpha order, as long as the name ends with `.rules`.
 
 
-```linenums="1" title="/etc/udev/rules.d/80-local.rules"
+```bash linenums="1" title="/etc/udev/rules.d/80-local.rules"
 SUBSYSTEM=="block", ACTION=="add", RUN+="/usr/local/bin/trigger.sh"
 ```
 
@@ -225,7 +225,7 @@ Refining the rule into something useful:
   in the output of `udevadm info -a -n /dev/sdb | grep vendor`, but I find the output of lsusb a
   little easier on the eyes.
 * You can now include these attributes in your rule:
-    ```linenums="1" title="/etc/udev/rules.d/80-local.rules"
+    ```bash linenums="1" title="/etc/udev/rules.d/80-local.rules"
     SUBSYSTEM=="block", ATTRS{idVendor}=="03f0", ACTION=="add", RUN+="/usr/local/bin/thumb.sh"
     ```
 
@@ -234,7 +234,7 @@ Refining the rule into something useful:
 * Insert your device, and find string like `DEVNAME=/dev/bus/usb/003/006` in the output. 
   `/dev/bus/usb/003/006` is your device name.
 * Once you have a device path, you can:
-    * Get all its attributes: `udevadm info -a -n /dev/bus/usb/003/006`
+    * Get all its attributes: `#!bash udevadm info -a -n /dev/bus/usb/003/006`
     * Or simulate rule execution: `udevadm test (udevadm info -q path -n /dev/bus/usb/003/006)`
 
 

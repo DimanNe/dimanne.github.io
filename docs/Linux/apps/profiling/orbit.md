@@ -15,13 +15,13 @@ For the script below to finish its work, we have to add path where conan will be
 
 === "old fish"
 
-    ```bash
+    ```fish
     set -U fish_user_paths $HOME/.local/bin $fish_user_paths
     ```
 
 === "new fish"
 
-    ```bash
+    ```fish
     fish_add_path $HOME/.local/bin
     ```
 

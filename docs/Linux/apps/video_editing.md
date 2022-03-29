@@ -96,10 +96,10 @@ ffmpeg -ss 00:04:00 -i out.mp4 -c:v libxvid -q:v 2  out_libxvid.mov
 
 ### ProRes
 
-* PROXY (bad): `-c:v prores_ks -profile:v 0 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
-* LT: `-c:v prores_ks -profile:v 1 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
-* SQ: `-c:v prores_ks -profile:v 2 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
-* 422 HQ: `-c:v prores_ks -profile:v 3 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
+* PROXY (bad): `#!bash -c:v prores_ks -profile:v 0 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
+* LT: `#!bash -c:v prores_ks -profile:v 1 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
+* SQ: `#!bash -c:v prores_ks -profile:v 2 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
+* 422 HQ: `#!bash -c:v prores_ks -profile:v 3 -qscale:v 5 -vendor ap10 -pix_fmt yuv422p10le -acodec pcm_s16le`
 
 
 ## **Output / export codecs**
@@ -126,15 +126,15 @@ libx265 AVOptions:
 
 Add `-ss 00:01:40` before `-i` for faster tests, add `-loglevel debug` for more info.
 
-`ffmpeg -i LakeDistrict2.mov -c:v libx265 -crf 22 -preset veryslow -pix_fmt yuv420p -c:a aac -b:a 128k LakeDistrict2_libx265_crf_22_veryslow_yuv420p.mkv`
+`#!bash ffmpeg -i LakeDistrict2.mov -c:v libx265 -crf 22 -preset veryslow -pix_fmt yuv420p -c:a aac -b:a 128k LakeDistrict2_libx265_crf_22_veryslow_yuv420p.mkv`
 
-Works: `ffmpeg -ss 00:01:40 -i LakeDistrict2.mov -c:v libx265 -crf 21 -preset veryfast -pix_fmt yuvj420p -c:a aac -b:a 128k LakeDistrict2_h.265_crf_28_yuvj420p_veryfast.mkv`
+Works: `#!bash ffmpeg -ss 00:01:40 -i LakeDistrict2.mov -c:v libx265 -crf 21 -preset veryfast -pix_fmt yuvj420p -c:a aac -b:a 128k LakeDistrict2_h.265_crf_28_yuvj420p_veryfast.mkv`
 
 
 ### h.264 (old codec).
 See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.264#crf).
 
-`ffmpeg -i LakeDistrict2.mov -c:v libx264 -crf 16 -preset veryslow -c:a copy LakeDistrict2_crf_16_veryslow.mkv`
+`#!bash ffmpeg -i LakeDistrict2.mov -c:v libx264 -crf 16 -preset veryslow -c:a copy LakeDistrict2_crf_16_veryslow.mkv`
 
 * Pixel format is not supported on phones and mplayer (`-pix_fmt yuv420p` is needed?)
 * You might want to to consider adding `-x264-params opencl=true`, but see below

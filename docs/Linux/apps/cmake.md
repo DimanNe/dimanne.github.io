@@ -5,7 +5,7 @@ title: cmake
 ## **Debuging**
 
 * Debug output: `-LAH --debug-output --trace-expand`
-* Variable changes in cmake: `variable_watch(CMAKE_INSTALL_LIBDIR)`
+* Variable changes in cmake: `#!cmake variable_watch(CMAKE_INSTALL_LIBDIR)`
 * Analyse dependency graph: `GLOBAL_DEPENDS_DEBUG_MODE`
 
 
@@ -31,12 +31,12 @@ Sometimes the default CMake approach is too monolithic. This is especially relev
 
 * For example, with the default cmake, given a monorepo, I cannot build a specific (_single_) sub-project.
   I can only build the entire repo.
-* Another (even more important) consequence is that the decision as to whether to add `add_subdirectory(dependencyA)`
+* Another (even more important) consequence is that the decision as to whether to add `#!cmake add_subdirectory(dependencyA)`
   in the given `CMakeLists.txt` or not, *is not local*. I know that my target depends on `dependencyA`, but
   I do not know (_locally_, in the given `CMakeLists.txt`) whether it has already been included or not by a
   parent `CMakeLists.txt`.
 * Finally, with the default cmake approach I have to remember both: (1) target name
-  (to specify it in `target_link_libraries`) and (2) target path (to specify it in `add_subdirectory`).
+  (to specify it in `#!cmake target_link_libraries()`) and (2) target path (to specify it in `#!cmake add_subdirectory()`).
   Alternatively, we could auto-generate target names based on its path, and require to remember only paths.
 
 
@@ -71,7 +71,7 @@ The goal is to be able to write CMakeLists in this way:
 Implementation of the functions is pretty straighforward --- we just need:
 
 * to maintain a list of processed directories (`processed_paths`)
-* and to introduce our own `depends_upon(directory)` that will `add_subdirectory(directory)`
+* and to introduce our own `#!cmake depends_upon(directory)` that will `#!cmake add_subdirectory(directory)`
   only if it has not yet been added in the `processed_paths`:
 
 
