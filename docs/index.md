@@ -57,7 +57,7 @@ The HTML specification is maintained by the W3C.
 ## **Math**
 
 $$
-\operatorname{ker} f=\{g\in G:f(g)=e_{H}\}{\mbox{.}}
+\operatorname{ker} f=\{g\in GG:f(g)=e_{H}\}{\mbox{.}}
 $$
 
 The homomorphism $f$ is injective if and only if its kernel is only the 
@@ -121,8 +121,10 @@ A^T^A
         for i in range(len(items)):
             for j in range(len(items) - 1 - i):
                 if items[j] > items[j + 1]:
-                    items[j], items[j + 1] = items[j + 1], items[j]
+                    items[j], items[j + 1] = items[j + 1], items[j] # (1)!
     ```
+
+    1.  :man_raising_hand: I'm an annotation!
 
 === "Tab 2"
 
@@ -131,6 +133,12 @@ A^T^A
 
 The `#!python range()` function is used to generate a sequence of numbers.
 
+
+Lorem ipsum dolor sit amet, (1) consectetur adipiscing elit.
+{ .annotate }
+
+1.  :man_raising_hand: I'm an annotation! I can contain `code`, __formatted
+    text__, images, ... basically anything that can be expressed in Markdown.
 
 
 ## **Admonitions**
