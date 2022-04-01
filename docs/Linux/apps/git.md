@@ -150,14 +150,32 @@ Another useful concept you need to remember is that there are two states:
 git clone --recurse-submodules git@github.com:DimanNe/scripts.git
 ```
 
-### Add submodule in a parent repo
+### Add a submodule in a parent repo
 
 ```bash linenums="1"
+mkdir -p contrib/result
 git submodule add git@github.com:DimanNe/result.git contrib/result/result
 cd contrib/result/result && git checkout branch_you_need && cd ../../../
 git config -f .gitmodules submodule.contrib/result/result.branch branch_you_need # Tell git which branch to pull/track
+git add .gitmodules
 git commit -m "Add result as a submodule"
 ```
+
+### Remove a submodule from a repo
+[Src](https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule)
+```
+git rm <path-to-submodule>
+```
+This removes the filetree at `<path-to-submodule>`, and the submodule's entry in the `.gitmodules` file
+I.e. all traces of the submodule in your repository proper are removed.
+
+Additionally, you might want to remove `.git` directory of the submodule from `modules/`:
+
+```bash linenums="1"
+rm -rf .git/modules/<path-to-submodule>
+git config --remove-section submodule.<path-to-submodule>.
+```
+
 
 ### Pull a submodule (Update specific submodule from its remote)
 
