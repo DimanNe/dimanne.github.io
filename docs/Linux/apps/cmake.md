@@ -6,7 +6,20 @@ title: cmake
 
 * Debug output: `-LAH --debug-output --trace-expand`
 * Variable changes in cmake: `#!cmake variable_watch(CMAKE_INSTALL_LIBDIR)`
-* Analyse dependency graph: `GLOBAL_DEPENDS_DEBUG_MODE`
+
+### Dependency graph --- [[1](https://stackoverflow.com/a/30803359/758986)]:
+
+Option 1:
+```cmake
+set_property(GLOBAL PROPERTY GLOBAL_DEPENDS_DEBUG_MODE 1)
+```
+
+Option 2:
+```bash linenums="1"
+cmake --graphviz=test.graph 
+dotty test.graph
+```
+
 
 
 
