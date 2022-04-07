@@ -1,0 +1,304 @@
+title: Rare Words
+
+# **Rare Words**
+
+## **[Barron's](https://books.google.ru/books/about/Barron_s_1100_Words_You_Need_to_Know.html?id=0aWLMQEACAAJ&redir_esc=y&hl=en) sets**
+
+| Set 01           | Set 02                 | Set 03              | Set 04             | Set 05                  |
+| -                |-                       | -                   | -                  | -                       |
+| inveigh (80e-7)  | gesticulate (67e-7)    | doddering (87e-7)   | importune (56e-7)  | irate (668e-7)          |
+| vacillate        | hirsute (132e-7)       | abjure (247e-7)     | connubial (74e-7)  | sinecure (139e-7)       |
+| blase            | puissant (164e-7)      | recondite (255e-7)  | asinine (107e-7)   | pariah (485e-7)         |
+| recant           | vituperation           | vapid (256e-7)      | shibboleth (125e-7)| frenetic (653e-7)       |
+| vitriolic        | procrastinate (252e-7) | maim (266e-7)       | doleful (262e-7)   | qualm (119e-7)          |
+| pugnacious       | squeamish              | histrionic (428e-7) | perpetrate (307e-7)| domicile (1354e-7)      |
+| feint            | capitulate             | extol (458e-7)      | temerity (360e-7)  | fervid (159e-7)         |
+| fractious        | nettle (385e-7)        | paragon (483e-7)    | mien (369e-7)      | consternation (1280e-7) |
+| nepotism         | lassitude              | felon (609e-7)      | irascible (376e-7) | castigate (179e-7)      |
+| largesse         | felicitous (490e-7)    | vivacious (634e-7)  | diatribe (503e-7)  | delude (344e-7)         |
+| trenchant        | commodious             | connoisseur (675e-7)| embellish (526e-7) | potentate (195e-7)      |
+| adroit           | repulse (554e-7)       | culminate (698e-7)  | prodigy (552e-7)   | asperity (238e-7)       |
+| incontrovertible | abhor (594e-7)         | glean (732e-7)      | puny (589e-7)      | sumptuous (1308e-7)     |
+| germane          | sabbatical             | obviate (738e-7)    | sultry (613e-7)    | proffer (330e-7)        |
+| succulent        | magnanimous            | inviolable (783e-7) | eschew (747e-7)    |                         |
+| comely           | erudite (768e-7)       | implore (863e-7)    | culpable (902e-7)  |                         |
+| perfunctory      | obsolescence (811e-7)  | emaciated (967e-7)  | laudable (903e-7)  |                         |
+| divulge (860e-7) | inveterate             | dexterity (1488e-7) | carnage (1055e-7)  |                         |
+
+
+| Set 06                | Set 07                       | Set 08                     | Set 09                | Set 10                  |
+| -                     |-                             | -                          | -                     | -                       |
+| legerdemain (119e-7)  | complicity (2003e-7)         | impugn (216e-7)            | indoctrinate (165e-7) | prognosticate (58e-7)   |
+| stentorian (183e-7)   | consummate (1762e-7)         | remiss (417e-7)            | interject (233e-7)    | dulcet (123e-7)         |
+| noisome (219e-7)      | insatiable (1455e-7)         | evanescent (714e-7)        | umbrage (279e-7)      | jeopardise (216e-7)     |
+| turpitude (261e-7)    | omnipotent (1443e-7)         | brawl (655e-7)             | quip (316e-7)         | nonentity (222e-7)      |
+| fetter (266e-7)       | fret (1289e-7)               | passe (664e-7)             | jaunty (465e-7)       | begrudge (244e-7)       |
+| aspirant (529e-7)     | antiquated (1167e-7)         | infamy (917e-7)            | bristle (512e-7)      | fulsome (288e-7)        |
+| profligate (656e-7)   | indigent (1028e-7)           | impertinent (930e-7)       | contrite (577e-7)     | interloper (288e-7)     |
+| gregarious (683e-7)   | exult / exultation (952e-7)  | drudgery (971e-7)          | peruse (583e-7)       | surfeit (346e-7)        |
+| aegis (791e-7)        | afflict (681e-7)             | demeanor (1021e-7)         | assiduous (589e-7)    | encumbrance (385e-7)    |
+| emissary (813e-7)     | bane (675e-7)                | quell (1062e-7)            | evince (613e-7)       | apostate (553e-7)       |
+| inordinate (1080e-7)  | dregs (660e-7)               | delve (1111e-7)            | nondescript (724e-7)  | unconscionable (584e-7) |
+| construe (1138e-7)    | brash (639e-7)               | cursory (1399e-7)          | supplication (958e-7) | gullible (662e-7)       |
+| persevere (1233e-7)   | cupidity (357e-7)            | itinerant (1419e-7)        | stipulate (964e-7)    | rabid (711e-7)          |
+| complacent (1284e-7)  | mollify (263e-7)             | indiscriminate (1432e-7)   | frustrate (1104e-7)   | levity (766e-7)         |
+| diminutive (1516e-7)  | venial (247e-7)              | supine (1635e-7)           | curtail (1117e-7)     | allay (932e-7)          |
+| bona fide (1634e-7)   | potpourri (206e-7)           |                            | wan (1411e-7)         | vestige (935e-7)        |
+|                       | perspicacious (115e-7)       |                            | skirmish (1220e-7)    | wane (940e-7)           |
+|                       |                              |                            | retort (1325e-7)      | bulwark (953e-7)        |
+|                       |                              |                            |                       | strident (996e-7)       |
+|                       |                              |                            |                       | flagrant (1038e-7)      |
+|                       |                              |                            |                       | indolent (1052e-7)      |
+|                       |                              |                            |                       | paucity (1382e-7)       |
+|                       |                              |                            |                       | sanguine (1481e-7)      |
+                                                                                                                                                
+                                                                                                                                                
+## **Other**
+
+| 1                     | 2                  | 3                  | 4                      | 5                     |
+| -                     |-                   | -                  | -                      | -                     |
+| schadenfreude (54e-7) | lacerate (64e-7)   | murmuration (3e-7) | shivoo (0.1e-7)        | crapulous (11e-7)     |
+| botch (92e-7)         | dither (146e-7)    | senectitude        | laterigrade (0.1e-7)   | parergon (20e-7)      |
+| collude (296e-7)      | sensitize          | handsel (9e-7)     | fallals (3e-7)         | equivoque             |
+| aplomb                | ingratiate         | certifiable (85e-7)| froideur               | cloudland             |
+| skittish              | fumble (392e-7)    | skulk              | asseverate (12e-7)     | ataraxia (35e-7)      |
+| benighted (-ness)     | vibe               | de rigueur         | fulminate              | contumacious          |
+| loathe                | flaunt             | dabble (217e-7)    | ostracize              | umbra                 |
+| muddle (705e-7)       | grope (438e-7)     | adjourn            | lackadaisical          | cerulean              |
+| congregate            | derail             | rescind (565e-7)   | bedlam                 | antic (157e-7)        |
+| petrified             | deplete            | plenitude          | aloofness              | boorish               |
+| commendable           | cringe             | frolic             | quagmire (492e-7)      | corpulent             |
+| fledgling             | brackish (673e-7)  | rectitude          | multitudinous          | bilious (333e-7)      |
+| vindication (1289e-7) | scour              | blatantly (984e-7) | amass                  | bellicose             |
+| penchant              | perishing          | inadvertent        | modus operandi         | calamitous            |
+| tally                 | faux               | flair              | igneous                | baleful (445e-7)      |
+| meagre                | affront (1235e-7)  | heiress            | garner                 | defamatory            |
+| deteriorate           | allotment          | lousy (1401e-7)    | egregious              | foreboding (1093e-7)  |
+| provenance (1627e-7)  | subsumed (1564e-7) | savvy (1778e-7)    | interminable (1393e-7) | concomitant (3237e-7) |
+
+
+| 6                     | 7                     | 8                      | 9                        | 10                    |
+| -                     | -                     | -                      | -                        | -                     |
+| equanimous (11e-7)    | puckish (40e-7)       | paralogize (0.06e-7)   | oscitant (0.5e-7)        | cris de coeur (1e-7)  |
+| hubristic             | platitudinous (63e-7) | bonzer (3.6e-7)        | spoony (10e-7)           | fugacious (14e-7)     |
+| effulgent (91e-7)     | mordant (236e-7)      | muckrake (6e-7)        | uxorious (37e-7)         | susurration (17e-7)   |
+| dowdy (204e-7)        | pendulous (244e-7)    | rebarbative (23e-7)    | sine die (56e-7)         | shrive (27e-7)        |
+| feckless (219e-7)     | munificent            | ruminative (83e-7)     | dudgeon (112e-7)         | beastie (42e-7)       |
+| fecund                | impish (296e-7)       | risible (124e-7)       | noblesse oblige (116e-7) | scapegrace (69e-7)    |
+| gustatory             | querulous (319e-7)    | salubrious (254e-7)    | wheedling (140e-7)       | runnel (89e-7)        |
+| dilatory (283e-7)     | petulant (480e-7)     | sclerotic (292e-7)     | turgid (248e-7)          | stevedore (99e-7)     |
+| fulsome               | cranky (602e-7)       | taciturn               | voluble (340e-7)         | desuetude (99e-7)     |
+| execrable (308e-7)    | parsimonious (613e-7) | redolent               | statecraft (549e-7)      | aleatory (108e-7)     |
+| guile(-less)          | nefarious             | sagacious (628e-7)     | tempestuous (598e-7)     | lorn (104e-7)         |
+| garrulous             | obtuse (748e-7)       | serpentine             | ravenous (687e-7)        | saturnine (134e-7)    |
+| histrionic            | propitious            | reticent               | verdant                  | vainglorious (156e-7) |
+| effusive (437e-7)     | quiescent (903e-7)    | recalcitrant (1148e-7) | voracious (769e-7)       | rambunctious (227e-7) |
+| incendiary            | frugal (927e-7)       | tenacious              | tremulous (919e-7)       | juggernaut (282e-7)   |
+| fastidious (938e-7)   | auspicious (1486e-7)  | evocative              | withering (1120e-7)      | serendipity (334e-7)  |
+| insolent              | noxious (1550e-7)     | discerning (1840e-7)   | zealous (2477e-7)        | demure (539e-7)       |
+| efficacious (1820e-7) | pernicious (2114e-7)  | obstinate (2042e-7)    | ubiquitous (4151e-7)     | meritorious (1109e-7) |
+
+
+| 11                      | 12                     | 13                     | 14                   | 15                     |
+| -                       | -                      | -                      | -                    | -                      |
+| petrichor (0.3e-7)      | umbrous (0.9e-7)       | green-collar (0.2e-7)  | jamboree (55e-7)     | nitpicky (11e-7)       |
+| defenestrate (2e-7)     | brumous (1e-7)         | coruscant (2e-7)       | minx (66e-7)         | sashay (34e-7)         |
+| hagridden (3e-7)        | sesquipedalian (11e-7) | conglobate (2e-7)      | damnedest (160e-7)   | interdigitate (42e-7)  |
+| obfuscatory (19e-7)     | tenebrous (41e-7)      | kerfuffle (8e-7)       | beeline (194e-7)     | tartness (61e-7)       |
+| frowzy (27e-7)          | vagary (53e-7)         | pulchritude (30e-7)    | infest (213e-7)      | inundate (136e-7)      |
+| dulcet (123e-7)         | sophomoric (78e-7)     | pollyanna (153e-7)     | repartee (259e-7)    | infuriate (146e-7)     |
+| gloaming (147e-7)       | euphony (84e-7)        | craven (205e-7)        | rekindle (332e-7)    | deliriously (175e-7)   |
+| insouciance (169e-7)    | irrefragable (102e-7)  | demur (222e-7)         | jettison (358e-7)    | splurge (188e-7)       |
+| circumlocution (176e-7) | pellucid (145e-7)      | perfidious (247e-7)    | clairvoyant (386e-7) | immiscible (290e-7)    |
+| antediluvian (218e-7)   | imbroglio (162e-7)     | scintillating (286e-7) | unflinching (388e-7) | innervate (350e-7)     |
+| acerbic (272e-7)        | propinquity (173e-7)   | opprobrium (346e-7)    | artisanal (496e-7)   | humdrum (361e-7)       |
+| celerity (319e-7)       | meed (175e-7)          | lacuna (427e-7)        | sheen (966e-7)       | squirm (448e-7)        |
+| blithe (375e-7)         | salacious (251e-7)     | smattering (444e-7)    | impromptu (1001e-7)  | blankly (808e-7)       |
+| abrogate (396e-7)       | palimpsest (281e-7)    | inchoate (620e-7)      | malevolent (1131e-7) | profuse (809e-7)       |
+| abstruse (553e-7)       | quibble (320e-7)       | quandary (668e-7)      | sophomore (1143e-7)  | imperceptible (888e-7) |
+| circumspect (680e-7)    | timorous (334e-7)      | avarice (823e-7)       | hiatus (1144e-7)     | thither (906e-7)       |
+| inculcate (771e-7)      | sonorous (747e-7)      | onus (929e-7)          | nourish (1401e-7)    | crux (1272e-7)         |
+| indefatigable (988e-7)  | specious (754e-7)      | succinct (1288e-7)     | tenet (1401e-7)      | veracity (1286e-7)     |
+
+
+| 16                    | 17                     | 18                        | 19                     | 20                     |
+| -                     | -                      | -                         | -                      | -                      |
+| greeb (0.2e-7)        | comfortingly (132e-7)  | ultracrepidarian (0.3e-7) | athleisure (0.2e-7)    |  maffick (0.9e-7)      |
+| tantalize (88e-7)     | unbeknownst (269e-7)   | forgettery (1e-7)         | notabilia (5e-7)       |  cannikin (1e-7)       |
+| toupee (93e-7)        | blip (281e-7)          | holus-bolus (3e-7)        | true-blue (45e-7)      |  divagate (2e-7)       |
+| mockingbird (115e-7)  | idiosyncrasy (295e-7)  | chinwag (4e-7)            | centenarian (54e-7)    |  exurb (5e-7)          |
+| misogynistic (245e-7) | surreptitious (444e-7) | moggy (6e-7)              | centenarian (72e-7)    |  malinger (22e-7)      |
+| impersonate (255e-7)  | perilously (446e-7)    | memoriter (12e-7)         | puffery (84e-7)        |  perambulator (48e-7)  |
+| prescience (338e-7)   | meander (580e-7)       | purloin (41e-7)           | prelapsarian (104e-7)  |  sotto voce (131e-7)   |
+| goatee (362e-7)       | valour (673e-7)        | slumberous (53e-7)        | brinkmanship (104e-7)  |  dissemble (150e-7)    |
+| relegate (387e-7)     | inequity (824e-7)      | oleaginous (56e-7)        | hireling (105e-7)      |  ovine (203e-7)        |
+| vexing (615e-7)       | culpable (902e-7)      | limerick (104e-7)         | immortalize (133e-7)   |  amalgamate (206e-7)   |
+| lurk (685e-7)         | incredulous (938e-7)   | Luddite (117e-7)          | vim (178e-7)           |  invigorate (259e-7)   |
+| candour (715e-7)      | sprawl (1001e-7)       | cantankerous (269e-7)     | castigate (179e-7)     |  awestruck (289e-7)    |
+| irritate (914e-7)     | pejorative (1009e-7)   | winsome (286e-7)          | conflate (344e-7)      |  exculpatory (355e-7)  |
+| corroborate (917e-7)  | implicate (1011e-7)    | imprimatur (308e-7)       | hedonism (561e-7)      |  fete (367e-7)         |
+| knack (1156e-7)       | compendium (1030e-7)   | digression (729e-7)       | irate (668e-7)         |  instantiate (501e-7)  |
+| permeate (1182e-7)    | blasphemy (1164e-7)    | superlative (754e-7)      | conflagration (746e-7) |  conundrum (721e-7)    |
+| infiltrate (1289e-7)  | docile (1206e-7)       | placid (1023e-7)          | coalesce (999e-7)      |  jumble (1009e-7)      |
+| volition (1676e-7)    | conjugal (1329e-7)     | bewilderment (1201e-7)    | ire (1136e-7)          |  inalienable (1203e-7) |
+
+
+| 21                    | 22                       | 23                    | 24                     | 25                   |
+| -                     | -                        | -                     | -                      | -                    |
+| lickspittle (8e-7)    | sole meuniere (6e-7)     | mussitation (0.3e-7)  | minatory (42e-7)       | smaragdine( 0.6e-7)  |
+| dairymaid (21e-7)     | beleaguer (11e-7)        | incogitant (0.3e-7)   | jejune (71e-7)         | mumpsimus (1e-7)     |
+| aubergine (104e-7)    | dingbat (28e-7)          | daymare (2e-7)        | lachrymose (74e-7)     | sumpsimus (1e-7)     |
+| groveling (128e-7)    | doula (55e-7)            | consuetude (5e-7)     | meretricious           | chatoyant (5e-7)     |
+| footloose (194e-7)    | pyrrhic (76e-7)          | kibitzer (10e-7)      | mendacious             | vulpine (23e-7)      |
+| meritocracy (337e-7)  | satiate (102e-7)         | ululate (11e-7)       | loquacious             | Weltschmerz (33e-7)  |
+| prowl (391e-7)        | plod (164e-7)            | banausic (17e-7)      | jocular (329e-7)       | vaunting (62e-7)     |
+| gibberish (404e-7)    | janitorial (195e-7)      | confabulate (23e-7)   | puerile                | nescience (119e-7)   |
+| circuitous (568e-7)   | commode (300e-7)         | hobbyhorse (39e-7)    | intransigent (396e-7)  | canard (158e-7)      |
+| lustrous (584e-7)     | spendthrift (302e-7)     | verisimilar (45e-7)   | limpid                 | platitude (177e-7)   |
+| matrimony (672e-7)    | leek (344e-7)            | fructify (46e-7)      | stilted                | overwinter (204e-7)  |
+| stupendous (701e-7)   | sleight (440e-7)         | ruth (79e-7)          | invidious (600e-7)     | orogeny (207e-7)     |
+| woo (705e-7)          | crass (583e-7)           | lineament (80e-7)     | irksome (662e-7)       | malfeasance (302e-7) |
+| conspire (713e-7)     | florid (655e-7)          | sinecure (139e-7)     | mannered               | coterminous (344e-7) |
+| retaliate (878e-7)    | rife 1(107e-7)           | gravid (216e-7)       | resentful              | comportment (368e-7) |
+| purportedly (1039e-7) | sluggish (1605e-7)       | exterminate (537e-7)  | obnoxious (1504e-7)    | ostensible (1045e-7) |
+| variegated (1061e-7)  | exodus (2185e-7)         | iconoclastic (552e-7) | contemptuous (1600e-7) | ameliorate (1172e-7) |
+| hamper (1241e-7)      | reconnaissance (2695e-7) | mumbling (662e-7)     |                        |                      |
+
+
+| 26                    | 27                        | 28                        | 29            | 30           |
+| -                     | -                         | -                         | -             | -            |
+| slugfest (22e-7)      | trothplight (3e-7)        | ultracrepidarian (0.1e-7) | septenary 16  | daunt        |
+| skitter (62e-7)       | sibylline (32e-7)         | forgettery (1e-7)         | gramarye 2    | obstruct     |
+| regurgitate (123e-7)  | elate (35e-7)             | holus-bolus (3e-7)        | antinomy 301  | obstreperous |
+| abstemious (160e-7)   | expostulate (35e-7)       | memoriter (4e-7)          | mickle 17     | obdurate     |
+| expunge (213e-7)      | mesmerize (68e-7)         | luddite (6e-7)            | incommunicado | obstinate    |
+| fusiform (302e-7)     | distend (104e-7)          | slumberous (27e-7)        | dilapidated   | occlude      |
+| rummage (304e-7)      | coagulate (167e-7)        | oleaginous (38e-7)        | ramshackle    | draggle      |
+| ardour (448e-7)       | miniscule (175e-7)        | true-blue (43e-7)         | imbue         | sulky        |
+| jubilant (602e-7)     | flout (242e-7)            | ramification (201e-7)     | nonplussed    | horrendous   |
+| acquiesce (901e-7)    | foreshadow (321e-7)       | winsome (210e-7)          | peeve         | insolence    |
+| chagrin (961e-7)      | inane (363e-7)            | cantankerous (265e-7)     | befuddle      | imperious    |
+| abomination (977e-7)  | sui generis (506e-7)      | imprimatur (338e-7)       | dislodge      | carnation    |
+| promiscuous (1124e-7) | hedonism (633e-7)         | ironclad (451e-7)         | prevaricate   | mingle       |
+| haphazard (1422e-7)   | crevice (662e-7)          | yank (459e-7)             | mayhem        | preoccupy    |
+| elucidate (1639e-7)   | encumbered (679e-7)       | wiggle (514e-7)           | recluse       | engross      |
+| affluence (1657e-7)   | inconsequential (1160e-7) | camaraderie (1029e-7)     | beguile       | moribund     |
+| sojourn (1739e-7)     | insurmountable (1341e-7)  |                           | poky          | chance upon  |
+|                       |                           |                           | squalid       | afore        |
+|                       |                           |                           | disparage     | bustling     |
+                                                                                                                                                            
+  
+| 31           | 32            | 33             | 34             | 35              |
+| -            | -             | -              | -              | -               |
+| merrily      | benevolence   | brumal         | featly         | patrician       |
+| convene      | attenuate     | bedizen        | stardust       | objurgate       |
+| livid        | arete         | bunglesome     | obsequiously   | maladroit       |
+| alacrity     | brachylogy    | gadzookery     | sepulcher      | lenity          |
+| intertwine   | pervious      | solitudinarian | watershed      | kismet          |
+| unsheathe    | palmy         | fantasticate   | vulnerary      | innuendo        |
+| acumen       | logomachy     | oblivescence   | vatic          | deracinate      |
+| ditto        | literatim     | decathect      | upbraid        | denouement      |
+| flit         | gerontocracy  | paralipsis     | turncoat       | clandestine     |
+| marshy       | abridge       | naissance      | truckle        | circumferential |
+| exacerbate   | daily-breader | hyetal         | terse          | cervine         |
+| exasperate   | mishpocha     | goldilock      | sprout         | berate          |
+| scold        | apopemptic    | earworm        | silver-tongued | behindhand      |
+| vertigo      | abubble       | instauration   | reverie        | aerie           |
+| virago       | valedictory   | cerebrate      | reproach       | aberration      |
+| splinter     | tidings       | suspiration    | pullulate      | perk            |
+| sliver       | tabernacle    | tattersall     | pestiferous    | obscene         |
+| salver       | pinguid       | craic          | peculate       | throngs         |
+| malapropism  | enrapture     | shambles       | aflame         | valiant         |
+
+
+
+| 36           | 37          | 38          | 39        | 40          |
+| -            | -           | -           | -         | -           |
+| tire out     | moot        | plead       | ravel     | pant        |
+| holistically | deject      | growl       | courteous | languid     |
+| trotting     | avow        | snappishly  | dwindle   | indignantly |
+| splendour    | assent      | pretext     | delirium  | hookah      |
+| scurry       | paramour    | oyster      | dashing   | hiss        |
+| queer        | illicit     | succour     | stoop     | faint       |
+| crease       | abode       | credulous   | rumbling  | coax        |
+| borough      | abyss       | banter      | shriek    | chrysalis   |
+| pliable      | premeditate | orderly     | chimney   | buttercup   |
+| embarked     | bristling   | peering     | fluster   | actuarial   |
+| entrapment   | shrill      | vivisection | barrowful | startle     |
+| inadmissible | frown       | shatter     | hoarsely  | tedious     |
+| conferred    | crossly     | gasp        | sternly   | batler      |
+| cane         | gravely     | grok        | wretched  | shack       |
+| heckler      | titter      | manky       | trample   | subdue      |
+| inanimate    | thimble     | belch       | thistle   | sob         |
+| trudge       | comfit      | dianthus    | serpent   | wriggle     |
+| surfeit      | bow         | hideousness | piteous   | nibble      |
+
+
+| 41          | 42           | 43           | 44          | 45          |
+| -           | -            | -            | -           | -           |
+| edict       |  livery      | mournfully   | forthright  | crimson     |
+| impale      |  footman     | treacle      | encroach    | mallet      |
+| frizzy      |  disembark   | bawl         | adage       | furrow      |
+| mediocrity  |  crouch      | unruffle     | glimmer     | eldritch    |
+| egalitarian |  renounce    | adduce       | bespoke     | espouse     |
+| austerity   |  solemn      | shrine       | inflagrante | fervour     |
+| rabies      |  uncivil     | emeritus     | paddle      | smorgasbord |
+| den         |  lullaby     | tentative    | spinster    | reel        |
+| affectively |  howl        | stifle       | candidly    | derision    |
+| intermingle |  grunt       | preposterous | clogs       | tread       |
+| wisp        |  fling       | snazzy       | backcomb    | porpoise    |
+| disdain     |  cauldron    | hedgerow     | spanner     | flapper     |
+| trot        |  litany      | muppet       | ratsbane    | drawl       |
+| bough       |  impartial   | wade         | coiffure    | caper       |
+| thatch      |  abruptly    | deliberation | cognate     | askance     |
+| meekly      |  swift       | sordid       | oblong      | tureen      |
+| wearily     |  fleet       | adjudicator  | merrily     | dainty      |
+| twinkling   |  fallibility | pristine     | bequeath    | bailout     |
+
+
+| 46             | 47              | 48               | 49        | 50            |
+| -              | -               | -                | -         | -             |
+| flurry         | sanctuary       | keep/stay schtum | paunchy   | cognisant     |
+| diligent       | encomium        | heinous          | tubby     | mildewed      |
+| rustle         | smithereens     | abominable       | rotund    | debacle       |
+| vagaries       | epitomise       | resplendent      | pudgy     | entice        |
+| miscreant      | newfangled      | dauntless        | chubby    | cede          |
+| gimmick        | virulent        | plucky           | chunky    | divestiture   |
+| admonition     | slovenly        | intrepid         | burly     | floosie       |
+| mixed blessing | pundit/punditry | valorous         | waft      | addenda       |
+| imprudent      | lampoon         | listless         | droll     | sever         |
+| elation        | spout           | savoury          | beget     | remit         |
+| foil           | jab             | raze             | befriend  | exhilaration  |
+| flabbergasted  | slant           | enthralling      | abet      | disquieting   |
+| consecrated    | crumble         | spellbind        | indolent  | scawl         |
+| precariously   | audacious       | enchanting       | runt      | adulation     |
+| scribble       | leeway          | bewitching       | exiguous  | yearn         |
+| doodle         | loitering       | luxuriate in     | amiss     | pinnacle      |
+| scrawl         | instigate       | devour           | assailant | devour        |
+| hazy           | stallion        | topple           | belittle  | admonition    |
+| raucous        | verbiage        | fallacious       | mortified | cinder        |
+| vilify         |                 | posthaste        | retract   | transfix      |
+
+
+| 51             | 52                 |
+| -              | -                  |
+| trepidation    | apanthropinization |
+| shirk          | gongoozler         |
+| scoundrel      | kakistocracy       |
+| precipice      | ergophobia         |
+| aberrant       | snollygoster       |
+| torporific     | abliguration       |
+| logrolling     | wamblecropt        |
+| atemporal      | grumbletonians     |
+| cruciverbalist | grufeling          |
+| rapprochement  | apricate           |
+| nostrum        | kickshaw           |
+| mealy-mouthed  | slugabed           |
+| hearth         | cockalorum         |
+| fortitude      | lady-star          |
+| ebullient      |                    |
+| fudgel         |                    |
+| uhtceare       |                    |
+| dysania        |                    |
+| perendinate    |                    |
+
