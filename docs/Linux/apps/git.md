@@ -9,6 +9,54 @@ Look at the number of occurrences: `#!bash git log -S "#include <sys/ustat.h>"`
 
 
 
+## **Git Content Filter Driver**
+
+There is a way to comply with official company-wide code-style **and** work (locally) with the code formatted **as you want**.
+
+The idea is based upon the fact that it is only important to push my code in central repo in the official format, while
+nobody prevents me from having and working with code that is formatted in my own way.
+
+Luckily, git has native support for this - [Git Content Filter Driver](https://stackoverflow.com/questions/2316677/can-git-automatically-switch-between-spaces-and-tabs/2316728#2316728).
+
+##### In `.git/config` add
+
+```ini
+[filter "clangformat"]
+	smudge = .git/clang-formatter.sh .clang-format-my
+	clean = .git/clang-formatter.sh .clang-format-company
+```
+
+* `smudge` --- the command that is called when you **pull** something (more precisely when git checks sources out onto your disk).
+* `clean` --- the command that is called when you **push** something (more precisely when you add files in the git's staging area).
+* `.clang-format-my` and `.clang-format-company` --- self-explanatory `clang-format` config files.
+* `.git/clang-formatter.sh` is a small script that invokes `clang-format`. The main purpose of the script is to "prepare" value for
+  `-style` option (via awk):
+    ```bash linenums="1"
+    #!/bin/bash
+                              # (1)!
+    clang-format-8 -style "{$(awk '{if ($0 !~ /#/) {if (NR>1) {printf ", "} printf $0; }}' $1)}" -assume-filename=main.cpp
+    ```
+
+    1.  the awk script below converts contents of `.clang-format-my` (or `.clang-format-company`) into inline format: `-style "{Option1: Value, ...}"`,
+        because there is no way to specify filename with config to `clang-format`
+
+* do not forget to make the script executable: `chmod +x .git/clang-formatter.sh`
+
+
+##### In `.git/info/` add `attributes`:
+```ini
+*.c filter=clangformat
+*.h filter=clangformat
+*.cpp filter=clangformat
+*.hpp filter=clangformat
+```
+
+##### More info and explanation...
+...can be found [here](https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes)
+
+
+
+
 ## **Merge-related tricks**
 
 
@@ -119,6 +167,7 @@ diff and (2) branch's diff (because we have space). Meaning that master has the 
 The second `+/-` tells us what happened in one of the diffs (master's commit or branch's commit).
 
 The first `+/-` is from diff of the two diffs. If there is space, it means there is no diff (between the two diffs).
+
 
 
 
