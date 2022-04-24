@@ -33,34 +33,36 @@ apt list | grep -i bazel
 
 
 
-### Find **package by file**: `apt-file find`
+### Find **package by file**: `apt-file find` or `dpkg -S`
 
-```bash
-$ apt-file find psql | grep so
-libqt4-sql-psql: /usr/lib/x86_64-linux-gnu/qt4/plugins/sqldrivers/libqsqlpsql.so
-libqt5sql5-psql: /usr/lib/x86_64-linux-gnu/qt5/plugins/sqldrivers/libqsqlpsql.so
-```
+=== "apt-file"
+    ```bash
+    $ apt-file find psql | grep so
+    libqt4-sql-psql: /usr/lib/x86_64-linux-gnu/qt4/plugins/sqldrivers/libqsqlpsql.so
+    ```
 
-
-
-### Find **package by file**: `dpkg -S`
-```bash
-dpkg -S /usr/bin/nvidia-container-cli
-libnvidia-container-tools: /usr/bin/nvidia-container-cli
-```
+=== "dpkg"
+    ```bash
+    $ dpkg -S /usr/bin/nvidia-container-cli
+    libnvidia-container-tools: /usr/bin/nvidia-container-cli
+    ```
 
 
+### Find **files by package**: `apt-file list` or `dpkg -L`
 
-### Find **files by package**: `apt-file list`
+=== "apt-file"
+    ```bash
+    $ apt-file list davfs2
+    davfs2: /etc/davfs2/davfs2.conf
+    ...
+    ```
 
-```bash
-apt-file list davfs2
-davfs2: /etc/davfs2/davfs2.conf
-davfs2: /etc/davfs2/secrets
-davfs2: /sbin/mount.davfs
-...
-```
-
+=== "dpkg"
+    ```bash
+    $ dpkg -L puppet-agent
+    /etc/default
+    ...
+    ```
 
 
 ### **Add a repo**
