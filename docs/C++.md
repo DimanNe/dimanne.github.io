@@ -41,6 +41,14 @@ int main () {
 [reddit](https://www.reddit.com/r/cpp/comments/cliw5j/should_not_exceptions_be_finally_deprecated/)
 
 
+### [Embracing (and also Destroying) Variant Types Safely - Andrei Alexandrescu - CppCon 2021](https://www.youtube.com/watch?v=va9I2qivBOA&ab_channel=CppCon)
+
+* Usage of parameter packs (`head`, `tail`, `type_sequence`).
+
+
+### clang libAST
+
+[An example of parsing C++ code](https://www.youtube.com/watch?v=icvNkYextOo&ab_channel=CppCon).
 
 
 
