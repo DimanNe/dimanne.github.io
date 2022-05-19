@@ -75,7 +75,7 @@ The goal is to be able to write CMakeLists in this way:
 * And configure in this way:
 
     ```bash
-    cmake root/cmake/dir -DMAIN_TARGET="my/super/project/se2"  # <-- specify only one sub-project to build
+    cmake root/cmake/dir -DDIRS_TO_BUILD="my/super/project/se2"  # <-- specify only one sub-project to build
     ```
 
 
@@ -108,44 +108,48 @@ endfunction()
 macro(add_static_library)
    get_default_target_name(default_target_name)
    set_if_not_set(current_target ${default_target_name})
-   message("add_static_library: Adding STATIC library ${current_target}, with files: ${ARGV}")
+   message("SubProjectBuilder: add_static_library: Adding STATIC library ${current_target}, with files: ${ARGV}")
    add_library(${current_target} STATIC ${ARGV})
 endmacro()
 
 
 macro(add_exec name)
    set(current_target ${name})
+   message("SubProjectBuilder: add_exec: Adding executable ${ARGV}")
    add_executable(${ARGV})
 endmacro()
 
 
 function(add_subdirectory_if_not_added name)
-   message("add_subdirectory_if_not_added: ARGV: ${ARGV}, processed_paths: ${processed_paths}")
+   # message("SubProjectBuilder: add_subdirectory_if_not_added: ARGV: ${ARGV}, processed_paths: ${processed_paths}")
    string(REPLACE "/" "-" dashed_name ${name})
    if("${processed_paths}" MATCHES "X${dashed_name}X")
-      message("add_subdirectory_if_not_added: dashed_name: ${dashed_name} found in the list of processed paths, ignoring it...")
+      # message("SubProjectBuilder: add_subdirectory_if_not_added: dashed_name: ${dashed_name} found in the list of processed paths, ignoring it...")
       return()
    endif()
 
-   message("add_subdirectory_if_not_added: dashed_name: ${dashed_name} was not found in the list of processed paths, adding it...")
+   # message("SubProjectBuilder: add_subdirectory_if_not_added: dashed_name: ${dashed_name} was not found in the list of processed paths, adding it...")
    set(local_processed_paths ${processed_paths})
    list(APPEND local_processed_paths "X${dashed_name}X")
-   message("add_subdirectory_if_not_added: local_processed_paths: ${local_processed_paths}")
+   # message("SubProjectBuilder: add_subdirectory_if_not_added: local_processed_paths: ${local_processed_paths}")
    set(processed_paths "${local_processed_paths}" CACHE INTERNAL "")
 
    set(backup_current_target ${current_target})
    unset(current_target)
+   message("SubProjectBuilder: add_subdirectory_if_not_added: recursing to: ${name}")
    add_subdirectory(${PROJECT_SOURCE_DIR}/${name} ${PROJECT_BINARY_DIR}/${name})
    set(current_target ${backup_current_target})
 endfunction()
 
-function(depends_upon path)
-   message("depends_upon: name: ${current_target}, path: ${path}")
-   add_subdirectory_if_not_added(${path})
-
-   string(REPLACE "/" "-" dashed_name ${path})
-   target_link_libraries(${current_target} ${dashed_name})
+function(depends_upon paths)
+   # message("SubProjectBuilder: depends_upon: name: ${current_target}, path: ${path}")
+   foreach(path IN LISTS ARGV)
+      add_subdirectory_if_not_added(${path})
+      string(REPLACE "/" "-" dashed_name ${path})
+      target_link_libraries(${current_target} ${dashed_name})
+   endforeach()
 endfunction()
+
 
 
 # =================================================================================================
@@ -153,6 +157,7 @@ endfunction()
 
 include_directories(.)
 
-message("Building ${MAIN_TARGET}")
-add_subdirectory(${MAIN_TARGET})
+foreach(target_name IN LISTS DIRS_TO_BUILD)
+   add_subdirectory_if_not_added(${target_name})
+endforeach()
 ```
