@@ -52,9 +52,86 @@ int main () {
 
 
 
-## **Tricky parts**
+### Early return patter
 
-### Reference collapsing rules
+
+### Total functions vs Partial functions
+
+Let’s say instead of having a precondition that the range is non-empty, I want to handle that case too.
+I want to write a total function instead of a partial function. The best way to do that is either return
+some value (if I can) or no value (if I can’t). That’s an optional, that’s what it’s for: to handle returning
+something or nothing.
+
+
+
+
+
+## **Concepts**
+
+Purpose:
+
+* Better error messages.
+* Faster compilation {>>checks can be performed before instantiating and parsing a template function/class<<}.
+* Glorified `std::enable_if_t`.
+
+### Constraining return type
+
+Use arrow: `->`:
+
+```cpp
+template<class T>
+concept BoolComparable = requires(T lhs, T rhs) {
+   {lhs == rhs} -> std::convertible_to<bool>;
+   { shape.draw() }; -> std::same_as<void>;
+};
+```
+
+### Constraints for multiple types
+
+Consider heterogeneous comparison (`"asdf" == std::string("asdf")`):
+
+```cpp
+template<class T, class U>
+concept EqualityCompare = requires(T op_T, U op_U) {
+   {op_T == op_U} -> std::convertible_to<bool>;
+   {op_U == op_T} -> std::convertible_to<bool>;
+};
+
+template<class T, EqualityCompare<T> U>
+bool are_equal(const T op_T, const U op_U) {...}
+
+template<class T, class U> requires EqualityCompare<T, U>
+bool are_equal(const T op_T, const  U op_U) {...}
+
+bool are_equal(const auto op_T, const auto op_U)
+requires EqualityCompare<declytpe(op_T), decltype(op_U)> {...}
+```
+
+### Using concepts as parameters
+
+```cpp
+void drawShape(const ShapeConcept auto &shape) {
+   shape.draw();
+}
+template<class ShapeConcept>
+void drawShape(const ShapeConcept &shape) {
+   shape.draw();
+}
+```
+
+### Using concepts as return types
+
+```cpp
+ShapeConcept auto getShape() {
+   ...
+}
+auto getShape() -> ShapeConcept auto {
+   ...
+}
+```
+
+
+## **Reference collapsing rules**
 A good explanation of [rvalues](http://thbecker.net/articles/rvalue_references/section_01.html).
 
 Geven:
@@ -73,7 +150,9 @@ rvalue reference to a template argument:
   the argument type becomes `A&&`.
 
 
-### auto vs decltype
+
+
+## **auto vs decltype**
 
 [Src](http://thbecker.net/articles/auto_and_decltype/section_01.html).
 
@@ -96,7 +175,9 @@ class member access. Let `T` be the type of `expr`.
 
 
 
-### RVO / URVO / NRVO
+
+
+## **RVO / URVO / NRVO**
 
 Consider the following:
 
@@ -177,7 +258,7 @@ Instead of it just a single ctor called.
 
 
 
-## [**C++ Core Guidelines**](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md) --- excerpts
+## [**C++ Core Guidelines**](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md) {>>excerpts<<}
 
 
 
