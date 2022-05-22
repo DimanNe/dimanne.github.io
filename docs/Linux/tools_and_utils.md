@@ -116,6 +116,14 @@ Restore default permissions (`x` for dirs, no `x` for files):
     ```
 
 
+
+## **initrd.img**
+
+* Extract `initrd.img`: `unmkinitramfs /boot/initrd.img-5.15.0-30-generic ../new-init/`
+
+
+
+
 ## **udev**
 Docs: [debian.org/udev](https://wiki.debian.org/udev), 
 [freedesktop.org multiseat](https://www.freedesktop.org/wiki/Software/systemd/multiseat/),
