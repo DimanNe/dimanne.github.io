@@ -2,6 +2,19 @@ title: git
 
 # **git**
 
+## **git pull force** --- [[1](https://stackoverflow.com/questions/67054889/force-git-pull-to-resolve-divergent-by-discard-all-local-commits)]
+
+This will:
+
+1. get rid of all local uncommited changes
+2. get rid of all local commits
+3. and bring your local branch in sync with remote
+
+```bash
+git fetch && git reset --hard @{upstream}
+```
+
+
 ## **grep history**
 Look for the given regex: `#!bash git log -G "#include <sys/ustat.h>"`
 

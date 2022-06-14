@@ -35,6 +35,26 @@ or [`add_library`](https://cmake.org/cmake/help/latest/command/add_library.html)
 
 
 
+## **Create proxy targets**
+
+[Src](https://github.com/conan-io/conan/issues/4430).
+
+```
+find_package (libjpeg)
+if (NOT TARGET libjpeg::libjpeg)
+    find_package (JPEG REQUIRED)
+    add_library (libjpeg::libjpeg INTERFACE IMPORTED)
+    target_link_libraries (libjpeg::libjpeg PUBLIC JPEG::JPEG)
+    message (STATUS "using system provided JPEG library")
+else()
+    message (STATUS "using conan provided JPEG library")
+endif()
+
+target_link_libraries (your_project_target PRIVATE libjpeg::libjpeg)
+```
+
+
+
 ## **CMake for monorepos**
 
 ### The problem

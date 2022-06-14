@@ -51,6 +51,25 @@ int main () {
 [An example of parsing C++ code](https://www.youtube.com/watch?v=icvNkYextOo&ab_channel=CppCon).
 
 
+### Unwinding a Stack by Hand with Frame Pointers and ORC
+
+[A great article](https://blogs.oracle.com/linux/post/unwinding-stack-frame-pointers-and-orc) about stack unwinding.
+
+Getting symbol names by their addresses:
+```bash
+addr2line -e /usr/lib/debug/lib/modules/5.4.17-2136.304.4.1.el8uek.x86_64/vmlinux \
+            -j .text -ipfas                                                       \
+            0x30d178 0x2fb393 0x2fc1c9 0x2fd20d 0x301a80 0x301c3e 0x2f4437 0x2f55e4 0x2f5644 0x44f0 0xa001b8
+
+0x000000000030d178: read_word_at_a_time at compiler.h:350
+ (inlined by) dentry_string_cmp at dcache.c:252
+ (inlined by) dentry_cmp at dcache.c:406
+ (inlined by) __d_lookup_rcu at dcache.c:2672
+0x00000000002fb393: lookup_fast at namei.c:1659
+...
+```
+
+
 
 ### Early return patter
 
