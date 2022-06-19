@@ -2,10 +2,13 @@ title: C++
 
 # **C++**
 
+----------------------------------------------------------------------------------------------------
 ## **Talks & Articles**
+
 
 ### `signed` vs `unsigned int`'s --- performance-wise
 [CppCon 2016: Chandler Carruth](https://youtu.be/yG1OZ69H_-o?t=3094)
+
 
 
 ### Non-constant constant-exspressions in C++
@@ -41,6 +44,7 @@ int main () {
 [reddit](https://www.reddit.com/r/cpp/comments/cliw5j/should_not_exceptions_be_finally_deprecated/)
 
 
+
 ### [Embracing (and also Destroying) Variant Types Safely - Andrei Alexandrescu - CppCon 2021](https://www.youtube.com/watch?v=va9I2qivBOA&ab_channel=CppCon)
 
 * Usage of parameter packs (`head`, `tail`, `type_sequence`).
@@ -49,6 +53,7 @@ int main () {
 ### clang libAST
 
 [An example of parsing C++ code](https://www.youtube.com/watch?v=icvNkYextOo&ab_channel=CppCon).
+
 
 
 ### Unwinding a Stack by Hand with Frame Pointers and ORC
@@ -70,8 +75,8 @@ addr2line -e /usr/lib/debug/lib/modules/5.4.17-2136.304.4.1.el8uek.x86_64/vmlinu
 ```
 
 
-
 ### Early return patter
+
 
 
 ### Total functions vs Partial functions
@@ -83,8 +88,74 @@ something or nothing.
 
 
 
+### SIMD in C++20
+[Standard library algorithms implementation using SIMD](https://www.youtube.com/watch?v=WZGNCPBMInI&ab_channel=CppCon).
 
 
+
+
+----------------------------------------------------------------------------------------------------
+## **Ranges**
+
+### Projection --- the 3rd argument
+
+Example 1:
+
+```cpp linenums="1"
+struct Product {
+    std::string name_;
+    double value_ { 0.0 };
+};
+const auto                 is_positive = [](const auto& v) { return v > 0; };
+const std::vector<Product> prods       = {{ "box", 10.0 }, {"tv", 100.0}, {"none", -1.0}};
+auto res = std::ranges::all_of(prods, is_positive, &Product::value_);
+```
+
+Example 2, case insensitive search
+
+```cpp linenums="1"
+res = std::ranges::search(testString2,
+                          needle2,
+                          std::ranges::equal_to{},
+                          ::toupper,
+                          ::toupper);
+```
+
+### Views compositon --- `|`:
+
+```cpp linenums="1"
+auto out = [](const auto& v) { std::cout << v << ", "; };
+std::ranges::for_each(prods | std::views::reverse, out, &Product::name_);
+```
+
+### temporary ranges & `std::ranges::dangling`
+
+There is a special type that is returned when a function is called with a temporary value:
+
+```cpp linenums="1"
+std::vector<Product> GetProds() {...}
+
+auto it = std::ranges::find_if(GetProds(), [](const Product& p) { return true});
+```
+
+will [result in](https://godbolt.org/z/f5v1P4rGo):
+```
+<source>:22:48: error: base operand of '->' has non-pointer type 'std::ranges::dangling'
+   22 |     std::cout << "std::ranges::find_if: " << it->name_ << '\n';
+      |   
+```
+
+### [Erase–remove idiom](https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom)
+
+```cpp linenums="1"
+prodsVec.erase(std::ranges::remove_if(prodsVec, checkNoPrefix).begin(), prodsVec.end());
+
+// or
+std::erase_if(prodsVec, checkNoPrefix);
+```
+
+
+----------------------------------------------------------------------------------------------------
 ## **Concepts**
 
 Purpose:
@@ -150,6 +221,9 @@ auto getShape() -> ShapeConcept auto {
 ```
 
 
+
+
+----------------------------------------------------------------------------------------------------
 ## **Reference collapsing rules**
 A good explanation of [rvalues](http://thbecker.net/articles/rvalue_references/section_01.html).
 
@@ -171,6 +245,8 @@ rvalue reference to a template argument:
 
 
 
+
+----------------------------------------------------------------------------------------------------
 ## **auto vs decltype**
 
 [Src](http://thbecker.net/articles/auto_and_decltype/section_01.html).
@@ -195,7 +271,7 @@ class member access. Let `T` be the type of `expr`.
 
 
 
-
+----------------------------------------------------------------------------------------------------
 ## **RVO / URVO / NRVO**
 
 Consider the following:
@@ -242,6 +318,7 @@ Instead of it just a single ctor called.
 
 
 
+----------------------------------------------------------------------------------------------------
 ## **Lesser known C++ std algorithms**
 [Full list](https://en.cppreference.com/w/cpp/algorithm).
 
@@ -277,6 +354,8 @@ Instead of it just a single ctor called.
 
 
 
+
+----------------------------------------------------------------------------------------------------
 ## [**C++ Core Guidelines**](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md) {>>excerpts<<}
 
 
