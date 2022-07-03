@@ -10,16 +10,20 @@ title: Tools & Utils
     A directory:
     ```bash
     # Compress:
-    tar -I "zstd -T16 --ultra -22" -cf scripts.tar.zst scripts/
+    tar -I "zstd -T30 --ultra -19" -cf scripts.tar.zst scripts/ # (1)!
     
     # Decompress:
     tar --zstd -xf scripts.tar.zst
     ```
 
+    1. `-T` --- number of threads
+
+        Instead of `-19` you can use `-22` but it is will not utilise all threads
+
     A single file:
     ```bash
     # Compress:
-    zstd --compress --threads 16 --ultra -22 -o file.txt.zstd file.txt
+    zstd --compress --threads 30 --ultra -19 -o file.txt.zstd file.txt
 
     # Decompress:
     zstd --decompress file.txt.zstd

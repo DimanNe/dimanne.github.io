@@ -94,6 +94,26 @@ something or nothing.
 
 
 
+### Generate tuple consisting of N types
+
+```cpp linenums="1"
+template <class T, size_t N>
+   struct GenerateTNTimes {
+      template <size_t Index>
+      using AlwaysT = T;
+
+      template <class = std::make_index_sequence<N>>
+      struct Impl;
+
+      template <size_t... Indices>
+         struct Impl<std::index_sequence<Indices...>> {
+         using type = std::tuple<AlwaysT<Indices>...>;
+      };
+
+   using type = typename Impl<>::type;
+};
+```
+
 ----------------------------------------------------------------------------------------------------
 ## **Ranges**
 
@@ -219,6 +239,8 @@ auto getShape() -> ShapeConcept auto {
    ...
 }
 ```
+
+
 
 
 
