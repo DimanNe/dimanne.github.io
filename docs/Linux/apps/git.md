@@ -88,6 +88,16 @@ $ git show :3:hello.rb > hello.theirs.rb
 
 Then you can change them and finally merge: `#!bash git merge-file -p hello.ours.rb hello.common.rb hello.theirs.rb > hello.rb`.
 
+##### Same as above but in-place:
+
+```bash linenums="1"
+git checkout --ours result/ErrorRepMedium.h
+```
+
+NOTE:
+
+* During rebase (`git rebase master`), `--ours` correspond to `master`.
+
 
 ### Diff of the pending merge
 

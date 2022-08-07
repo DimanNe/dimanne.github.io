@@ -7,9 +7,11 @@ title: perf
 
 ## **Prerequisites**
 
-If you want to see kernel symbols: `#!bash sudo sysctl -w kernel.kptr_restrict=0`
-
-Make sure you use these flags during compilation: `-g2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer`
+* If you want to see kernel symbols: `#!bash sudo sysctl -w kernel.kptr_restrict=0`.
+* You probably also [need to install](https://unix.stackexchange.com/a/542221/314771) the following packages:
+  `sudo apt-get install libelf-dev libunwind-dev libaudit-dev`
+* Make sure you use these flags during compilation: `-g2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer`
+* Make sure you run `perf script` with `sudo` (as it needs access to kallsyms).
 
 
 ## **Counting events** --- `perf stat -e`
@@ -88,7 +90,7 @@ perf record -e L1-dcache-load-misses -c 10000 -ag -- sleep 5
 === "Bash"
 
     ```bash
-    bn="gen2-worker5-F2987"; mw=0.01; suffix="$mw"; perf script | ./FlameGraph/stackcollapse-perf.pl > $bn.perf.data.folded; \
+    bn="gen2-worker5-F2987"; mw=0.01; suffix="$mw"; sudo perf script | ./FlameGraph/stackcollapse-perf.pl > $bn.perf.data.folded; \
     cat $bn.perf.data.folded | ./FlameGraph/flamegraph.pl --minwidth $mw --width 2250 --title "$bn $suffix" --reverse --inverted > ./$bn-$suffix.perf-icicle.svg && \
     cat $bn.perf.data.folded | ./FlameGraph/flamegraph.pl --minwidth $mw --width 2250 --title "$bn $suffix" > ./$bn-$suffix.perf-flame.svg
     ```
@@ -96,7 +98,7 @@ perf record -e L1-dcache-load-misses -c 10000 -ag -- sleep 5
 === "Fish"
 
     ```bash
-    set bn "gen2-F2987.1"; set mw 0.01; set suffix "$mw"; perf script | ~/devel/FlameGraph/stackcollapse-perf.pl > $bn.perf.data.folded; \
+    set bn "gen2-F2987.1"; set mw 0.01; set suffix "$mw"; sudo perf script | ~/devel/FlameGraph/stackcollapse-perf.pl > $bn.perf.data.folded; \
     cat $bn.perf.data.folded | ~/devel/FlameGraph/flamegraph.pl --minwidth $mw --width 2250 --title "$bn $suffix" --reverse --inverted > ./$bn-$suffix.perf-icicle.svg && \
     cat $bn.perf.data.folded | ~/devel/FlameGraph/flamegraph.pl --minwidth $mw --width 2250 --title "$bn $suffix" > ./$bn-$suffix.perf-flame.svg
     ```
