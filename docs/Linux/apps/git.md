@@ -216,6 +216,13 @@ Another useful concept you need to remember is that there are two states:
   the parent repo also includes list of submodules, urls from which they have been clones, branches they track, SHA
   "pointers" to commits of the branches, all of which you have to commit/pull/push).
 
+### Checkout all submodules to their correct versions
+
+```bash
+git submodule update --init --recursive
+git submodule foreach --recursive git reset --hard
+```
+
 ### Clone a repo with submodules
 
 ```bash
