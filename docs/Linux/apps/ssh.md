@@ -67,9 +67,18 @@ There is proper support for this workflow in ssh: read more about `-J`, `-W` fla
 When you ssh to a host first time, you are supposed to verify its key fingerprint.
 
 You can obtain host's fingerprint in this way:
-```bash
-ssh-keygen -l -f /etc/ssh/ssh_host_ecdsa_key.pub
-```
+
+=== "fish"
+
+    ```fish
+    ssh-keygen -lf (ssh-keyscan localhost 2>/dev/null | psub)
+    ```
+
+=== "bash"
+
+    ```bash
+    ssh-keygen -lf <(ssh-keyscan localhost 2>/dev/null)
+    ```
 
 
 
