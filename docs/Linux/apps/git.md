@@ -21,6 +21,24 @@ Look for the given regex: `#!bash git log -G "#include <sys/ustat.h>"`
 Look at the number of occurrences: `#!bash git log -S "#include <sys/ustat.h>"`
 
 
+## **Multiple branches simultaneously** (in a single repo)
+
+[`git worktree`](https://git-scm.com/docs/git-worktree) makes is possible to materialise multiple branches simultaneously
+and work with them as usual in a single git repo:
+
+* [Clone repo with master going to a nested directory](https://stackoverflow.com/a/72289797/758986):
+  `mkdir ~/devel/ybd && cd ~/devel/ybd && git clone git@bitbucket.org:yellowbrickdata/ybd.git master  --separate-git-dir=.git`
+* Checkout worktree that you need (repeat this as many times as you need): `git worktree add cloud_native`
+
+Operations:
+
+* **add** worktree: `git worktree add <path> <commit-ish>`
+* **list** worktrees: `git worktree list`
+* **move** worktree from one directory to another: `git worktree move`
+* **remove** worktree: `git worktree remove`
+* **repair**
+
+
 
 ## **Git Content Filter Driver**
 
