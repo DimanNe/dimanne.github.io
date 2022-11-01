@@ -2,6 +2,7 @@ title: Disks
 
 # **Disks**
 
+`lsblk --fs` --- shows all block devices along with uuids.
 
 ## **Format a disk**
 
@@ -23,6 +24,30 @@ sudo mkfs.ext4 -L TempStorage /dev/sda1
 7. Check the filesystem: `sudo e2fsck -f /dev/sdXX`
 8. Resize filesystem: `sudo resize2fs /dev/sdXX`
 
+
+## **Add encrypted disk**
+
+```
+sudo cryptsetup luksFormat /dev/nvme0n1
+sudo cryptsetup open /dev/nvme0n1 nvme0_crypt
+sudo mkfs.ext4 -L VortexHome /dev/mapper/nvme0_crypt
+```
+
+then add it in `/etc/crypttab`:
+
+```title="sudo nano /etc/crypttab"
+nvme0_crypt UUID=dd3a78d4-1085-422f-abd4-e42a1bf50073 none luks,discard
+
+# Or
+# nvme0_crypt UUID=c652c9c4-54a0-440f-824a-ec1d8e0d2d50 none luks,keyscript=/usr/share/yubikey-luks/ykluks-keyscript,discard
+```
+
+Update initramfs: `sudo update-initramfs -u`
+
+and finally in fstab:
+
+```title="sudo nano /etc/fstab"
+```
 
 
 ## **Disk health checks**
