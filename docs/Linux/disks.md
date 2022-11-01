@@ -47,6 +47,7 @@ Update initramfs: `sudo update-initramfs -u`
 and finally in fstab:
 
 ```title="sudo nano /etc/fstab"
+/dev/mapper/nvme0_crypt    /home2          ext4    errors=remount-ro 0       1
 ```
 
 
