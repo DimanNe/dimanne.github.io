@@ -48,6 +48,11 @@ Operations:
 * **repair**
 
 
+## Initial config
+
+* Prune deleted branches automatically: `git config --global fetch.prune true`
+* Merge strategy: `TODO`
+
 
 ## **Git Content Filter Driver**
 

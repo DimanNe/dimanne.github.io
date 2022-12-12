@@ -21,6 +21,17 @@ Consider creating a [restricted ssh user for port-forwarding](https://askubuntu.
 
 
 
+## **SSH port forwarding: bastions and `ProxyJump`'s**
+
+Sometimes there are "bastion" hosts: in order to ssh to `host2`, you have first have to ssh to an intermediate `host1`.
+
+There is proper support for this workflow in ssh: read more about `-J`, `-W` flags and `ProxyCommand`
+[here](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump).
+
+
+
+
+
 ## **Arbitrary port forwarding**
 Suppose you have a web-server on `host2`, and this host is unreachable directly from your machine (`localhost`).
 The only way to reach `host2` is through intermediate host - `host1`. And you want to be able to open pages from `host2`
@@ -36,12 +47,39 @@ Once you run it, you can navigate to `http://localhost:12345` in your browser.
 
 
 
-## **SSH port forwarding: bastions and `ProxyJump`'s**
+## **Agent forwarding**
 
-Sometimes there are "bastion" hosts: in order to ssh to `host2`, you have first have to ssh to an intermediate `host1`.
+You might want to maintain and use a single SSH key, regardless of how many nested SSH sessions there are. By default,
+the key of the current localhost is used. Agent forwarding makes it possible to use a single ssh key, forwarding it
+from one remote host to another. (1)
+{.annotate}
 
-There is proper support for this workflow in ssh: read more about `-J`, `-W` flags and `ProxyCommand`
-[here](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump).
+1. Both ssh-agent as well as gpg-agent implement ssh-agent protocol. This secction describes only ssh-agent.
+
+    See [Generating ssh keys -> GPG keys](ssh.md#generating-ssh-keys) for more info about gpg for ssh.
+
+
+* Ensure local ssh config allows in:
+
+    ```ini title="sudo nano /etc/ssh/ssh_config"
+    Host *
+    ForwardAgent yes
+    ```
+
+* Ensure remote server allows it:
+
+   ```ini title="nano /etc/ssh/sshd_config"
+   AllowForwardAgent yes
+   ```
+
+* Check configuration is fine: `/usr/sbin/sshd -t`
+* And restart sshd: `service ssh restart`
+* Start ssh-agent automatically:
+
+    ```bash title=".bashrc"
+    eval `ssh-agent`
+    ```
+
 
 
 
