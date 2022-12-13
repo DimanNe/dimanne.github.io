@@ -1,5 +1,7 @@
 title: git
 
+`git config pull.rebase true`
+
 # **git**
 
 ## **git pull force** --- [[1](https://stackoverflow.com/questions/67054889/force-git-pull-to-resolve-divergent-by-discard-all-local-commits)]
@@ -33,6 +35,13 @@ and work with them as usual in a single git repo:
 Operations:
 
 * **add** worktree: `git worktree add <path> <commit-ish>`
+
+    If commit-ish is a branch name is has not yet been checked out locally, then git will create a tracking branch for you.
+
+* **add** worktree: `git worktree add --track -b DS_CN_YBD-22481-GCP-1 objst origin/DS_CN_YBD-22481-GCP-1`
+
+    Use this if you want to create a directory `objst` that has a branch which tracks remote branch.
+
 * **list** worktrees: `git worktree list`
 * **move** worktree from one directory to another: `git worktree move`
 * **remove** worktree: `git worktree remove`
