@@ -2,6 +2,11 @@ title: lldb
 
 # **lldb**
 
+## **Attach & Continue**
+
+* `#!bash sudo apt update && sudo apt install -y lldb`
+* `#!bash sudo lldb -o "continue" -p $(pgrep -x worker)`
+
 ## **Breakpoints**
 
 Automatically perform an action on hit:
