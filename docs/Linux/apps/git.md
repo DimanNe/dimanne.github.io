@@ -1,7 +1,5 @@
 title: git
 
-`git config pull.rebase true`
-
 # **git**
 
 ## **git pull force** --- [[1](https://stackoverflow.com/questions/67054889/force-git-pull-to-resolve-divergent-by-discard-all-local-commits)]
@@ -48,10 +46,10 @@ Operations:
 * **repair**
 
 
-## Initial config
+## **Common git config**
 
 * Prune deleted branches automatically: `git config --global fetch.prune true`
-* Merge strategy: `TODO`
+* Merge strategy: `git config pull.rebase true`
 
 
 ## **Git Content Filter Driver**
