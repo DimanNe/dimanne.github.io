@@ -2,6 +2,8 @@ title: git
 
 # **git**
 
+
+------------------------------------------------------------------------------------------------------------------------
 ## **git pull force** --- [[1](https://stackoverflow.com/questions/67054889/force-git-pull-to-resolve-divergent-by-discard-all-local-commits)]
 
 This will:
@@ -15,12 +17,40 @@ git fetch && git reset --hard @{upstream}
 ```
 
 
+
+------------------------------------------------------------------------------------------------------------------------
+## **Sign & Verify commits**
+
+Official [git docs](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)
+and [github docs](https://docs.github.com/en/authentication/managing-commit-signature-verification/displaying-verification-statuses-for-all-of-your-commits)
+
+### Signing commits
+
+* Tell git to sign commits:
+    * only in this repo: `git config commit.gpgsign true`
+    * or all repos: `git config --global commit.gpgsign true`
+* Specify what key to use:
+    * Choose the fingerprint of an `S` key: `gpg --list-secret-keys --keyid-format=long`
+    * `git config --global user.signingkey 0A46826A!`
+* When committing add `-S`: `git commit -S -m "Test signing"`
+* You might want to add gpg key to github, export it via: `gpg --export --armour  --fingerprint ...`
+
+### Verification
+
+* During pull: `git pull --verify-signatures`
+* In log: `git log --show-signature`
+
+
+
+------------------------------------------------------------------------------------------------------------------------
 ## **grep history**
 Look for the given regex: `#!bash git log -G "#include <sys/ustat.h>"`
 
 Look at the number of occurrences: `#!bash git log -S "#include <sys/ustat.h>"`
 
 
+
+------------------------------------------------------------------------------------------------------------------------
 ## **Multiple branches simultaneously** (in a single repo)
 
 [`git worktree`](https://git-scm.com/docs/git-worktree) makes is possible to materialise multiple branches simultaneously
@@ -46,12 +76,16 @@ Operations:
 * **repair**
 
 
+
+------------------------------------------------------------------------------------------------------------------------
 ## **Common git config**
 
 * Prune deleted branches automatically: `git config --global fetch.prune true`
 * Merge strategy: `git config pull.rebase true`
 
 
+
+------------------------------------------------------------------------------------------------------------------------
 ## **Git Content Filter Driver**
 
 There is a way to comply with official company-wide code-style **and** work (locally) with the code formatted **as you want**.
@@ -100,6 +134,7 @@ Luckily, git has native support for this - [Git Content Filter Driver](https://s
 
 
 
+------------------------------------------------------------------------------------------------------------------------
 ## **Merge-related tricks**
 
 
@@ -223,7 +258,7 @@ The first `+/-` is from diff of the two diffs. If there is space, it means there
 
 
 
-
+------------------------------------------------------------------------------------------------------------------------
 ## **Submodules cheat-sheet**
 
 ### Intro
@@ -304,6 +339,8 @@ git add contrib/result/result && git commit -m "Update contrib/result/result sub
 ```
 
 
+
+------------------------------------------------------------------------------------------------------------------------
 ## **Default branch name**
 
 ```bash
@@ -312,6 +349,7 @@ git symbolic-ref --short refs/remotes/origin/HEAD
 
 
 
+------------------------------------------------------------------------------------------------------------------------
 ## **git-svn: skip revisions**
 
 Omit 1395620-1395673 revisions:
@@ -322,6 +360,8 @@ git svn rebase
 ```
 
 
+
+------------------------------------------------------------------------------------------------------------------------
 ## **Add remote upstream**
 
 ```bash
