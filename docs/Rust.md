@@ -2,6 +2,13 @@ title: Rust
 
 # **Rust**
 
+[**The Rust Programming Language book**](https://rust-book.cs.brown.edu/experiment-intro.html)
+
+[**Rust API Guidelines**](https://rust-lang.github.io/api-guidelines/about.html)
+
+[**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
+
+
 ---------------------------------------------------------------------------------------------------------------------------
 
 ## **C++ differences**
@@ -307,7 +314,9 @@ Similar (explicit) syntax of calling a trait is also useful in case of collision
 
 ---------------------------------------------------------------------------------------------------------------------------
 
-## **Project organisation & Structure**
+## **Project organisation & Structure & Cargo**
+
+[Cargo documentation](https://doc.rust-lang.org/cargo/index.html).
 
 From smaller units to larger:
 

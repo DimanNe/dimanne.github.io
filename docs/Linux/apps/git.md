@@ -26,19 +26,20 @@ and [github docs](https://docs.github.com/en/authentication/managing-commit-sign
 
 ### Signing commits
 
-* Tell git to sign commits:
-    * only in this repo: `git config commit.gpgsign true`
-    * or all repos: `git config --global commit.gpgsign true`
-* Specify what key to use:
+* Tell git to sign commits: `#!bash git config commit.gpgsign true # --global `
+* Specify what key to use by default:
     * Choose the fingerprint of an `S` key: `gpg --list-secret-keys --keyid-format=long`
-    * `git config --global user.signingkey 0A46826A!`
+    * `git config user.signingkey 0A46826A! # --global`
 * When committing add `-S`: `git commit -S -m "Test signing"`
 * You might want to add gpg key to github, export it via: `gpg --export --armour  --fingerprint ...`
+
 
 ### Verification
 
 * During pull: `git pull --verify-signatures`
+    * Make it the default: `#!bash git config merge.verifySignatures true # --global`
 * In log: `git log --show-signature`
+    * Make it the default: `#!bash git config log.showSignature true # --global`
 
 
 
