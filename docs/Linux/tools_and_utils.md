@@ -10,25 +10,26 @@ title: Tools & Utils
     A directory:
     ```bash
     # Compress:
-    tar -I "zstd -T30 --ultra -19" -cf scripts.tar.zst scripts/ # (1)!
+    tar -I "zstd --threads 30 --ultra -19 --memory 8192" -cf scripts.tar.zst scripts/
     
     # Decompress:
     tar --zstd -xf scripts.tar.zst
     ```
 
-    1. `-T` --- number of threads
-
-        Instead of `-19` you can use `-22` but it is will not utilise all threads
-
     A single file:
+
     ```bash
     # Compress:
-    zstd --compress --threads 30 --ultra -19 -o file.txt.zstd file.txt
+    zstd --compress --threads 30 --ultra -19 --memory 8192 -o file.txt.zstd file.txt
 
     # Decompress:
     zstd --decompress file.txt.zstd
     ```
 
+A couple of observations:
+
+* zstd uses cores up to the compression level of 19 (including).
+* `--ultra -22` gives the best compression
 
 
 ## **ip commands**
@@ -127,23 +128,6 @@ Restore default permissions (`x` for dirs, no `x` for files):
 
 
 
-
-
-## **screen**
-
-### Enable scroll
-
-```linenums="1" title="~/.screenrc"
-defscrollback 10000
-termcapinfo xterm* ti@:te@
-```
-
-### Rename existing screen
-
-```
-Ctrl + a
-:sessionname mySessionName<ENTER>
-```
 
 
 
