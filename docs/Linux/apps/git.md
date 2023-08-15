@@ -262,82 +262,106 @@ The first `+/-` is from diff of the two diffs. If there is space, it means there
 ------------------------------------------------------------------------------------------------------------------------
 ## **Submodules cheat-sheet**
 
-### Intro
-
 [Official docs.](https://www.git-scm.com/book/en/v2/Git-Tools-Submodules)
 
-* Better git status output: `git config status.submodulesummary 1`
-* Better git diff: `git diff --submodule=diff`
-* Consistent git checkout (if you issue git checkout in the root repo, it will checkout submodules as well):
-  `git config submodule.recurse true`. More generally, this will add `--recurse-submodules` to all git commands.
-* Do not push root repo without ensuring submodules are pushed. The following setting prevents git from pushing
-  a new submodule commit pointer in the root repo, unless the commit exists in the remote of the submodule:
-  `git config push.recurseSubmodules check`.
+Remember is that there are two states:
 
-Another useful concept you need to remember is that there are two states:
+1. the state associated with git repo that is a submodule
+    * and therefore you need to do all usual things with it, such as adding files, committing, pushing and so on...
+2. and the state stored in the parent repo, that describes submodules (this is in addition to usual git repo state
+   and operations, the parent repo also includes list of submodules, urls from which they have been clones,
+   branches they track, SHA "pointers" to commits of the branches, all of which you have to commit/pull/push).
 
-* state associated with git repo that is a submodule (and therefore you need to do all usual things with it,
-  such as adding files, committing, pushing and so on...);
-* and state stored in the parent repo, that describes submodules (in addition to usual git repo state and operations,
-  the parent repo also includes list of submodules, urls from which they have been clones, branches they track, SHA
-  "pointers" to commits of the branches, all of which you have to commit/pull/push).
-
-### Checkout all submodules to their correct versions
-
-```bash
-git submodule update --init --recursive
-git submodule foreach --recursive git reset --hard
-```
-
-### Clone a repo with submodules
-
-```bash
-git clone --recurse-submodules git@github.com:DimanNe/scripts.git
-```
-
-### Add a submodule in a parent repo
-
-```bash linenums="1"
-mkdir -p contrib/result
-git submodule add git@github.com:DimanNe/result.git contrib/result/result
-cd contrib/result/result && git checkout branch_you_need && cd ../../../
-git config -f .gitmodules submodule.contrib/result/result.branch branch_you_need # Tell git which branch to pull/track
-git add .gitmodules
-git commit -m "Add result as a submodule"
-```
-
-### Remove a submodule from a repo
-[Src](https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule)
-```
-git rm <path-to-submodule>
-```
-This removes the filetree at `<path-to-submodule>`, and the submodule's entry in the `.gitmodules` file
-I.e. all traces of the submodule in your repository proper are removed.
-
-Additionally, you might want to remove `.git` directory of the submodule from `modules/`:
-
-```bash linenums="1"
-rm -rf .git/modules/<path-to-submodule>
-git config --remove-section submodule.<path-to-submodule>.
-```
+Another non-obvious thing is that there are two places where repo URLs are kept: `.gitmodules` and `<repo>/.git/config`.
+If someone updates and URL of a repo, you get the changes in `.gitmodules` via git pull. But `<repo>/.git/config`
+is not updated. This is why you need to use `git submodule sync --recursive` (after `git pull`).
 
 
-### Pull a submodule (Update specific submodule from its remote)
+* **Show statuses of submodules**: `git config status.submodulesummary 1`
 
-```
-git submodule update --remote --merge contrib/result/result/ # Omit the last arg if you want to pull all submodules
-git pull && git submodule sync --recursive && git submodule update --init --recursive --remote
-```
 
-### Push a submodule
+* **Show diff of submodules**:
+    * `git diff --submodule=diff`
+    * `git config          diff.submodule diff`
+    * `git config --global diff.submodule diff`
 
-Work with submodule as usual: make changes in submodule's files, add the changed files, commit and push them (note:
-you do not need to push explicitly each submodules if you set git config submodule.recurse true).
 
-Finally, fix/set the new submodule hash in the root repo:
-```bash linenums="1"
-git add contrib/result/result && git commit -m "Update contrib/result/result submodule" && git push
-```
+* **Checkout submodules** too (if you issue git checkout in the root repo, it will checkout submodules as well):
+    * `git checkout --recurse-submodules`
+    * `git config submodule.recurse true` (this will add `--recurse-submodules` to all git commands)
+    * `git config --global submodule.recurse true`
+
+
+* **Verify that submodules were pushed before super-repo push**:
+    * `git config push.recurseSubmodules check`
+
+
+* **Checkout all submodules to their correct versions**
+
+    ```bash
+    git submodule foreach --recursive git reset --hard
+    git submodule update --init --recursive
+    ```
+
+
+* **Clone a repo with all submodules**: `git clone --recurse-submodules git@github.com:DimanNe/scripts.git`
+    * or only selected submodules: (1)
+      {.annotate}
+
+        1. here:
+
+            ```bash
+            git clone git@github.com:DimanNe/scripts.git
+            cd scripts
+            git submodule init path/to/your/submodule
+            git submodule update
+            ```
+
+
+* **Add a submodule in a parent repo**
+
+    ```bash
+    git submodule add -b branch_you_need git@github.com:DimanNe/result.git contrib/result/result
+    # Below is not needed if you used -b above:
+    # cd contrib/result/result && git checkout branch_you_need && cd ../../../
+    # Tell git which branch to pull/track
+    # git config -f .gitmodules submodule.contrib/result/result.branch branch_you_need
+    # git add .gitmodules
+    git commit -m "Add result as a submodule"
+    ```
+
+
+* **Remove a submodule from a repo** [Src](https://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule)
+
+    ```bash
+    git rm <path-to-submodule>
+    ```
+
+    This removes the filetree at `<path-to-submodule>`, and the submodule's entry in the `.gitmodules` file.
+
+    Additionally, you might want to remove `.git` directory of the submodule from `modules/`:
+
+    ```bash linenums="1"
+    rm -rf .git/modules/<path-to-submodule>
+    git config --remove-section submodule.<path-to-submodule>.
+    ```
+
+
+* **Pull submodules**:
+
+    * **Update submodule from upstream**: `#!bash git submodule update --remote --merge contrib/result/result/`
+      (Omit the last arg if you want to pull all submodules)
+
+    * **Get the state expected/committed in super-repo**: `#!bash git pull && git submodule sync --recursive && git submodule update --init --recursive`
+
+
+* **Push a submodule**: work with submodule as usual: make changes in submodule's files, add the changed files,
+  commit and push them (note: you do not need to push explicitly each submodules if you set `git config submodule.recurse true`).
+
+    Finally, fix/set the new submodule hash in the root repo:
+    `git add contrib/result/result && git commit -m "Update contrib/result/result submodule" && git push`
+
+
 
 
 
@@ -368,4 +392,3 @@ git svn rebase
 ```bash
 git remote add upstream https://github.com/UPSTREAM-USER/ORIGINAL-PROJECT.git
 ```
-

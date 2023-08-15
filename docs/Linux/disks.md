@@ -6,12 +6,27 @@ title: Disks
 
 ## **Format a disk**
 
-```bash linenums="1"
-sudo parted /dev/sda mklabel gpt
-sudo parted -a opt /dev/sda mkpart primary 0% 100%
-sudo mkfs.ext4 -L TempStorage /dev/sda1
-```
+* **gpt partitions**:
 
+    ```bash linenums="1"
+    sudo parted /dev/sda mklabel gpt
+    sudo parted -a opt /dev/sda mkpart primary 0% 100%
+    sudo mkfs.ext4 -L TempStorage /dev/sda1
+    ```
+
+* **mbr/dos**
+
+    ```bash
+    sudo parted /dev/sdb mklabel msdos
+    parted -a opt /dev/sdb mkpart primary 0% 100%
+    sudo mkfs.vfat /dev/sdb1
+    ```
+
+## Move image to flash
+
+```
+dd if=./src-filename of=/dev/sdb status=progress conv=fsync
+```
 
 ## **Resize a GPT with a ext4**
 
