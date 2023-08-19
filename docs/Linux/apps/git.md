@@ -279,6 +279,7 @@ is not updated. This is why you need to use `git submodule sync --recursive` (af
 
 * **Show statuses of submodules**: `git config status.submodulesummary 1`
 
+* **Fetch submodules in parallel**: `git config --global submodule.fetchJobs 32`
 
 * **Show diff of submodules**:
     * `git diff --submodule=diff`
@@ -292,15 +293,15 @@ is not updated. This is why you need to use `git submodule sync --recursive` (af
     * `git config --global submodule.recurse true`
 
 
-* **Verify that submodules were pushed before super-repo push**:
-    * `git config push.recurseSubmodules check`
+* **Verify that submodules are pushed before super-repo is pushed**:
+    * `git config push.recurseSubmodules on-demand`
 
 
 * **Checkout all submodules to their correct versions**
 
     ```bash
     git submodule foreach --recursive git reset --hard
-    git submodule update --init --recursive
+    git pull && git submodule sync --recursive && git submodule update --init --recursive
     ```
 
 
@@ -349,8 +350,10 @@ is not updated. This is why you need to use `git submodule sync --recursive` (af
 
 * **Pull submodules**:
 
-    * **Update submodule from upstream**: `#!bash git submodule update --remote --merge contrib/result/result/`
-      (Omit the last arg if you want to pull all submodules)
+    * **Update submodule from upstream**:
+        * One: `#!bash git pull && git submodule sync --recursive && git submodule update --remote --merge contrib/result/result/`
+        * All: `#!bash git pull && git submodule sync --recursive && git submodule update --remote --merge --recursive`
+
 
     * **Get the state expected/committed in super-repo**: `#!bash git pull && git submodule sync --recursive && git submodule update --init --recursive`
 

@@ -241,25 +241,28 @@ There are several ways to make ssh work with keys on a Yubikey:
 
     3. Setup ssh<--->gpg interaction (main [source](https://opensource.com/article/19/4/gpg-subkeys-ssh)):
         1. Enable ssh support in `gpg-agent` config:
-            ```bash linenums="1"
-            cat << HEREDOC > ~/.gnupg/gpg-agent.conf
-            enable-ssh-support
-            # default-cache-ttl 60 # Change if you wish
-            # max-cache-ttl 120    # Change if you wish
-            HEREDOC
-            ```
-        2. Restart `gpg-agent`: `gpgconf --kill gpg-agent`
-        3. Specify which key should be used for ssh: add keygrip of the "Auth GPG key" to `~/.gnupg/sshcontrol`:
 
             === "bash"
-                ```bash
-                gpg -K --with-keygrip | grep -A 1 "^ssb>.* \[A\]$" | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4 >> ~/.gnupg/sshcontrol
+                ```bash linenums="1"
+                cat << HEREDOC > ~/.gnupg/gpg-agent.conf
+                enable-ssh-support
+                # default-cache-ttl 60 # Change if you wish
+                # max-cache-ttl 120    # Change if you wish
+                HEREDOC
+                ```
+            === "fish"
+
+                ```fish
+                echo "enable-ssh-support
+                # default-cache-ttl 60 # Change if you wish
+                # max-cache-ttl 120    # Change if you wish" > ~/.gnupg/gpg-agent.conf
                 ```
 
-            === "fish"
-                ```bash
-                gpg -K --with-keygrip | grep -A 1 "^ssb>.* \[A\]\$" | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4 >> ~/.gnupg/sshcontrol
-                ```
+        2. Restart `gpg-agent`: `gpgconf --kill gpg-agent`
+        3. Specify which key should be used for ssh: add keygrip of the "Auth GPG key" to `~/.gnupg/sshcontrol`:
+            * Get its keygrip: gpg -K --with-keygrip
+            * Put it in ~/.gnupg/sshcontrol: `echo 87A342B1561ADD416AD21... > ~/.gnupg/sshcontrol`
+
 
         4. Tell SSH to use `gpg-agent`'s socket:
 
