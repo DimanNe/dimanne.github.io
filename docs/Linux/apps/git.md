@@ -145,6 +145,8 @@ Specifically:
     git commit -m "Add result as a submodule"
     ```
 
+    * **Change tracking branch**: `git submodule set-branch --branch master contrib/llvm-project`
+
     * **Remove a submodule from a repo** (1)
     {.annotate}
 
@@ -185,6 +187,12 @@ Specifically:
     ```bash
     git submodule foreach --recursive git reset --hard # <--- Careful!
     git pull && git submodule sync --recursive && git submodule update --init --recursive
+
+    # Yes, again...
+    # git submodule update can leave submodules in non-checked-out state if an error happens
+    # during fetch one of submodules (git status reports that all files has been deleted from worktree).
+    # Fix it:
+    git submodule foreach --recursive git reset --hard
     ```
 
 * **Update submodule from upstream**:
