@@ -124,6 +124,20 @@ Specifically:
     Without `--remote`, the sha will be taken from parent state, with `--remote`, the sha will be taken from
     the branch specified in .gitmodules.
 
+**Broken `push --recurse-submodules=on-demand`**
+
+Note that `git push --recurse-submodules=on-demand` is broken.
+
+You would expect that `git push` has the following invariant/contact: *after successful push, (1) remote branch
+(2) remote-tracking branch and (3) local branch should have same SHA*.
+
+This is NOT what `git push --recurse-submodules=on-demand` does. The crux of the issue is that git submodules
+does not know anything about branches. What `git push --recurse-submodules=on-demand` does is check if SHA of
+the head of the local branch exists **somewhere** on remote server. If it exists, it does nothing (regardless
+of the states of remote branch and local branch). In other words, it does not advance local branch, as regular
+`git pull` does, because the required commit already exists somewhere on remote. If if does not exist, it pushes
+the SHA.
+
 
 ### **Useful config**
 
@@ -187,12 +201,17 @@ Specifically:
     ```bash
     git submodule foreach --recursive git reset --hard # <--- Careful!
     git pull && git submodule sync --recursive && git submodule update --init --recursive
+    ```
 
-    # Yes, again...
-    # git submodule update can leave submodules in non-checked-out state if an error happens
-    # during fetch one of submodules (git status reports that all files has been deleted from worktree).
-    # Fix it:
-    git submodule foreach --recursive git reset --hard
+    Note however, that the command above will leave all submodules in detached HEAD state. You need to checkout
+    expected branches, and then `git pull`.
+
+* **Blacklist submodule** (do not update it)
+
+    ```
+    git config submodule.contrib/mkdocs/mkdocs.update none
+    git config --unset submodule.contrib/mkdocs/mkdocs.update
+
     ```
 
 * **Update submodule from upstream**:
@@ -200,7 +219,11 @@ Specifically:
     * All: `#!bash git pull && git submodule sync --recursive && git submodule update --remote --merge --recursive`
 
 
+* **Push**
 
+    As described above, does not work. So, we have to use this:
+
+    `git submodule foreach "git symbolic-ref --short HEAD >/dev/null 2>&1 && git push || true" && git push`
 
 
 
