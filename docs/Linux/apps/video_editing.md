@@ -2,14 +2,52 @@ title: Video editing
 
 # **Video editing**
 
-## **Tools**
+
+## **DaVinci**
+
+* `LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 /opt/resolve/bin/resolve`
+* [Tutorial / Intro](https://www.youtube.com/watch?v=63Ln33O4p4c&ab_channel=JustinBrown-PrimalVideo).
+* [Changing speed](https://www.youtube.com/watch?v=MgSIDRvgwIg&t=250s&ab_channel=John%E2%80%99sFilms).
+
+Below are stages of workflow in Davinci.
+
+**Re-encode**
+
+See intermediate codecs below.
+
+**New Project**
+
+* Create new project.
+* Choose resolution (UHD) & fps (60fps) of timeline (this is the most important part)
+* Choose same or lower resolution in Video Monitoring.
+
+**Import media, organise, mark**
+
+* On the "Media tab" import media.
+* **Merge multiple physical videos into a single logical one**: put them on timeline (in the Edit tab) -> select ->
+  right click -> New Compound Clip
+* Organise & Cut
+    * **Use bins**, for example
+        * a bin for clips on timeline vs not-yet-on-timelne
+        * bin with timelapses
+        * etc..
+    * **Use markers**: select clip and press `M`. Press it a second time to adjust colour/text.
+    * **Use the blade tool**
+* **Use multiple timelines**: At the upper-left corner of timeline, click "Timeline view options" button, press
+  "Stacked timelines", at the upper-right corner, a new button with plus sign appears, press it.
+
+**Cutting**
+
+* **Temporarily speed up video**: j (speeds up backward), k, l (speeds up forward).
+* **Use Blade tool**: `B`
+* **Cut from curr pos to the right**: `Ctrl+Shift+]`
+* **Cut from curr pos to the left**: `Ctrl+Shift+[`
+
+
+## **Other Tools**
 
 ### ffmpeg
 List available encoders: `ffmpeg -encoders`
-
-### DaVinci
-* [Tutorial / Intro](https://www.youtube.com/watch?v=63Ln33O4p4c&ab_channel=JustinBrown-PrimalVideo).
-* [Changing speed](https://www.youtube.com/watch?v=MgSIDRvgwIg&t=250s&ab_channel=John%E2%80%99sFilms).
 
 
 ### Mencoder
@@ -40,7 +78,7 @@ mencoder -aid 1 -slang eng  -ovc lavc -vf scale -zoom -xy 640 -oac mp3lame -lame
 
 ## **Codecs**
 
-[Main doc](https://blog.frame.io/2017/02/15/choose-the-right-codec/). 
+[Main doc](https://blog.frame.io/2017/02/15/choose-the-right-codec/).
 [Comparison table](https://blog.frame.io/2017/02/13/compare-50-intermediate-codecs/).
 
 There are several groups of codecs for different purposes:
@@ -56,6 +94,7 @@ Codecs that used for editing, intermediate codecs: `DNxHD`, `DNxHR`, `ProRes` an
 is not using them directly, you will need to convert source video to one of them.
 
 More info:
+
 * This means that they're designed to be used to trans-code footage from other sources into a form that's easy
 for video editing programs to work with while maintaining quality. So, unlike most h.264 implementations, they
 focus on low CPU usage, retaining as much detail as possible, and an ability to be re-compressed several times
@@ -92,9 +131,12 @@ Output format container for DNxHD is typically `MXF` or `MOV`.
 Script:
 
 ```fish
-for f in (ls -1 | grep -v "for-edit-")
-   echo $f
-   ffmpeg -i $f -c:v dnxhd -profile:v dnxhr_hqx -pix_fmt yuv422p10le for-edit-$f.mov
+# cd to a dir, where you have ./source dir and ./intermediate dir
+for s in (ls -1 ./source)
+  set s ./source/$s
+  set d ./intermediate/(basename $s).mov
+  echo "$s => $d"
+  ffmpeg -i $s -c:v dnxhd -profile:v dnxhr_hqx -pix_fmt yuv422p10le $d;
 end
 ```
 
