@@ -5,6 +5,7 @@ title: Video editing
 
 ## **DaVinci**
 
+* `sudo apt install pulseaudio pulseaudio-utils pulseaudio-module-x11 libasound2-plugins`
 * `LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 /opt/resolve/bin/resolve`
 * [Tutorial / Intro](https://www.youtube.com/watch?v=63Ln33O4p4c&ab_channel=JustinBrown-PrimalVideo).
 * [Changing speed](https://www.youtube.com/watch?v=MgSIDRvgwIg&t=250s&ab_channel=John%E2%80%99sFilms).
@@ -39,7 +40,9 @@ See intermediate codecs below.
 **Cutting**
 
 * **Temporarily speed up video**: j (speeds up backward), k, l (speeds up forward).
-* **Use Blade tool**: `B`
+* **Move cursor to the edges** of clips and adjust their length/start/end. You can always expand later (nothing is removed).
+* **Use both viewports** to adjust start/end with high precision.
+* **Use Blade tool**: `B`. Note, blade tool does not remove anything, you can you expand again the clip later.
 * **Cut from curr pos to the right**: `Ctrl+Shift+]`
 * **Cut from curr pos to the left**: `Ctrl+Shift+[`
 
@@ -175,11 +178,45 @@ libx265 AVOptions:
 ```
 
 
-Add `-ss 00:01:40` before `-i` for faster tests, add `-loglevel debug` for more info.
+* Use `-ss 00:00:20 -t 00:40:00` before `-i` to specify start & duration of the clip to encode (for faster tests)
 
-`#!bash ffmpeg -i LakeDistrict2.mov -c:v libx265 -crf 22 -preset veryslow -pix_fmt yuv420p -c:a aac -b:a 128k LakeDistrict2_libx265_crf_22_veryslow_yuv420p.mkv`
+* Add `-loglevel debug` for more info.
 
-Works: `#!bash ffmpeg -ss 00:01:40 -i LakeDistrict2.mov -c:v libx265 -crf 21 -preset veryfast -pix_fmt yuvj420p -c:a aac -b:a 128k LakeDistrict2_h.265_crf_28_yuvj420p_veryfast.mkv`
+* No difference between `-crf` 10, 14 18, 19, 20 (21 barely differs).
+    * 22 is slightly worse.
+    * **24 is still perfectly fine**.
+    * 25 --- this is where compression *starts* to get noticeable.
+
+
+`#!bash ffmpeg -i LakeDistrict2.mov -c:v libx265 -crf 22 -preset veryslow -pix_fmt yuv420p -c:a aac -b:a 192k LakeDistrict2_libx265_crf_22_veryslow_yuv420p.mkv`
+
+Works: `#!bash ffmpeg -ss 00:01:40 -i LakeDistrict2.mov -c:v libx265 -crf 21 -preset veryfast -pix_fmt yuvj420p -c:a aac -b:a 192k LakeDistrict2_h.265_crf_28_yuvj420p_veryfast.mkv`
+
+
+```
+set basename "Swiss-Part1-export"; \
+set codec libx265;                 \
+set crf 24;                        \
+set preset medium;                 \
+set pix_fmt yuv420p;               \
+ffmpeg -ss 00:00:40 -t 00:00:10 -i $basename.mov -c:v $codec -crf $crf -preset $preset -pix_fmt $pix_fmt -c:a aac -b:a 192k \
+$basename-$codec-crf=$crf-preset=$preset-pix_fmt=$pix_fmt.mkv
+```
+
+
+### VP9
+
+
+```
+set basename "Swiss-Part1-export"; \
+set crf 20;                        \
+set preset medium;                 \
+set pix_fmt yuv420p;               \
+ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v libvpx-vp9 -pix_fmt $pix_fmt -b:v 0 -crf $crf -threads 16 -speed 10 \
+-pass 1 -f webm /dev/null
+
+ffmpeg -i Swiss-Part1-export.mov -c:v libvpx-vp9 -b:v 2M -pass 1 -an -f null /dev/null
+```
 
 
 ### h.264 (old codec).
