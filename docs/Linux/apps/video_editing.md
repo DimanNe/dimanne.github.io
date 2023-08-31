@@ -161,54 +161,51 @@ ffmpeg -ss 00:04:00 -i out.mp4 -c:v libxvid -q:v 2  out_libxvid.mov
 ### h.265 (new/better codec).
 See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.265).
 
-You can see available options with:
+??? info "You can see available options with: `ffmpeg -h encoder=libx265`"
 
-```bash
-$ ffmpeg -h encoder=libx265
-
-    Supported pixel formats: yuv420p yuvj420p yuv422p yuvj422p yuv444p yuvj444p gbrp yuv420p10le yuv422p10le yuv444p10le gbrp10le yuv420p12le yuv422p12le yuv444p12le gbrp12le gray gray10le gray12le
-libx265 AVOptions:
-  -crf               <float>      E..V...... set the x265 crf (from -1 to FLT_MAX) (default -1)
-  -qp                <int>        E..V...... set the x265 qp (from -1 to INT_MAX) (default -1)
-  -forced-idr        <boolean>    E..V...... if forcing keyframes, force them as IDR frames (default false)
-  -preset            <string>     E..V...... set the x265 preset
-  -tune              <string>     E..V...... set the x265 tune parameter
-  -profile           <string>     E..V...... set the x265 profile
-  -x265-params       <dictionary> E..V...... set the x265 configuration using a :-separated list of key=value parameters
-```
+    ```bash
+        Supported pixel formats: yuv420p yuvj420p yuv422p yuvj422p yuv444p yuvj444p gbrp yuv420p10le yuv422p10le yuv444p10le gbrp10le yuv420p12le yuv422p12le yuv444p12le gbrp12le gray gray10le gray12le
+    libx265 AVOptions:
+      -crf               <float>      E..V...... set the x265 crf (from -1 to FLT_MAX) (default -1)
+      -qp                <int>        E..V...... set the x265 qp (from -1 to INT_MAX) (default -1)
+      -forced-idr        <boolean>    E..V...... if forcing keyframes, force them as IDR frames (default false)
+      -preset            <string>     E..V...... set the x265 preset
+      -tune              <string>     E..V...... set the x265 tune parameter
+      -profile           <string>     E..V...... set the x265 profile
+      -x265-params       <dictionary> E..V...... set the x265 configuration using a :-separated list of key=value parameters
+    ```
 
 
 * Use `-ss 00:00:20 -t 00:40:00` before `-i` to specify start & duration of the clip to encode (for faster tests)
 
 * Add `-loglevel debug` for more info.
 
-* No difference between `-crf` 10, 14 18, 19, 20 (21 barely differs).
-    * 22 is slightly worse.
-    * **24 is still perfectly fine**.
+* **Choose crf**: No difference between `-crf` 10, 14 18, 19, 20 (21 & 22 barely differs, but you cannot tell which
+  one is worse).
+    * **24 is still perfectly fine**, but you can tell the difference.
     * 25 --- this is where compression *starts* to get noticeable.
 
+* **Example of command**:
 
-`#!bash ffmpeg -i LakeDistrict2.mov -c:v libx265 -crf 22 -preset veryslow -pix_fmt yuv420p -c:a aac -b:a 192k LakeDistrict2_libx265_crf_22_veryslow_yuv420p.mkv`
+    ```fish title="do not forget to remove -ss and -t"
+    set basename "Swiss-Part-1";       \
+    set codec libx265;                 \
+    set crf 24;                        \
+    set preset medium;                 \
+    set pix_fmt yuv420p;               \
+    ffmpeg -ss 00:00:40 -t 00:00:10 -i $basename.mov -c:v $codec -crf $crf -preset $preset -pix_fmt $pix_fmt -c:a aac -b:a 192k \
+    $basename-$codec-crf=$crf-preset=$preset-pix_fmt=$pix_fmt.mkv
+    ```
 
-Works: `#!bash ffmpeg -ss 00:01:40 -i LakeDistrict2.mov -c:v libx265 -crf 21 -preset veryfast -pix_fmt yuvj420p -c:a aac -b:a 192k LakeDistrict2_h.265_crf_28_yuvj420p_veryfast.mkv`
+* **Reduce priority**: `sudo renice 19 -p (pgrep -x ffmpeg)`.
+
+
+
+### ~~VP9~~ (too slow)
 
 
 ```
-set basename "Swiss-Part1-export"; \
-set codec libx265;                 \
-set crf 24;                        \
-set preset medium;                 \
-set pix_fmt yuv420p;               \
-ffmpeg -ss 00:00:40 -t 00:00:10 -i $basename.mov -c:v $codec -crf $crf -preset $preset -pix_fmt $pix_fmt -c:a aac -b:a 192k \
-$basename-$codec-crf=$crf-preset=$preset-pix_fmt=$pix_fmt.mkv
-```
-
-
-### VP9
-
-
-```
-set basename "Swiss-Part1-export"; \
+set basename "Swiss-Part-1";       \
 set crf 20;                        \
 set preset medium;                 \
 set pix_fmt yuv420p;               \
