@@ -4,7 +4,9 @@ title: memory usage
 
 You can find out what function allocated what amount of memory.
 
-## Build with [tcmalloc](https://gperftools.github.io/gperftools/heapprofile.html)
+## **tcmalloc**
+
+### Build with [tcmalloc](https://gperftools.github.io/gperftools/heapprofile.html)
 
 cmake example:
 ```cmake
@@ -18,7 +20,8 @@ link_libraries(${TCMALLOC_LIB})
 ```
 
 
-## Run your app
+### Run your app
+
 Start your application with the environment variable set to a filename
 (to which `tcmalloc` will dump the graph of allocations):
 
@@ -27,7 +30,8 @@ HEAPPROFILE=mybin.hprof ./google_ngram
 ```
 
 
-## View report
+### View report
+
 The command above will produce files like: `mybin.hprof.0132.heap`, it then can be viewed with:
 
 ```bash

@@ -201,18 +201,33 @@ See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.265).
 
 
 
-### ~~VP9~~ (too slow)
+### VP9 (produces much larger output)
 
 
+Single-pass:
+
+```fish
+set basename "Swiss-Part-3.2";
+set codec libvpx-vp9;
+set crf 20;         # Lower is better quality. 0–63
+set deadline best;  # realtime, good, best
+set passes single
+set pix_fmt yuv420p;
+ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v $codec -crf $crf  -b:v 0 -deadline $deadline -cpu-used 0 -pix_fmt $pix_fmt -c:a libopus -b:a 192k -row-mt 1 $basename-$codec-crf=$crf-$passes-pass-deadline=$deadline-pix_fmt=$pix_fmt.webm
 ```
-set basename "Swiss-Part-1";       \
-set crf 20;                        \
-set preset medium;                 \
-set pix_fmt yuv420p;               \
-ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v libvpx-vp9 -pix_fmt $pix_fmt -b:v 0 -crf $crf -threads 16 -speed 10 \
--pass 1 -f webm /dev/null
 
-ffmpeg -i Swiss-Part1-export.mov -c:v libvpx-vp9 -b:v 2M -pass 1 -an -f null /dev/null
+Two-pass:
+
+```fish
+set basename "Swiss-Part-3.2";
+set codec libvpx-vp9;
+set crf 20;         # Lower is better quality. 0–63
+set deadline best;  # realtime, good, best
+set passes 2
+# set pix_fmt yuv420p;
+ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v $codec -b:v 0 -crf $crf -pass 1 -deadline $deadline -cpu-used 0 -an -f null /dev/null
+ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v $codec -b:v 0 -crf $crf -pass 2 -deadline $deadline -cpu-used 0 -c:a libopus -b:a 192k -row-mt 1 $basename-$codec-crf=$crf-$passes-pass-deadline=$deadline-pix_fmt=$pix_fmt.webm
+
 ```
 
 
