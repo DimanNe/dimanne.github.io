@@ -188,11 +188,11 @@ See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.265).
 * **Example of command**:
 
     ```fish title="do not forget to remove -ss and -t"
-    set basename "Swiss-Part-1";       \
-    set codec libx265;                 \
-    set crf 24;                        \
-    set preset medium;                 \
-    set pix_fmt yuv420p;               \
+    set basename "Swiss-Part-1";
+    set codec libx265;
+    set crf 24;          # Lower is better quality
+    set preset medium;   # medium, slow, veryslow
+    set pix_fmt yuv420p;
     ffmpeg -ss 00:00:40 -t 00:00:10 -i $basename.mov -c:v $codec -crf $crf -preset $preset -pix_fmt $pix_fmt -c:a aac -b:a 192k \
     $basename-$codec-crf=$crf-preset=$preset-pix_fmt=$pix_fmt.mkv
     ```
@@ -204,19 +204,26 @@ See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.265).
 ### VP9 (produces much larger output)
 
 
-Single-pass:
+**Single-pass**:
 
 ```fish
 set basename "Swiss-Part-3.2";
 set codec libvpx-vp9;
-set crf 20;         # Lower is better quality. 0–63
+set crf 38;         # Lower is better quality. 0–63
 set deadline best;  # realtime, good, best
 set passes single
 set pix_fmt yuv420p;
 ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v $codec -crf $crf  -b:v 0 -deadline $deadline -cpu-used 0 -pix_fmt $pix_fmt -c:a libopus -b:a 192k -row-mt 1 $basename-$codec-crf=$crf-$passes-pass-deadline=$deadline-pix_fmt=$pix_fmt.webm
 ```
 
-Two-pass:
+Comparison of qualities' parameters of vp9 and h.265:
+
+* crf=30 of vp9 (visual quality is better)
+* crf=24 of h.265 is ~same as crf=38 of vp9
+* crf=40 of vp9 (visual quality is worse)
+
+
+**Two-pass**:
 
 ```fish
 set basename "Swiss-Part-3.2";
@@ -227,8 +234,9 @@ set passes 2
 # set pix_fmt yuv420p;
 ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v $codec -b:v 0 -crf $crf -pass 1 -deadline $deadline -cpu-used 0 -an -f null /dev/null
 ffmpeg -ss 00:00:20 -t 00:00:40 -i $basename.mov -c:v $codec -b:v 0 -crf $crf -pass 2 -deadline $deadline -cpu-used 0 -c:a libopus -b:a 192k -row-mt 1 $basename-$codec-crf=$crf-$passes-pass-deadline=$deadline-pix_fmt=$pix_fmt.webm
-
 ```
+
+Note: two-pass quality is substatially worse than 1 pass quality, so you need to take this into account by lowering the crf value.
 
 
 ### h.264 (old codec).
