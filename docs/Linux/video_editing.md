@@ -180,10 +180,16 @@ See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.265).
 
 * Add `-loglevel debug` for more info.
 
-* **Choose crf**: No difference between `-crf` 10, 14 18, 19, 20 (21 & 22 barely differs, but you cannot tell which
-  one is worse).
-    * **24 is still perfectly fine**, but you can tell the difference.
-    * 25 --- this is where compression *starts* to get noticeable.
+* **Choose crf**:
+    * No difference **in high-contrast areas** between `-crf` 10, 14 18, 19, 20 (21 & 22 barely differs, but
+      you cannot tell which one is worse).
+        * **24 is still perfectly fine**, but you can tell the difference.
+        * 25 --- this is where compression *starts* to get noticeable.
+        * **In other words, 24 +-1 is good for distribution**.
+    * As for clouds (low-contrast) regions:
+        * `crf` 16 is worse than the original.
+        * **`crf` 12 same as the original**.
+        * **In other words, 12-14 is good for personal use**.
 
 * **Example of command**:
 
