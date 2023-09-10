@@ -106,25 +106,36 @@ When you ssh to a host first time, you are supposed to verify its key fingerprin
 
 You can obtain host's fingerprint in this way:
 
-=== "fish"
-
-    ```fish
-    ssh-keygen -lf (ssh-keyscan localhost 2>/dev/null | psub)
-    ```
-
-=== "bash"
-
-    ```bash
-    ssh-keygen -lf <(ssh-keyscan localhost 2>/dev/null)
-    ```
+```bash
+ssh-keyscan localhost 2>/dev/null | ssh-keygen -lf -
+```
 
 
 
-## **Publickey-only auth** --- disable passwords
-```linenums="1" title="/etc/ssh/sshd_config"
+## **Hardenining** --- Publickey-only auth, disable passwords
+
+```title="sudo nano /etc/ssh/sshd_config"
+Protocol 2
+PubkeyAuthentication yes
+PasswordAuthentication no
+PermitEmptyPasswords no
+MaxAuthTries 3
+PermitRootLogin no
+```
+
+Or, for specific user:
+
+```title="sudo nano /etc/ssh/sshd_config"
 Match User <user_name_here>
    PasswordAuthentication no
 ```
+
+and then: `sudo systemctl restart sshd`
+
+
+[A very nice tutorial](https://blog.stribik.technology/2015/01/04/secure-secure-shell.html) on hardening SSH
+Server that includes things like putting SSH in TOR.
+
 
 
 
@@ -184,7 +195,7 @@ There are several ways to make ssh work with keys on a Yubikey:
 === "natively via FIDO/U2F-backed keys"
 
     ??? warning inline end "FIDO/U2F-backed ssh keys security concerns"
-    
+
         Note, however, that FIDO/U2F has different security properties:
 
         * Often, _only_ touch is neede to use the key, unlike gpg, where you have to enter PIN
@@ -203,9 +214,9 @@ There are several ways to make ssh work with keys on a Yubikey:
     ssh-keygen -t ecdsa-sk
     Generating public/private ecdsa-sk key pair.
     You may need to touch your authenticator to authorize key generation.
-    Enter file in which to save the key (/var/home/vorburger/.ssh/id_ecdsa_sk): 
-    Enter passphrase (empty for no passphrase): 
-    Enter same passphrase again: 
+    Enter file in which to save the key (/var/home/vorburger/.ssh/id_ecdsa_sk):
+    Enter passphrase (empty for no passphrase):
+    Enter same passphrase again:
     Your identification has been saved in /home/<>/.ssh/id_ecdsa_sk
     Your public key has been saved in /home/<>/.ssh/id_ecdsa_sk.pub
     The key fingerprint is: SHA256:nwf4+ba...VM <>@<>
@@ -283,4 +294,3 @@ There are several ways to make ssh work with keys on a Yubikey:
                 ```
 
     4. Verify it works. `ssh-add -L` should show you public ssh-keys (backed by Yubikey & gpg).
-
