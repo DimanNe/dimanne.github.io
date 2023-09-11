@@ -110,6 +110,18 @@ You can obtain host's fingerprint in this way:
 ssh-keyscan localhost 2>/dev/null | ssh-keygen -lf -
 ```
 
+## **Prevent dropping idle connections**
+
+[SO](https://superuser.com/questions/699676/how-to-prevent-ssh-from-disconnecting-if-its-been-idle-for-a-while)
+
+The problem is that there is something (usually a firewall or load-balancer), which is dropping idle sessions.
+If you configure session keepalives, the keepalives will prevent network devices from considering the session as idle.
+
+```title="sudo nano /etc/ssh/sshd_config"
+ClientAliveInterval 10
+ClientAliveCountMax 10
+```
+
 
 
 ## **Hardenining** --- Publickey-only auth, disable passwords
