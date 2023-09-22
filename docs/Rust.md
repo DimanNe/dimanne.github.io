@@ -9,31 +9,168 @@ title: Rust
 [**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
 
 
----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 
 ## **C++ differences**
 
-Blocks are expressions.
-
-Move or copy by default.
-
-Const by default.
-
-Mutable references vs const references have the same relationship as read-write lock:
-only a single mutable reference is allowed, or multiple const references.
-
-Move is a real move: it is not allowed to use a moved-from variable.
-
-
-Self is explicit, like in Python, but unlike Python, it is useful --- we specify type modifiers, such as const/mut, ref or move.
-
-Enums can have associated with its fields data/types.
+* Blocks are expressions.
+* Move or copy by default.
+    * Move is a real move: it is not allowed to use a moved-from variable.
+* Const by default.
+* Mutable references vs const references have the same relationship as read-write lock: only a single mutable
+  reference is allowed, or multiple const references.
+* `self` is explicit, like in Python, but unlike Python, it is useful --- we specify type modifiers, such as
+  `const`/`mut`, `ref` or move.
+* Enums can have associated with its fields data/types (so it is a mix of `enum class` and `std::variant`).
 
 
 
 
 
----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+## **Project organisation & Structure & Cargo**
+
+### Create directories / packages
+
+[Cargo documentation](https://doc.rust-lang.org/cargo/index.html).
+
+From smaller units to larger:
+
+1. **Module**: corresponds to a single `.rs` or namespace (it is not necessarily required to create a file. A
+   module can be created "in-place").
+
+2. **Crate**: an executable or the (main and the only!) library of a package.
+
+3. **Package**: can contain multiple binary crates and *at most* one library-crate
+   ([1](https://doc.rust-lang.org/cargo/reference/cargo-targets.html),
+   [2](https://internals.rust-lang.org/t/how-about-changing-lib-to-lib-to-allow-multiple-library-in-a-crate/2022)):
+
+     > The filename defaults to `src/lib.rs`, and the name of the library defaults to the name of the package.
+       A package can have only one library
+
+     So, from the point of view of dependencies, package == library.
+
+     Each package is handled by its `Cargo.toml` and can be published to crates.io.
+
+4. **Workspace**: analogous to a project and consists of multiple (presumably related) packages/libraries.
+   [How-to.](https://rust-book.cs.brown.edu/ch14-03-cargo-workspaces.html)
+
+
+
+From the practical point of view, create several libraries (==directories), like this:
+
+```bash
+cargo new input  # will create "input" package (and its directory, along with toml file, src, etc...)
+cargo new output # same
+cargo new query  # same
+```
+
+Then you can "combine" them in a single workspace via this:
+
+```toml title="Cargo.toml"
+[workspace]
+
+members = [
+   "input",
+   "output",
+   "query",
+]
+```
+
+
+### Show structure
+
+```
+cargo tree
+
+input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
+├── anyhow v1.0.75
+├── protobuf v3.2.0
+│   ├── bytes v1.5.0
+│   ├── once_cell v1.18.0
+│   ├── protobuf-support v3.2.0
+│   │   └── thiserror v1.0.48
+│   │       └── thiserror-impl v1.0.48 (proc-macro)
+│   │           ├── proc-macro2 v1.0.67
+│   │           │   └── unicode-ident v1.0.12
+│   │           ├── quote v1.0.33
+│   │           │   └── proc-macro2 v1.0.67 (*)
+│   │           └── syn v2.0.37
+│   │               ├── proc-macro2 v1.0.67 (*)
+│   │               ├── quote v1.0.33 (*)
+│   │               └── unicode-ident v1.0.12
+│   └── thiserror v1.0.48 (*)
+└── protobuf-json-mapping v3.2.0
+    ├── protobuf v3.2.0 (*)
+    ├── protobuf-support v3.2.0 (*)
+    └── thiserror v1.0.48 (*)
+```
+
+
+### **lib.rs, main.rs: mod, pub, use and other**
+
+* **Start from the crate root**: When compiling a crate, the compiler first looks in the crate root file (usually
+  `src/lib.rs` for a library crate or `src/main.rs` for a binary crate) for code to compile.
+* **Declaring modules**: In the crate root file, you can declare new modules; say, you declare a “garden” module
+  with `mod garden;`. The compiler will look for the module’s code in these places:
+    * Inline, within curly brackets that replace the semicolon following `mod garden`
+    * In the file `src/garden.rs`
+    * In the file `src/garden/mod.rs`
+* **Declaring *sub*modules**: In any file other than the crate root, you can declare submodules. For example, you
+  might declare `mod vegetables;` in `src/garden.rs`. The compiler will look for the submodule’s code within the
+  directory named for the parent module in these places:
+    * Inline, directly following `mod vegetables`, within curly brackets instead of the semicolon
+    * In the file `src/garden/vegetables.rs`
+    * In the file `src/garden/vegetables/mod.rs`
+* **Paths to code in modules**: Once a module is part of your crate, you can refer to code in that module from
+  anywhere else in that same crate (as long as the privacy rules allow), using the path to the code. For example,
+  an `Asparagus` type in the garden vegetables module would be found at `crate::garden::vegetables::Asparagus`.
+* **Private vs public**: Code within a module is private from its parent modules by default. To make a module
+  public, declare it with `pub mod` instead of `mod`. To make items within a public module public as well, use
+  `pub` before their declarations.
+* **The `use` keyword**: Within a scope, the `use` keyword creates shortcuts to items to reduce repetition of
+  long paths. In any scope that can refer to `crate::garden::vegetables::Asparagus`, you can create a shortcut
+  with `use crate::garden::vegetables::Asparagus;` and from then on you only need to write `Asparagus` to make
+  use of that type in the scope.
+
+    aliases are supported with `use`:
+
+    ```rs
+    use std::fmt::Result;
+    use std::io::Result as IoResult;
+    ```
+* **Re-exporting different structure**: Re-exporting is useful when the internal structure of your code is
+  different from how programmers calling your code would think about the domain. With pub use, we can write our
+  code with one structure but expose a different structure. Doing so makes our library well organized for
+  programmers working on the library and programmers calling the library:
+
+    ```rs
+    mod front_of_house {
+        pub mod hosting {
+            pub fn add_to_waitlist() {}
+        }
+    }
+
+    pub use crate::front_of_house::hosting;
+    ```
+
+
+
+### Package with lib and main
+
+The module tree (`mod asdf; mod qwer; ...`) should be defined in `src/lib.rs` (not `main.rs`).
+
+Rationale:
+
+Then, any public items can be used in the binary crate by starting paths with the name of the package. The binary
+crate becomes a user of the library crate just like a completely external crate would use the library crate: it
+can only use the public API. This helps you design a good API; not only are you the author, you’re also a client!
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
 
 ## **Pattern matching**
 
@@ -312,38 +449,8 @@ Similar (explicit) syntax of calling a trait is also useful in case of collision
     ```
 
 
+
 ---------------------------------------------------------------------------------------------------------------------------
-
-## **Project organisation & Structure & Cargo**
-
-[Cargo documentation](https://doc.rust-lang.org/cargo/index.html).
-
-From smaller units to larger:
-
-1. **Module**: corresponds to a single `.rs` or namespace (it is not necessarily required to create a file. A module can
-   be created "in-place").
-
-2. **Crate**: an executable or the (main and only!) library of a package.
-
-    There is a way to maintain two different structures of the code: one better suited for developers and the other for
-    external consumers of the library. The idea is to re-export publicly symbols from internal/nested modules in the crate's
-    module. [More info](https://rust-book.cs.brown.edu/ch14-02-publishing-to-crates-io.html#exporting-a-convenient-public-api-with-pub-use).
-
-3. **Package**: can contain multiple binary crates and *at most* one library-crate
-   ([1](https://doc.rust-lang.org/cargo/reference/cargo-targets.html),
-   [2](https://internals.rust-lang.org/t/how-about-changing-lib-to-lib-to-allow-multiple-library-in-a-crate/2022)):
-
-     > The filename defaults to `src/lib.rs`, and the name of the library defaults to the name of the package. A package can 
-       have only one library
-
-     So, from the point of view of dependencies, package == library.
-
-     Each package is handled by its `Cargo.toml` and can be published to crates.io.
-
-4. **Workspace**: analogous to a project and consists of multiple (presumably related) packages/libraries.
-   [How-to.](https://rust-book.cs.brown.edu/ch14-03-cargo-workspaces.html)
-
-
 ## **References & (smart) pointers**
 
 Unlike C++, references, pointers and smart-pointers are much more similar, and have same usage:
@@ -417,4 +524,3 @@ type Result<T> = std::result::Result<T, std::io::Error>;
 * `dyn`.
 * enum operations (aka `magic_enum`): get list of values, print to string, etc...
 * Range syntax: `(0u32..20)`.
-
