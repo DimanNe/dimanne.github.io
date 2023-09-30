@@ -28,7 +28,7 @@ title: Rust
 
 
 --------------------------------------------------------------------------------------------------------------
-## **Project organisation & Structure & Cargo**
+## **Project organisation & Structure**
 
 ### Create directories / packages
 
@@ -171,7 +171,21 @@ can only use the public API. This helps you design a good API; not only are you 
 
 
 --------------------------------------------------------------------------------------------------------------
+## **Cargo**
 
+* **Run**: `cargo run --bin digester -- --read-from-file $HOME/file1.txt --log-level trace`
+* **Build**: `cargo build`
+* Tests:
+    * **Run specific test**: `cargo test test_example`
+    * **stdout**: `cargo test -- --nocapture`
+    * **Parallel**: `cargo test -- --test-threads=2`
+    * **Run ignored**: `cargo test -- --ignored`
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
 ## **Pattern matching**
 
 **if let**
