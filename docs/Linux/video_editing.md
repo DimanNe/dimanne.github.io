@@ -194,10 +194,11 @@ See the [guide](https://trac.ffmpeg.org/wiki/Encode/H.265).
 * **Example of command**:
 
     ```fish title="do not forget to remove -ss and -t"
-    set basename "Swiss-Part-1";
+    cd ~/Videos/export/
+    set basename "Swiss-Part-1.2";
     set codec libx265;
-    set crf 24;          # Lower is better quality
-    set preset medium;   # medium, slow, veryslow
+    set crf 24;          # Lower is better quality, 12 for internal use, 24 for sharing
+    set preset veryslow; # medium, slow, veryslow
     set pix_fmt yuv420p;
     ffmpeg -ss 00:00:40 -t 00:00:10 -i $basename.mov -c:v $codec -crf $crf -preset $preset -pix_fmt $pix_fmt -c:a aac -b:a 192k \
     $basename-$codec-crf=$crf-preset=$preset-pix_fmt=$pix_fmt.mkv
