@@ -8,6 +8,8 @@ title: Rust
 
 [**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
 
+[**Rust cookbook**](https://rust-lang-nursery.github.io/rust-cookbook/)
+
 
 --------------------------------------------------------------------------------------------------------------
 
