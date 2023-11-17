@@ -81,7 +81,7 @@ Docs: [Source1](https://superuser.com/questions/66820/full-physical-hd-check),
 [Source2](https://calomel.org/badblocks_wipe.html)
 
 ```bash linenums="1"
-sudo badblocks -c 32768 -p 3 -b 512 -wvs /dev/sdX # (1)!
+sudo badblocks -c 32768 -p 3 -b 4096 -wvs /dev/sdX # (1)!
 Reading and comparing: done
 Testing with pattern 0x55: done
 Reading and comparing: done
@@ -94,7 +94,7 @@ Reading and comparing: 1506379640ne, 51:25:53 elapsed. (0/0/0 errors)
 1506379643ne, 51:26:02 elapsed. (3/0/0 errors)
 ```
 
-1.  * `-b` -- block size. The default is 1024. **Set it to the output of `#! bash sudo hdparm -I /dev/sdb | grep "Sector size"`**
+1.  * `-b` -- block size.
 
     * `-w` --- use **write-mode test**.
 
