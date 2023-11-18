@@ -90,7 +90,7 @@ control to kernel or (2) control can be passed directly to kernel (EFI Stub & Sy
 
     - start `MokManager`. `MokManager` allows a user to enroll keys, remove trusted keys, enroll binary hashes and toggle Secure
     Boot validation at the `shim` level. Unfortunately, `MokManager` does not have any protection from an adversary --- it allows
-    anyone to enroll new certificates, and does not require any protection --- 
+    anyone to enroll new certificates, and does not require any protection ---
     [it is too helpful](https://askubuntu.com/a/1334366/826568). So, in this guide we will remove it completely.
     - or `shim`
         1. verifies GRUB and Linux kernel.
@@ -204,7 +204,7 @@ We also want to simplify and automate the process because we will need to run it
 We are going to use a helper script, but it is always useful to understand how to accomplish each step yourself.
 You might need it in case something goes wrong and you need to fix it from a live usb.
 
-### SSL Certificates in UEFI
+### **SSL Certificates in UEFI**
 
 ##### Get the list
 
@@ -268,7 +268,7 @@ Note, the above will generate only one key/certificates (PK). You need to repeat
     - KEK: `efi-updatevar -e -f KEK.esl KEK`
     - PK: `efi-updatevar -e -f PK.esl PK`
 
-### SSL Signatures: Listing & Signing & Verification
+### **SSL Signatures: Listing & Signing & Verification**
 
 ##### Get list of signatures from a file
 
@@ -353,7 +353,7 @@ You can verify signed file by:
 - inspecting list of signatures attached, see above
 - or by verifying against the certificate: `sbverify --cert sec_out/KEK.crt sec_out/shimx64.efi.dualsigned.byme`
 
-### Hashes
+### **Hashes**
 
 Whitelist of checksums
 
@@ -370,7 +370,7 @@ Blacklist of checksums
 
 - `kmodsign` - signs a module.
 
-### GRUB
+### **GRUB**
 
 ##### Protecting GRUB configs on disk
 
@@ -403,7 +403,7 @@ kernel cmdline of your system (for example, to point to a different init binary)
 
     ```bash title="/etc/grub.d/10-linux" linenums="1"
     echo "menuentry '$(echo "$title" | grub_quote)'
-        ${CLASS} \$menuentry_id_option 
+        ${CLASS} \$menuentry_id_option
         'gnulinux-$version-$type-$boot_device_id'
         --unrestricted            ### <--- Add this option
         {" | sed "s/^/$submenu_indentation/"
@@ -553,7 +553,7 @@ optional arguments:
 ```
 
 
-### Buy equipment
+### **Buy equipment**
 
 Storing your keys in Yubikey has a number of advantages:
 
@@ -570,7 +570,7 @@ like [HID Identity OMNIKEY 5422](https://www.amazon.co.uk/gp/product/B0777RCP1C/
 will work, while NFC ACR122 ACR122U will NOT because it does not support "extended APDU" / "TPDU".
 
 
-### Generate SSL/UEFI keys and certificates
+### **Generate SSL/UEFI keys and certificates**
 
 This will genrate (PK, KEK, db) x (cer, key) in a directory (`sec_out` in the example below):
 
@@ -603,7 +603,7 @@ $ ./secboot.py --log-level INFO ot/enroll-ssl-to-yubikey --keys-dir sec_out/ --u
 Refer to help of "`ot/enroll-ssl-to-yubikey`" to get more info about `--uefi/nfc-reader` option and its value.
 
 
-### For GRUB users
+### **For GRUB users**
 
 ##### Generate GPG keys
 
@@ -718,7 +718,7 @@ $ sudo ./secboot.py --log-level INFO danger/make-new-boot \
 2021-05-01 18:46:40,869 INFO exec:82: executing: rm /boot/efi/EFI/BOOT/mmx64.efi
 ```
 
-### For EFI Stub Users
+### **For EFI Stub Users**
 
 ```
 $ sudo ./secboot.py --log-level INFO danger/efistub/make-new-boot \
@@ -754,7 +754,7 @@ $ sudo ./secboot.py --log-level INFO danger/efistub/make-new-boot \
 2021-05-04 17:46:26,764 INFO add_entry:1547: Adding boot entry for "SecBoot Latest Linux", /secboot-linux-latest.efi
 ```
 
-### Enroll your UEFI keys
+### **Enroll your UEFI keys**
 
 There are many ways of enrolling your keys, but since you will need to reboot your PC anyway in order to delete
 existing keys from UEFI, I will consider enrolling certificates using UEFI.
@@ -813,7 +813,7 @@ Always prefer the thorough or full boot option when unsure of the vendor impleme
 Disable Compatibility Support Module (CSM) Legacy Mode to prevent legacy fallback mode from bypassing Secure Boot
 protections. Reason: Some systems fall back to Legacy Mode when a Secure Boot check fails.
 
-### Reboot and check it works
+### **Reboot and check it works**
 
 - Check that secure boot is enabled: `sudo dmesg | grep -i "uefi\|secure boot"`
 - Double-check that secure boot is enabled: `mokutil --sb-state`
@@ -828,7 +828,7 @@ protections. Reason: Some systems fall back to Legacy Mode when a Secure Boot ch
     - You also should verify that an image signed with the default UEFI secure boot keys does not boot --- an Ubuntu CD
     or bootable USB stick should allow you to verify this.
 
-### In case of an error
+### **In case of an error**
 
 You can always find an up-to-date (and presumably working) version of the above description in the
 script. `create_new_boot_in_fresh_vm` does exactly what is described above.
@@ -872,7 +872,7 @@ script. `create_new_boot_in_fresh_vm` does exactly what is described above.
     qemu: Qemu = Qemu(dry_run, image)
     qemu.start()
     qemu.disable_sudo_pass()
-    qemu.exec_and_wait(f'sudo apt-get -y remove unattended-upgrades') 
+    qemu.exec_and_wait(f'sudo apt-get -y remove unattended-upgrades')
     qemu.copy(pl.Path(__file__).resolve(), script) # Copy the script in the VM
 
     qemu.exec_and_wait(f'sudo {GENERATE_UEFI_KEYS_EXAMPLE} && sudo cp -r ./sec_out/*.cer /boot/efi')
@@ -901,7 +901,7 @@ Well, there is only one way to check --- test in a VM. In this section:
 - and then we will be tampering/modifying random and sensitive parts of the OS in order to
   ensure that boot stops working.
 
-### Setup VM (semi-manually)
+### **Setup VM (semi-manually)**
 
 Just follow instructions of `qemu/efistub/initialise` (or `qemu/grub/initialise`):
 
@@ -929,9 +929,9 @@ Press any key when ready...
 2021-05-01 18:45:15,361 INFO recreate_new_snapshot:1389: Removed write permissions from secboot_testing/without-secboot.img and secboot_testing/OVMF-without-secboot.fd
 2021-05-01 18:45:15,731 INFO recreate_new_snapshot:1403: Created new snapshot QemuImage(image=PosixPath('secboot_testing/with-secboot.img'), uefi=PosixPath('secboot_testing/OVMF-with-secboot.fd')) from QemuImage(image=PosixPath('secboot_testing/without-secboot.img'), uefi=PosixPath('secboot_testing/OVMF-without-secboot.fd')) and made the latter immutable
 
-test@test-Standard-PC-i440FX-PIIX-1996:~$ 
+test@test-Standard-PC-i440FX-PIIX-1996:~$
 test@test-Standard-PC-i440FX-PIIX-1996:~$ echo "test ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
-[sudo] password for test: 
+[sudo] password for test:
 test ALL=(ALL) NOPASSWD: ALL
 test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo apt-get -y remove unattended-upgrades
 
@@ -956,7 +956,7 @@ Press any key when you are ready...
 2021-05-01 18:48:51,060 INFO qemu_initialise:1660: SecureBoot has been successfully enabled. Everything works fine. Shuttig down...
 ```
 
-### Run automated test
+### **Run automated test**
 
 Use option `qemu/efistub/run-tests` (or `qemu/grub/run-tests`). The script will create a temporary snapshot, modify
 various parts of the system (by writing random byte in the middle of a file, so that signature be invalid), reboot
@@ -979,7 +979,7 @@ qemu: Qemu = Qemu(dry_run, QemuImage(image=disposable.image, uefi=orig_uefi))
 assert qemu.start() == BootStatuses.Ok
 ```
 
-### Useful QEMU commands
+### **Useful QEMU commands**
 
 - QEMU images:
     - Create an image with max size 20G: `qemu-img create -f qcow2 secboot-initial.img 20G`
@@ -994,7 +994,7 @@ assert qemu.start() == BootStatuses.Ok
 - Modify binary file (to check that the modification will be caught):
 
     ```
-    (export f=file-to-change.txt; cp $f $f.bak; printf "\x56" | dd of=$f bs=1 seek=10 count=1 conv=notrunc; echo; cmp -b -c $f $f.bak; md5sum $f $f.bak) 
+    (export f=file-to-change.txt; cp $f $f.bak; printf "\x56" | dd of=$f bs=1 seek=10 count=1 conv=notrunc; echo; cmp -b -c $f $f.bak; md5sum $f $f.bak)
     ```
 
 
@@ -1018,7 +1018,7 @@ assert qemu.start() == BootStatuses.Ok
     - [A repo with a script](https://github.com/xmikos/cryptboot/blob/master/cryptboot-efikeys) where most of the things is implemented
 - Yubikey PIV:
     - [Harden your Linux UEFI Secure Boot using GRUB signature checking and a Yubikey](https://casualhacking.io/blog/2020/5/24/harden-your-linux-uefi-secure-boot-using-grub-signature-checking-and-a-yubikey)
-  
+
 - Kernel modules signing:
     - [Kernel module signing facility](https://www.kernel.org/doc/html/v4.14/admin-guide/module-signing.html)
     - [How to sign a kernel module Ubuntu 18.04](https://superuser.com/questions/1438279/how-to-sign-a-kernel-module-ubuntu-18-04)
