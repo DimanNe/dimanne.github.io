@@ -2,6 +2,10 @@ title: Qt & QtCreator
 
 # **Qt & QtCreator**
 
+## **Install all qt dev libraries**
+
+`sudo apt install (apt-cache search --names-only qt | cut -d ' ' -f 1 | rg  "libqt5" | rg -v -- '-gles')`
+
 ## **Build Qt from source**
 
 ```bash linenums="1"
