@@ -22,6 +22,20 @@ title: Disks
     sudo mkfs.vfat /dev/sdb1
     ```
 
+    You might need to change partition type to HPFS//NFFS/exFAT
+    (you can check it in the output of `sudo fdisk -l /dev/sdb`):
+
+    ```bash
+    set dev /dev/sdb
+    sudo dd if=/dev/zero of=$dev bs=4M status=progress
+    sudo sync
+    sudo parted --script $dev mklabel msdos
+    sudo parted --script -a opt $dev mkpart primary 0% 100%
+    echo -e "t\n7\nw" | sudo fdisk $dev
+    sudo mkfs.exfat -L ASDF $dev"1"
+    sudo sync
+    ```
+
 ## Move image to flash
 
 ```
