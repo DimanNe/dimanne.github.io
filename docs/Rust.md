@@ -38,14 +38,15 @@ title: Rust
 
 From smaller units to larger:
 
-1. **Module**: corresponds to a single `.rs` or namespace (it is not necessarily required to create a file. A
+1. **Module**: corresponds to a single `.rs` or namespace (it is not required to create a file. A
    module can be created "in-place").
 
 2. **Crate**: an executable or the (main and the only!) library of a package.
 
 3. **Package**: can contain multiple binary crates and *at most* one library-crate
    ([1](https://doc.rust-lang.org/cargo/reference/cargo-targets.html),
-   [2](https://internals.rust-lang.org/t/how-about-changing-lib-to-lib-to-allow-multiple-library-in-a-crate/2022)):
+   [2](https://internals.rust-lang.org/t/how-about-changing-lib-to-lib-to-allow-multiple-library-in-a-crate/2022)),
+   this corresponds to C++ library and is the main unit of sharing:
 
      > The filename defaults to `src/lib.rs`, and the name of the library defaults to the name of the package.
        A package can have only one library
@@ -67,7 +68,7 @@ cargo new output # same
 cargo new query  # same
 ```
 
-Then you can "combine" them in a single workspace via this:
+Then you can put them in a single workspace via this:
 
 ```toml title="Cargo.toml"
 [workspace]
@@ -141,6 +142,7 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
     use std::fmt::Result;
     use std::io::Result as IoResult;
     ```
+
 * **Re-exporting different structure**: Re-exporting is useful when the internal structure of your code is
   different from how programmers calling your code would think about the domain. With pub use, we can write our
   code with one structure but expose a different structure. Doing so makes our library well organized for
@@ -158,17 +160,6 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
 
 
 
-### Package with lib and main
-
-The module tree (`mod asdf; mod qwer; ...`) should be defined in `src/lib.rs` (not `main.rs`).
-
-Rationale:
-
-Then, any public items can be used in the binary crate by starting paths with the name of the package. The binary
-crate becomes a user of the library crate just like a completely external crate would use the library crate: it
-can only use the public API. This helps you design a good API; not only are you the author, you’re also a client!
-
-
 
 
 
@@ -177,12 +168,14 @@ can only use the public API. This helps you design a good API; not only are you 
 
 * **Run**: `cargo run --bin digester -- --read-from-file $HOME/file1.txt --log-level trace`
 * **Build**: `cargo build`
-* Tests:
-    * **Run specific test**: `cargo test test_example`
-    * **stdout**: `cargo test -- --nocapture`
-    * **Parallel**: `cargo test -- --test-threads=2`
-    * **Run ignored**: `cargo test -- --ignored`
-
+* **Tests**:
+    * Only run tests, wihtout compilation:
+        * **Run specific test with stdout**: `cargo test --release -- --nocapture decoded_reader_zstd_encoder_zstd_decoder_decoded_writer`
+        * **Parallel**: `cargo test -- --test-threads=2`
+        * **Run ignored**: `cargo test -- --ignored`
+        * **Run only non-integration tests**: `cargo test --lib -- --nocapture`
+    * Compile & run:
+        * `cargo build --release --tests`
 
 
 
@@ -296,31 +289,6 @@ fn main() {
 ```
 
 
-**Ignoring unused values**
-
-```rust
-// Function argument:
-fn foo(_: i32, y: i32) {
-    println!("This code only uses the y parameter: {}", y);
-}
-
-// Variable:
-let _x = 5;
-let y = 10;
-```
-
-
-**Ignoring a part of a value**:
-
-```rust
-let numbers = (2, 4, 8, 16, 32);
-
-match numbers {
-    (first, _, third, _, fifth) => {
-        println!("Some numbers: {first}, {third}, {fifth}")
-    }
-}
-```
 
 
 **Ignoring many parts of a value**:
@@ -389,7 +357,7 @@ Traits are a mix of C++ concepts and CRTP and pure abstract interfaces:
     * Concepts are compulsory: you will not be able to do much with a template type, unless its traits are specified
       (even if the type has the methods you are trying to call).
     * Traits can have typedefs: `type Item;` in `Iterator`.
-* In the context of virtual functions, their interface is similar to pure virtual functions.
+* In the context of virtual functions (dyn Trait), trait defines an interface that is similar to pure virtual functions.
 
 Special functions are introduced as traits. For example if you need your type:
 
@@ -526,17 +494,3 @@ type Result<T> = std::result::Result<T, std::io::Error>;
 // template <class T>
 // using Result = std::result::Result<T, std::io::Error>;
 ```
-
-
-
-
-
-
-
----------------------------------------------------------------------------------------------------------------------------
-
-## **Questions**
-
-* `dyn`.
-* enum operations (aka `magic_enum`): get list of values, print to string, etc...
-* Range syntax: `(0u32..20)`.
