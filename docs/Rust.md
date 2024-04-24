@@ -10,6 +10,10 @@ title: Rust
 
 [**Rust cookbook**](https://rust-lang-nursery.github.io/rust-cookbook/)
 
+[**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
+
+[**The Little Book of Rust Macros**](https://veykril.github.io/tlborm/)
+
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -32,7 +36,7 @@ title: Rust
 --------------------------------------------------------------------------------------------------------------
 ## **Project organisation & Structure**
 
-### Create directories / packages
+#### **Create directories / packages**
 
 [Cargo documentation](https://doc.rust-lang.org/cargo/index.html).
 
@@ -81,7 +85,7 @@ members = [
 ```
 
 
-### Show structure
+#### **Show structure**
 
 ```
 cargo tree
@@ -110,27 +114,28 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
 ```
 
 
-### **lib.rs, main.rs: mod, pub, use and other**
+#### **lib.rs, main.rs: mod, pub, use and other**
 
-* **Start from the crate root**: When compiling a crate, the compiler first looks in the crate root file (usually
-  `src/lib.rs` for a library crate or `src/main.rs` for a binary crate) for code to compile.
-* **Declaring modules**: In the crate root file, you can declare new modules; say, you declare a “garden” module
-  with `mod garden;`. The compiler will look for the module’s code in these places:
+* **Start from the crate root**: When compiling a crate, the compiler first looks in the crate root file
+  (usually `src/lib.rs` for a library crate or `src/main.rs` for a binary crate) for code to compile.
+* **Declaring modules**: In the crate root file, you can declare new modules; say, you declare a “garden”
+  module with `mod garden;`. The compiler will look for the module’s code in these places:
     * Inline, within curly brackets that replace the semicolon following `mod garden`
     * In the file `src/garden.rs`
     * In the file `src/garden/mod.rs`
-* **Declaring *sub*modules**: In any file other than the crate root, you can declare submodules. For example, you
-  might declare `mod vegetables;` in `src/garden.rs`. The compiler will look for the submodule’s code within the
-  directory named for the parent module in these places:
+* **Declaring *sub*modules**: In any file other than the crate root, you can declare submodules. For example,
+  you might declare `mod vegetables;` in `src/garden.rs`. The compiler will look for the submodule’s code
+  within the directory named for the parent module in these places:
     * Inline, directly following `mod vegetables`, within curly brackets instead of the semicolon
     * In the file `src/garden/vegetables.rs`
     * In the file `src/garden/vegetables/mod.rs`
 * **Paths to code in modules**: Once a module is part of your crate, you can refer to code in that module from
-  anywhere else in that same crate (as long as the privacy rules allow), using the path to the code. For example,
-  an `Asparagus` type in the garden vegetables module would be found at `crate::garden::vegetables::Asparagus`.
+  anywhere else in that same crate (as long as the privacy rules allow), using the path to the code. For
+  example, an `Asparagus` type in the garden vegetables module would be found at
+  `crate::garden::vegetables::Asparagus`.
 * **Private vs public**: Code within a module is private from its parent modules by default. To make a module
-  public, declare it with `pub mod` instead of `mod`. To make items within a public module public as well, use
-  `pub` before their declarations.
+  public, declare it with `pub mod` instead of `mod`. To make items within a public module public as well,
+  use `pub` before their declarations.
 * **The `use` keyword**: Within a scope, the `use` keyword creates shortcuts to items to reduce repetition of
   long paths. In any scope that can refer to `crate::garden::vegetables::Asparagus`, you can create a shortcut
   with `use crate::garden::vegetables::Asparagus;` and from then on you only need to write `Asparagus` to make
@@ -144,8 +149,8 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
     ```
 
 * **Re-exporting different structure**: Re-exporting is useful when the internal structure of your code is
-  different from how programmers calling your code would think about the domain. With pub use, we can write our
-  code with one structure but expose a different structure. Doing so makes our library well organized for
+  different from how programmers calling your code would think about the domain. With pub use, we can write
+  our code with one structure but expose a different structure. Doing so makes our library well organized for
   programmers working on the library and programmers calling the library:
 
     ```rs
@@ -177,6 +182,28 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
     * Compile & run:
         * `cargo build --release --tests`
 
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+## **Enums**
+
+Enum "values" as functions:
+
+
+name of each enum variant that we define also becomes an initializer function. We can use these initializer
+functions as function pointers that implement the closure traits, which means we can specify the initializer
+functions as arguments for methods that take closures, like so:
+
+```rust
+enum Status {
+    Value(u32),
+    Stop,
+}
+
+let list_of_statuses: Vec<Status> = (0u32..20).map(Status::Value).collect();
+```
 
 
 
@@ -336,17 +363,11 @@ match msg {
 
 
 
----------------------------------------------------------------------------------------------------------------------------
-
-## **OOP**
-
-There is no inheritance.
 
 
 
 
-
----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 
 ## **Traits**
 
@@ -354,10 +375,11 @@ Traits are a mix of C++ concepts and CRTP and pure abstract interfaces:
 
 * In the context of templates (aka generics), a trait defines an interface (== concept) and optionally some,
   default implementation (== CRTP).
-    * Concepts are compulsory: you will not be able to do much with a template type, unless its traits are specified
-      (even if the type has the methods you are trying to call).
+    * Concepts are compulsory: you will not be able to do much with a template type, unless its traits are
+      specified (even if the type has the methods you are trying to call).
     * Traits can have typedefs: `type Item;` in `Iterator`.
-* In the context of virtual functions (dyn Trait), trait defines an interface that is similar to pure virtual functions.
+* In the context of virtual functions (dyn Trait), trait defines an interface that is similar to pure virtual
+  functions.
 
 Special functions are introduced as traits. For example if you need your type:
 
@@ -367,8 +389,8 @@ Special functions are introduced as traits. For example if you need your type:
 * to implement `operator+`, use `use std::ops::Add;`.
 
 
-Traits can "inherit" from other traits. In this case the derived trait says that type implementing it, should also
-implement the base trait (which is called super-trait):
+Traits can "inherit" from other traits. In this case the derived trait says that type implementing it, should
+also implement the base trait (which is called super-trait):
 
 ```rust
 trait OutlinePrint: fmt::Display {      // Any type implementing OutlinePrint, should also implement fmt::Display
@@ -390,8 +412,8 @@ impl OutlinePrint for Point {}
 ```
 
 
-Rust can choose an appropriate trait implementation based on self type. In the example below, map calls `to_string`
-function of `ToString` trait and finds the correct implementation of the trait (`i32`):
+Rust can choose an appropriate trait implementation based on self type. In the example below, map calls
+`to_string` function of `ToString` trait and finds the correct implementation of the trait (`i32`):
 
 ```rust
 let list_of_numbers = vec![1, 2, 3];
@@ -402,7 +424,8 @@ let list_of_strings: Vec<String> =
 
 Similar (explicit) syntax of calling a trait is also useful in case of collision of names of functions:
 
-* Explicit specification if we have an object (`self`) which can be used to determine which function we wanted:
+* Explicit specification if we have an object (`self`) which can be used to determine which function we
+  wanted:
 
     ```rust
     fn main() {
@@ -434,51 +457,53 @@ Similar (explicit) syntax of calling a trait is also useful in case of collision
 
 
 
----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 ## **References & (smart) pointers**
 
 Unlike C++, references, pointers and smart-pointers are much more similar, and have same usage:
 
 * References has to be dereferenced: `#!rust let y = &x; assert_eq!(5, *y);`
-* It allows for interoperability with smart pointers: if we change `y` to be a `Box` the `assert` will still compile fine.
+* It allows for interoperability with smart pointers: if we change `y` to be a `Box` the `assert` will still
+  compile fine.
 
 
 
 
 
----------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
 
 ## **Other**
 
-### Logical const-ness {>>aka mutable<<}
+#### **Logical const-ness {>>aka mutable<<}**
 
 Sometimes there is a field that should be changed on a const object (for example a counter of calls).
 
-In C++, `mutable` or `const_cast<>()` are used. In Rust `RefCell<T>` is the solution: it allows us to get mutable as well as
-immutable references, while enforcing borrow-checker invariants in run-time (the app will crash if more than one mutable
-reference has been requested).
+In C++, `mutable` or `const_cast<>()` are used. In Rust `RefCell<T>` is the solution: it allows us to get
+mutable as well as immutable references, while enforcing borrow-checker invariants in run-time (the app will
+crash if more than one mutable reference has been requested).
 
 
 
-### ::clone vs .clone vs `operator=`
+#### **::clone vs .clone vs `operator=`**
 
-The idea is that `.clone()` perform a deep-copy. It allows us to quickly find places in the code that can be slow.
+The idea is that `.clone()` perform a deep-copy. It allows us to quickly find places in the code that can be
+slow.
 
-Everything else is supposed and designed to be fast (for example, assigning is a copy if it is an small type, such
-an integer, or a move otherwise). This is also why Rc pointer is supposed to be copied by
+Everything else is supposed and designed to be fast (for example, assigning is a copy if it is an small type,
+such an integer, or a move otherwise). This is also why Rc pointer is supposed to be copied by
 
 ??? info "`::clone`, not `.clone()`"
 
-    > We could have called a.clone() rather than Rc::clone(&a), but Rust’s convention is to use Rc::clone in this case.
-    The implementation of Rc::clone doesn’t make a deep copy of all the data like most types’ implementations of clone do.
-    The call to Rc::clone only increments the reference count, which doesn’t take much time. By using Rc::clone for
-    reference counting, we can visually distinguish between the deep-copy kinds of clones and the kinds of clones that
-    increase the reference count.
+    > We could have called a.clone() rather than Rc::clone(&a), but Rust’s convention is to use Rc::clone in
+      this case. The implementation of Rc::clone doesn’t make a deep copy of all the data like most types’
+      implementations of clone do. The call to Rc::clone only increments the reference count, which doesn’t
+      take much time. By using Rc::clone for reference counting, we can visually distinguish between the
+      deep-copy kinds of clones and the kinds of clones that increase the reference count.
 
-    > When looking for performance problems in the code, we only need to consider the deep-copy clones and can disregard
-    calls to Rc::clone
+    > When looking for performance problems in the code, we only need to consider the deep-copy clones and
+      can disregard calls to Rc::clone
 
-### Multithreading
+#### **Multithreading**
 
 There are both: message-passing as well as mutexes.
 
@@ -486,7 +511,7 @@ There are both: message-passing as well as mutexes.
 
 
 
-### Using & Typedefs
+#### **Using & Typedefs**
 
 ```rust
 type Result<T> = std::result::Result<T, std::io::Error>;
