@@ -4,13 +4,13 @@ title: Rust
 
 [**The Rust Programming Language book**](https://rust-book.cs.brown.edu/experiment-intro.html)
 
+[**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
+
 [**Rust API Guidelines**](https://rust-lang.github.io/api-guidelines/about.html)
 
 [**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
 
 [**Rust cookbook**](https://rust-lang-nursery.github.io/rust-cookbook/)
-
-[**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
 
 [**The Little Book of Rust Macros**](https://veykril.github.io/tlborm/)
 
@@ -456,6 +456,32 @@ Similar (explicit) syntax of calling a trait is also useful in case of collision
     ```
 
 
+#### **Market traits**
+
+Sometimes, there is some behaviour that you want to distinguish in the type system, but which cannot be
+expressed as some specific method signature in a trait definition. For example, consider a trait for sorting
+collections; an implementation might be stable (elements that compare the same will appear in the same order
+before and after the sort) but there's no way to express this in the sort method arguments.
+
+In this case, it's still worth using the type system to track this requirement, using a marker trait:
+
+```rust
+pub trait Sort {
+    /// Re-arrange contents into sorted order.
+    fn sort(&mut self);
+}
+
+/// Marker trait to indicate that a [`Sortable`] sorts stably.
+pub trait StableSort: Sort {}
+```
+
+A marker trait has no methods, but an implementation still has to declare that it is implementing the
+trait. Code that relies on a stable sort can then specify the `StableSort` trait bound, relying on the
+honour system to preserve its invariants. Use marker traits to distinguish behaviours that cannot be
+expressed in the trait method signatures.
+
+
+
 
 --------------------------------------------------------------------------------------------------------------
 ## **References & (smart) pointers**
@@ -519,3 +545,12 @@ type Result<T> = std::result::Result<T, std::io::Error>;
 // template <class T>
 // using Result = std::result::Result<T, std::io::Error>;
 ```
+
+
+
+--------------------------------------------------------------------------------------------------------------
+
+## **Conversions**
+
+* `char::from_u32`
+* `char::from_u32_unchecked`
