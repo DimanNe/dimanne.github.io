@@ -456,7 +456,7 @@ Similar (explicit) syntax of calling a trait is also useful in case of collision
     ```
 
 
-#### **Market traits**
+#### **Marker traits**
 
 Sometimes, there is some behaviour that you want to distinguish in the type system, but which cannot be
 expressed as some specific method signature in a trait definition. For example, consider a trait for sorting
@@ -549,8 +549,283 @@ type Result<T> = std::result::Result<T, std::io::Error>;
 
 
 --------------------------------------------------------------------------------------------------------------
-
 ## **Conversions**
 
 * `char::from_u32`
 * `char::from_u32_unchecked`
+
+#### **Almost no implicit conversions**
+
+Rust has very few implicit conversions (coercions). Even save integer conversions must be done explicitly:
+
+```rust
+let x: u32 = 2;
+let y: u64 = x; // ERROR!
+```
+
+#### **But it *might appear* that it has implicit conversions**
+
+But sometimes it *might appear* that it has implicit conversions:
+
+Given these:
+
+```rust
+// Integer value from an IANA-controlled range.
+#[derive(Clone, Copy, Debug)]
+pub struct IanaAllocated(pub u64);
+
+// Need this implementation of From:
+impl From<u64> for IanaAllocated {
+    fn from(v: u64) -> Self {
+        Self(v)
+    }
+}
+
+// Need also this function that takes a trait bound (template):
+pub fn is_iana_reserved<T>(s: T) -> bool
+where
+    T: Into<IanaAllocated>,
+{
+    let s = s.into();
+    s.0 == 0 || s.0 == 65535
+}
+
+```
+
+you can call the last function with just an integer:
+
+```rust
+is_iana_reserved(42)
+```
+
+#### **Types of casts**
+
+* User defined From / TryFrom
+* `as`
+* Coercion (implicit conversion)
+    * Hardcoded in compiler:
+        * mutable reference to a non-mutable references
+        * reference to a raw pointer (this isn't unsafe)
+        * closure that happens not to capture any variables into a bare function pointer
+        * array to a slice
+        * concrete item to a trait object
+        * item lifetime to a "shorter" one
+        * The second coercion of a user-defined type happens when a concrete item is converted to a trait
+          object. This operation builds a fat pointer to the item; this pointer is fat because it includes
+          both a pointer to the item's location in memory, together with a pointer to the vtable for the
+          concrete type's implementation of the trait
+    * Using user-defined functions
+        * user-defined type implements the `Deref` or the `DerefMut` trait. These traits indicate that the
+          user defined type is acting as a smart pointer of some sort
+
+            In particular, a method that expects a reference argument like `&Point` can also be fed a
+            `&Box<Point>`, thanks to Deref implemented by `Box`.
+
+
+#### **Fat pointers & trait objects**
+
+Slice in Rust: `&[u64]` is considered to be a "fat pointer" because it consists two things: start position
+and length (aka `std::span`).
+
+
+The second built-in fat pointer type is a trait object: a reference to some item that implements a particular
+trait. It's built from a simple pointer to the item, together with an internal pointer to the type's vtable,
+giving a size of 16 bytes (on a 64-bit platform). The vtable for a type's implementation of a trait holds
+function pointers for each of the method implementations, allowing dynamic dispatch at runtime.
+
+So, this notation: `&dyn Trait` makes this separation clear (it means the pointer is "fat").
+
+
+Another interesting peculiarity is that it is impossible to cast an object that implements X interface,
+which is itself derived from Y to Y. While you can use functions from both X and Y, you cannot cast it to Y.
+
+Let's say we have this:
+
+```rust
+trait Shape: Drawable {
+    fn render_in(&self, bounds: Bounds);
+    fn render(&self) {
+        self.render_in(overlap(SCREEN_BOUNDS, self.bounds()));
+    }
+}
+```
+
+then, a method that accepts a `Shape` trait object:
+
+* can use the methods from `Drawable` (because `Shape` also-implements `Drawable`, and because the relevant
+  function pointers are present in the `Shape` vtable)
+* but cannot pass/cast the trait object on to another method that expects a `Drawable` trait object (because
+  `Shape` is-not Drawable, and because the `Drawable` vtable isn't available).
+
+This is in contrast to generic method that accepts items that implement `Shape`:
+
+* which can use methods from `Drawable`
+* and which can pass the item on to another generic method that has a `Drawable` trait bound, because the
+  trait bound is monomorphized at compile time to use the Drawable methods of the concrete type.
+
+
+#### **Deref vs AsRef<T\>**
+
+The Deref traits can't be generic (per-target: `Deref<Target>`) for the destination type. If they were, then
+it would be possible for some type `ConfusedPtr` to implement both `Deref<TypeA>` and `Deref<TypeB>`, and
+that would leave the compiler unable to deduce a single unique type for an expression like `*x`. So instead
+the destination type is encoded as the associated type named Target.
+
+This is in contrast to two other standard pointer traits, the `AsRef` and `AsMut` traits. These traits don't
+induce special behaviour in the compiler, but also allow conversions to a reference or mutable reference via
+an explicit call to their trait functions (`as_ref()` and `as_mut()` respectively). The destination type for
+these conversions is encoded as a type parameter (e.g. `AsRef<Point>`), which means that a single container
+type can support multiple destinations.
+
+
+
+#### **Borrow vs AsRef<T\> & ToOwned & Cow**
+
+`Borrow` and `BorrowMut` traits each have a single method (`borrow` and `borrow_mut` respectively). This
+method has the same signature as the equivalent `AsRef` / `AsMut` trait methods.
+
+The key difference in intents between these traits is visible via the blanket implementations that the
+standard library provides. Given an arbitrary Rust reference `&T`, there is a blanket implementation of
+both `AsRef` and `Borrow`.
+
+However, `Borrow` also has a blanket implementation for (non-reference) types: `impl<T> Borrow<T> for T`
+
+This means that a method accepting the `Borrow` trait can cope equally with instances of `T` as well as
+references-to-T:
+
+```rust
+fn add_four<T: std::borrow::Borrow<i32>>(v: T) -> i32 {
+    v.borrow() + 4
+}
+assert_eq!(add_four(&2), 6);
+assert_eq!(add_four(2), 6);
+```
+
+The standard library's container types have more realistic uses of `Borrow`; for example, `HashMap::get`
+uses `Borrow` to allow convenient retrieval of entries whether keyed by value or by reference.
+
+The `ToOwned` trait builds on the `Borrow` trait, adding a `to_owned()` method that produces a new owned
+item of the underlying type. This is a generalization of the `Clone` trait: where `Clone` specifically
+requires a Rust reference `&T`, `ToOwned` instead copes with things that implement `Borrow`.
+
+This means that:
+
+* A function that operates on references to some type can accept `Borrow` so that it can also be called
+  with moved items as well as references.
+* A function that operates on owned items of some type can accept `ToOwned` so that it can also be called
+  with references to items as well as moved items; any references passed to it will be replicated into a
+  locally owned item.
+
+Although it's not a pointer type, it's worth mentioning the `Cow` type at this point, because it provides
+an alternative way of dealing with the same kind of situation. `Cow` is an enum that can hold either owned
+data, or a reference to borrowed data. A `Cow` input can stay as borrowed data right up to the point where
+it needs to be modified, but becomes an owned copy at the point where the data needs to be altered.
+
+
+
+--------------------------------------------------------------------------------------------------------------
+## **Iterators**
+
+#### **Iterator Trait**
+
+Despite being able to iterate over elements, references to elements and mutable references to elements of
+a collection, there is only *one* trait.
+
+Collections that allow iteration over their contents – called iterables – implement the `IntoIterator` trait.
+The `into_iter` method of this trait consumes `Self` and emits an Iterator in its stead.
+
+But the catch is that `Self` is either `Vec<_>` or `&Vec<_>` or &mut `Vec<_>`.
+
+The compiler will automatically use this trait for expressions of the form:
+
+```rust
+for item in collection {
+    // body
+}
+```
+
+
+
+#### **Iterator transformations**
+
+Some of these tranformations affect the overall iteration process:
+
+* `take(n)`, `skip(n)`
+* `take_while()` and `skip_while()`: same as above, but based on a predicate.
+* `filter(|item| {...})` is the most general version
+* `step_by(n)`:emits every n-th item.
+* `rev()` reverses the direction of an iterator.
+* `cycle()`: converts an iterator that terminates into one that repeats forever, starting at the beginning
+  again whenever it reaches the end. (The iterator must support Clone to allow this.)
+* `partition`: splits an iterator into two collections based on a predicate
+
+Combining iterators:
+
+* `chain(other)` glues together two iterators, to build a combined iterator that moves through one then
+  the other.
+* `zip(it)`, `unzip`: zip joins an iterator with a second iterator, to produce a combined iterator that emits pairs of
+  items, one from each of the original iterators, until the shorter of the two iterators is finished.
+* The `flatten()` method deals with an iterator whose items are themselves iterators, flattening the result.
+  On its own, this doesn't seem that helpful, but it becomes much more useful when combined with the
+  observation that both `Option` and `Result` act as iterators: they produce either zero
+  (for `None`, `Err(e)`) or one (for `Some(v)`, `Ok(v)`) items. This means that flattening a stream of
+  `Option` / `Result` values is a simple way to extract just the valid values, ignoring the rest.
+
+Other transformations affect the nature of the Item that's the subject of the Iterator:
+
+* `map(|item| {...})` repeatedly applies a closure to transform each item in turn.
+* `cloned()` produces a clone of all of the items in the original iterator; this is particularly useful with
+  iterators over &Item references.
+* `copied()` produces a copy of all of the items in the original iterator; this is particularly useful
+  with iterators over &Item references.
+* `enumerate()` converts an iterator over items to be an iterator over (usize, Item) pairs
+
+
+Finally, iterator consumers:
+
+* Building a single value out of the collection:
+
+    * `sum()`, `product()`
+    * `min()`, `max()`
+    * `min_by(f)`, `max_by(f)` for finding the extreme values of a collection
+    * `reduce(f)` is a more general operation that encompasses the previous methods, building an
+      accumulated value of the Item type by running a closure at each step that takes the value accumulated
+      so far and the current item.
+    * `fold(f)`, `try_fold` is a generalization of `reduce`, allowing the "accumulated value" to be of an arbitrary
+      type (not just the `Iterator::Item` type).
+    * `scan(f)` generalizes in a slightly different way, giving the closure a mutable reference to some
+      internal state at each step.
+
+* Selecting a single value out of the collection:
+
+    * `find(p)`, `try_find` finds the first item that satisfies a predicate
+    * `position(p)` also finds the first item satisfying a predicate, but this time it returns the index of
+      the item.
+    * `nth(n)` returns the n-th element of the iterator, if available.
+
+* Testing against every item in the collection:
+
+    * `any(p)` indicates whether a predicate is true for any item
+    * `all(p)` indicates whether a predicate is true for all items
+
+* Accumulate all of the iterated items into a new collection:
+    * `collect()`. In addition to transforming an iterator into a new collection, it can also transform
+      a sequence of Result's into Result of a sequence:
+
+        ```rust
+        let res: Vec<u8> = in.into_iter().map(|v| <u8>::try_from(v)).collect::<Result<Vec<_>, _>>()?;
+        ```
+
+
+
+--------------------------------------------------------------------------------------------------------------
+## **std types**
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+## **Useful crates**
+
+* anyhow error
+* [derive_builder](https://docs.rs/derive_builder/latest/derive_builder/)
