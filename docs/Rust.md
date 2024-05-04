@@ -34,7 +34,10 @@ title: Rust
 
 
 --------------------------------------------------------------------------------------------------------------
-## **Project organisation & Structure**
+## **Project organisation & Structure. Cargo**
+
+* **Get unused dependencies**: `cargo-udeps`
+* **Check for security issues, licensing conflicts**: `cargo-deny`
 
 #### **Create directories / packages**
 
@@ -83,6 +86,56 @@ members = [
    "query",
 ]
 ```
+
+#### **Conditional compilation & Features**
+
+```rust
+// Build with `RUSTFLAGS` set to:
+//   '--cfg myname="a" --cfg myname="b"'
+#[cfg(myname = "a")]
+println!("cfg(myname = 'a') is set");
+#[cfg(myname = "b")]
+println!("cfg(myname = 'b') is set");
+```
+
+For example, the following chunk of a manifest file includes six features:
+
+```ini
+[features]
+default = ["featureA"]
+featureA = []
+featureB = []
+# Enabling `featureAB` also enables `featureA` and `featureB`.
+featureAB = ["featureA", "featureB"]
+schema = []
+
+[dependencies]
+rand = { version = "^0.8", optional = true }
+hex = "^0.4"
+```
+
+
+The `rand` crate is a dependency that is marked as `optional = true`, and that effectively makes `"rand"`
+into the name of a feature. If the crate is compiled with `--features rand`, then that dependency is activated:
+
+```rust
+#[cfg(feature = "rand")]
+pub fn pick_a_number() -> u8 {
+    rand::random::<u8>()
+}
+
+#[cfg(not(feature = "rand"))]
+pub fn pick_a_number() -> u8 {
+    4 // chosen by fair dice roll.
+}
+```
+
+So you can determine a crate's features by examining `[features]` as well as optional `[dependencies]` in the
+crate's `Cargo.toml` file.
+
+Feature unification means that features should be additive; it's a bad idea to have mutually incompatible
+features because there's nothing to prevent the incompatible features being simultaneously enabled by
+different users.
 
 
 #### **Show structure**
@@ -174,13 +227,11 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
 * **Run**: `cargo run --bin digester -- --read-from-file $HOME/file1.txt --log-level trace`
 * **Build**: `cargo build`
 * **Tests**:
-    * Only run tests, wihtout compilation:
+    * Build & run test:
         * **Run specific test with stdout**: `cargo test --release -- --nocapture decoded_reader_zstd_encoder_zstd_decoder_decoded_writer`
         * **Parallel**: `cargo test -- --test-threads=2`
         * **Run ignored**: `cargo test -- --ignored`
         * **Run only non-integration tests**: `cargo test --lib -- --nocapture`
-    * Compile & run:
-        * `cargo build --release --tests`
 
 
 
@@ -723,6 +774,63 @@ it needs to be modified, but becomes an owned copy at the point where the data n
 
 
 
+
+--------------------------------------------------------------------------------------------------------------
+## **Self-Referential Data Structures & Pin**
+
+
+Self-Referential Data Structure is a struct that contains a mixture of owned data together with references to
+within that owned data:
+
+```rust
+struct SelfRef {
+   text: String,
+   title: Option<&str>, // The slice of `text` that holds the title text.
+}
+```
+
+The main reason why it does not "just" work is move semantics:
+
+Data structures can move: from the stack to the heap, from the heap to the stack, and from one place to
+another. If that happens, the "interior" `title` pointer would no longer be valid, and there's no way to
+keep it in sync.
+
+There is one workaround and one proper solution.
+
+A simple alternative for this case is to use the indexing approach; a range of offsets into the text is
+not invalidated by a move, and is invisible to the borrow checker because it doesn't involve references:
+
+```rust
+struct SelfRefIdx {
+   text: String,
+   title: Option<Range<usize>>, // Indices into `text` where the title text is.
+}
+```
+
+
+However, this indexing approach only works for simple examples. A more general version of the self-reference
+problem turns up when the compiler deals with async code. Roughly speaking, the compiler bundles up a
+pending chunk of async code into a lambda, and the data for that lambda can include both values and
+references to those values.
+
+That's inherently a self-referential data structure, and so async support was a prime motivation for the
+`Pin` type in the standard library. This pointer type "pins" its value in place, forcing the value to
+remain at the same location in memory, thus ensuring that internal self-references remain valid.
+
+So `Pin` is available as a possibility for self-referential types, but it's tricky to use correctly (as
+its official docs make clear):
+
+* The internal reference fields need to use raw pointers, or near relatives (e.g. NonNull) thereof.
+* The type being pinned needs to not implement the Unpin marker trait. This trait is automatically
+  implemented for almost every type, so this typically involves adding a (zero-sized) field of type
+  PhantomPinned to the struct definition.
+* The item is only pinned once it's on the heap and held via Pin; in other words, only the contents of
+  something like Pin<Box<MyType>> is pinned. This means that the internal reference fields can only be
+  safely filled in after this point, but as they are raw pointers the compiler will give you no warning
+  if you incorrectly set them before calling `Box::pin`.
+
+
+
 --------------------------------------------------------------------------------------------------------------
 ## **Iterators**
 
@@ -821,6 +929,27 @@ Finally, iterator consumers:
 --------------------------------------------------------------------------------------------------------------
 ## **std types**
 
+Some "notable" combinations of smart-pointers:
+
+* `Rc<RefCell<T>>`: for interior mutability in single-threaded code
+* `Arc<Mutex<T>>`: for interior mutability in multithreaded code
+
+
+#### **Other**
+
+* `std::any`
+
+
+
+--------------------------------------------------------------------------------------------------------------
+## **Diagnostic & sanitisers**
+
+* [Miri](https://github.com/rust-lang/miri)
+* Deadlock detection tools: [no_deadlocks](https://docs.rs/no_deadlocks/latest/no_deadlocks/), ThreadSanitizer,
+  [parking_lot::deadlock](https://amanieu.github.io/parking_lot/parking_lot/deadlock/index.html)
+* Clippy
+
+#### **Performance**
 
 
 
