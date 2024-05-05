@@ -2,17 +2,21 @@ title: Rust
 
 # **Rust**
 
-[**The Rust Programming Language book**](https://rust-book.cs.brown.edu/experiment-intro.html)
+Sources & Books:
 
-[**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
+* [**The Rust Programming Language book**](https://rust-book.cs.brown.edu/experiment-intro.html)
 
-[**Rust API Guidelines**](https://rust-lang.github.io/api-guidelines/about.html)
+* [**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
 
-[**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
+* [**Rust API Guidelines**](https://rust-lang.github.io/api-guidelines/about.html)
 
-[**Rust cookbook**](https://rust-lang-nursery.github.io/rust-cookbook/)
+* [**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
 
-[**The Little Book of Rust Macros**](https://veykril.github.io/tlborm/)
+* [**Rust cookbook**](https://rust-lang-nursery.github.io/rust-cookbook/)
+
+* [**The Little Book of Rust Macros**](https://veykril.github.io/tlborm/)
+
+* [**Fuzz Book**](https://rust-fuzz.github.io/book/)
 
 
 --------------------------------------------------------------------------------------------------------------
@@ -34,10 +38,24 @@ title: Rust
 
 
 --------------------------------------------------------------------------------------------------------------
-## **Project organisation & Structure. Cargo**
+## **Cargo: Project structure, building, testing, benchmarking & other tools**
 
 * **Get unused dependencies**: `cargo-udeps`
 * **Check for security issues, licensing conflicts**: `cargo-deny`
+* **Run**: `cargo run --bin digester -- --read-from-file $HOME/file1.txt --log-level trace`
+* **Build**: `cargo build`
+* **Tests**:
+    * Code coverage: `[cargo-tarpaulin`](https://lib.rs/crates/cargo-tarpaulin)
+    * Build & run test:
+        * **Run specific test with stdout**: `cargo test --release -- --nocapture decoded_reader_zstd_encoder_zstd_decoder_decoded_writer`
+        * **Parallel**: `cargo test -- --test-threads=2`
+        * **Run ignored**: `cargo test -- --ignored`
+        * **Run only non-integration tests**: `cargo test --lib -- --nocapture`
+* [Miri](https://github.com/rust-lang/miri)
+* Deadlock detection tools: [no_deadlocks](https://docs.rs/no_deadlocks/latest/no_deadlocks/), ThreadSanitizer,
+  [parking_lot::deadlock](https://amanieu.github.io/parking_lot/parking_lot/deadlock/index.html)
+* Clippy
+
 
 #### **Create directories / packages**
 
@@ -218,20 +236,41 @@ input v0.1.0 (/home/dimanne/devel/scripts/observability/input)
 
 
 
+#### **Benchmarking: cargo bench & criterion**
+
+See [criterion crate](https://crates.io/crates/criterion).
+
+The [cargo bench](https://doc.rust-lang.org/cargo/commands/cargo-bench.html) command runs special test cases
+that repeatedly perform an operation, and emits average timing information for the operation.
+
+Example of benchmarking `factorial` function:
+
+```rust
+#![feature(test)]
+extern crate test;
+#[bench]
+fn bench_factorial(b: &mut test::Bencher) {
+    b.iter(|| {
+        let result = factorial(std::hint::black_box(15));
+        assert_eq!(result, 1_307_674_368_000);
+    });
+}
+```
+
+#### **Documentation**
+
+`cargo doc` build documentation.
 
 
 
---------------------------------------------------------------------------------------------------------------
-## **Cargo**
+#### **Fuzzing**
 
-* **Run**: `cargo run --bin digester -- --read-from-file $HOME/file1.txt --log-level trace`
-* **Build**: `cargo build`
-* **Tests**:
-    * Build & run test:
-        * **Run specific test with stdout**: `cargo test --release -- --nocapture decoded_reader_zstd_encoder_zstd_decoder_decoded_writer`
-        * **Parallel**: `cargo test -- --test-threads=2`
-        * **Run ignored**: `cargo test -- --ignored`
-        * **Run only non-integration tests**: `cargo test --lib -- --nocapture`
+[cargo fuzz](https://github.com/rust-fuzz/cargo-fuzz)
+
+See [Fuzz Book](https://rust-fuzz.github.io/book/)
+
+
+
 
 
 
@@ -926,6 +965,89 @@ Finally, iterator consumers:
 
 
 
+
+
+--------------------------------------------------------------------------------------------------------------
+## **FFI: foreign function interface**
+
+It is possible to call C/C++ function from within Rust (and vice-versa).
+See [this](https://lurklurk.org/effective-rust/ffi.html) for general info and
+[bindgen](https://lurklurk.org/effective-rust/bindgen.html) for C bindings and [cxx](https://cxx.rs/) for C++.
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+## **Macros**
+
+#### **Declarative Macros**
+
+The [cargo-expand](https://github.com/dtolnay/cargo-expand) tool shows the code that the compiler sees,
+after macro expansion:
+
+```rust
+macro_rules! inc_item {
+    { $x:ident } => { $x.contents += 1; }
+}
+
+let mut x = Item { contents: 42 }; // type is not `Copy`
+inc_item!(x);
+println!("x is {x:?}");
+```
+
+```rust
+let mut x = Item { contents: 42 };
+x.contents += 1;
+{
+    ::std::io::_print(format_args!("x is {0:?}\n", x));
+};
+```
+
+
+#### **Procedural Macros**
+
+There are three distinct types of procedural macro:
+
+* Function-like macros: Invoked with an argument:
+
+    ```rust
+    my_func_macro!(15, x + y, f32::consts::PI);
+    ```
+
+* Attribute macros: Attached to some chunk of syntax in the program:
+
+    ```rust
+    #[log_invocation]
+    fn add_three(x: u32) -> u32 {
+        x + 3
+    }
+    ```
+
+* Derive macros: Attached to the definition of a data structure.
+
+    Derive macros add to the input tokens, instead of replacing them altogether. This means that the data
+    structure definition is left intact but the macro has the opportunity to append related code.
+
+    Derive macro can declare associated helper attributes, which can then be used to mark parts of the data
+    structure that need special processing:
+
+    ```rust
+    #[derive(Debug, Deserialize)]
+    struct MyData {
+        // If `value` is missing when deserializing, invoke
+        // `generate_value()` to populate the field instead.
+        #[serde(default = "generate_value")]
+        value: String,
+    }
+    ```
+
+
+
+
+
+
 --------------------------------------------------------------------------------------------------------------
 ## **std types**
 
@@ -940,16 +1062,6 @@ Some "notable" combinations of smart-pointers:
 * `std::any`
 
 
-
---------------------------------------------------------------------------------------------------------------
-## **Diagnostic & sanitisers**
-
-* [Miri](https://github.com/rust-lang/miri)
-* Deadlock detection tools: [no_deadlocks](https://docs.rs/no_deadlocks/latest/no_deadlocks/), ThreadSanitizer,
-  [parking_lot::deadlock](https://amanieu.github.io/parking_lot/parking_lot/deadlock/index.html)
-* Clippy
-
-#### **Performance**
 
 
 
