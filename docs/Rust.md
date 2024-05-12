@@ -6,13 +6,23 @@ Sources & Books:
 
 * [**The Rust Programming Language book**](https://rust-book.cs.brown.edu/experiment-intro.html)
 
-* [**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
+* [**Asynchronous Programming in Rust**](https://rust-lang.github.io/async-book/)
 
-* [**Rust API Guidelines**](https://rust-lang.github.io/api-guidelines/about.html)
+* [**Effective rust**](https://lurklurk.org/effective-rust/cover.html)
 
 * [**The Rustonomicon**](https://doc.rust-lang.org/nomicon/)
 
+* [**std crate**](https://doc.rust-lang.org/std/index.html)
+
+* [**The Unstable Book**](https://doc.rust-lang.org/unstable-book/the-unstable-book.html)
+
+* [**The Rust Reference**](https://doc.rust-lang.org/reference/introduction.html)
+
+* [**Rust API Guidelines**](https://rust-lang.github.io/api-guidelines/about.html)
+
 * [**Rust cookbook**](https://rust-lang-nursery.github.io/rust-cookbook/)
+
+* [**Rust by Example**](https://doc.rust-lang.org/rust-by-example/index.html)
 
 * [**The Little Book of Rust Macros**](https://veykril.github.io/tlborm/)
 
@@ -1044,6 +1054,19 @@ There are three distinct types of procedural macro:
     ```
 
 
+--------------------------------------------------------------------------------------------------------------
+## **Unsafe Rust**
+
+There is an interesting asymmetry between trust:
+
+* safe code trusts unsafe code (trust is based on assumption that unsafe code was manually checked / verified)
+* but, unsafe code cannot trust safe code
+
+    For example, BTreeMap cannot trust that `Ord` trait has been implemented correctly for the key user type.
+    While this might counter-intuitive, the reason for this is that a logical error in implementation of
+    safe code (`Ord`) leads to a much larger issues in unsafe code. If a faulty `Ord` implementation is used
+    in safe code, rust will catch it (in the sense that it will not cause memory-related issues). But this is
+    not the case for unsafe code using a faulty implementation of `Ord`.
 
 
 
