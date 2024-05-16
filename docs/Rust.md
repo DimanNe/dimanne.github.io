@@ -48,6 +48,33 @@ Sources & Books:
 
 
 --------------------------------------------------------------------------------------------------------------
+## **Performance & Profiling**
+
+* **Get Rust fork of perl flamegraph**: `cargo install inferno`
+
+* **Add debug info into release build**:
+
+    ```ini
+    [profile.release]
+    debug = true
+    ```
+
+* **Record perf data**: `perf record -F 1987 --call-graph dwarf your-app-here`
+
+
+* **Create flame and icicle SVGs**:
+
+    ```fish
+    set bn "v2-F1987.1"; set mw 0.01; set suffix "$mw"; perf script | inferno-collapse-perf > $bn.perf.data.folded; \
+    cat $bn.perf.data.folded | inferno-flamegraph --minwidth $mw --width 2250 --title "$bn $suffix" --reverse --inverted > ./$bn-$suffix.perf-icicle.svg && \
+    cat $bn.perf.data.folded | inferno-flamegraph --minwidth $mw --width 2250 --title "$bn $suffix" > ./$bn-$suffix.perf-flame.svg
+    ```
+
+* **Diff**: `inferno-diff-folded folded1 folded2 | inferno-flamegraph > diff2.svg`
+
+
+
+--------------------------------------------------------------------------------------------------------------
 ## **Cargo: Project structure, building, testing, benchmarking & other tools**
 
 * **Get unused dependencies**: `cargo-udeps`
@@ -647,6 +674,11 @@ type Result<T> = std::result::Result<T, std::io::Error>;
 ```
 
 
+#### **Arrays**
+
+* set every value to the same thing with `let x = [val; N]`
+* specify each member individually with `let x = [val1, val2, val3]`
+
 
 --------------------------------------------------------------------------------------------------------------
 ## **Conversions**
@@ -1067,6 +1099,534 @@ There is an interesting asymmetry between trust:
     safe code (`Ord`) leads to a much larger issues in unsafe code. If a faulty `Ord` implementation is used
     in safe code, rust will catch it (in the sense that it will not cause memory-related issues). But this is
     not the case for unsafe code using a faulty implementation of `Ord`.
+
+
+#### **Exotically Sized Types**
+
+There are two major DSTs (dynamically sized types) exposed by the language:
+
+* trait objects: `dyn MyTrait`
+* slices: `[T]`, `str`, and others
+
+See Wide/Fat pointers & trait objects above.
+
+Structs can actually store a single DST directly as their last field, but this makes them a DST as well:
+
+```rust
+// Can't be stored on the stack directly
+struct MySuperSlice {
+    info: u32,
+    data: [u8],
+}
+```
+
+Although such a type is largely useless without a way to construct it. Currently the only properly supported
+way to create a custom DST is by making your type generic and performing an unsizing coercion:
+
+```rust
+struct MySuperSliceable<T: ?Sized> {
+    info: u32,
+    data: T,
+}
+fn main() {
+    let sized: MySuperSliceable<[u8; 8]> = MySuperSliceable {
+        info: 17,
+        data: [0; 8],
+    };
+    let dynamic: &MySuperSliceable<[u8]> = &sized;
+    // prints: "17 [0, 0, 0, 0, 0, 0, 0, 0]"
+    println!("{} {:?}", dynamic.info, &dynamic.data);
+}
+```
+
+Rust also allows types to be specified that occupy no space:
+
+
+```rust
+struct Nothing; // No fields = no size
+
+// All fields have no size = no size
+struct LotsOfNothing {
+    foo: Nothing,
+    qux: (),      // empty tuple has no size
+    baz: [u8; 0], // empty array has no size
+}
+```
+
+Rust also enables types to be declared that cannot even be instantiated. These types can only be talked about
+at the type level, and never at the value level. Empty types can be declared by specifying an enum with
+no variants:
+
+```rust
+enum Void {} // No variants = EMPTY
+```
+
+
+#### **Struct layout types: repr(C), repr(transparent), repr(u*), repr(i*), repr(packed), repr(align(n))**
+
+Use `repr(C)` to pass a struct through FFI or be able to manually control layout (disable Rust tricks,
+enabled by default)
+
+
+
+#### **Lifetimes**
+
+
+Lifetime positions can appear as either "input" or "output":
+
+For `fn` definitions, `fn` types, and the traits `Fn`, `FnMut`, and `FnOnce`, input refers to the types of
+the formal arguments, while output refers to result types. So fn `foo(s: &str) -> (&str, &str)` has elided
+one lifetime in input position and two lifetimes in output position.
+
+There is also the logic that allows to change lifetime from one to another (from longer one, such as
+'static to a shorter one). This is called subtyping. And this is why this code compilers:
+
+In almost any context, when you see some requirement of a longer lifetime, like 'static, it is possible to
+"convert" it to smaller (because 'static lives as long as a smaller lifetime). This property is called
+"being covariant".
+
+But this is wrong for function arguments. Function arguments require that a parameter live at least as long
+as given lifetime ('static). Unlike the case above, we can NOT use a parameter with smaller lifetime for
+function argument that requires 'static. This property is called "being contravariant".
+
+
+```rust
+fn debug<'a>(a: &'a str, b: &'a str) {
+    println!("a = {a:?} b = {b:?}");
+}
+
+fn main() {
+    let hello: &'static str = "hello";
+    {
+        let world = String::from("world");
+        let world = &world; // 'world has a shorter lifetime than 'static
+        debug(hello, world); // hello silently downgrades from `&'static str` into `&'world str`
+    }
+}
+```
+
+
+We're going to pretend that we're actually allowed to label scopes with lifetimes, and desugar the examples
+from the start of this chapter. One particularly interesting piece of sugar is that each let statement
+implicitly introduces a scope
+
+Example:
+
+```rust
+let x = 0;
+let z;
+let y = &x;
+z = y;
+
+// desugars to:
+
+'a: {
+    let x: i32 = 0;
+    'b: {
+        let z: &'b i32;
+        'c: {
+            // Must use 'b here because the reference to x is
+            // being passed to the scope 'b.
+            let y: &'b i32 = &'b x;
+            z = y;
+        }
+    }
+}
+```
+
+
+Example: references that outlive referents
+
+```rust
+fn as_str(data: &u32) -> &str {
+    let s = format!("{}", data);
+    &s
+}
+
+// desugars to:
+
+fn as_str<'a>(data: &'a u32) -> &'a str {
+    'b: {
+        let s = format!("{}", data);
+        return &'a s;
+    }
+}
+```
+
+This signature of `as_str` takes a reference to a `u32` with some lifetime, and promises that it can produce
+a reference to a `str` that can live just as long. Already we can see why this signature might be trouble.
+That basically implies that we're going to find a `str` somewhere in the scope the reference to the
+`u32` originated in, or somewhere even earlier.
+
+Since the contract of our function says the reference must outlive 'a, that's the lifetime we infer for the
+reference. Unfortunately, s was defined in the scope 'b, so the only way this is sound is if 'b contains
+'a -- which is clearly false since 'a must contain the function call itself. We have therefore created a
+reference whose lifetime outlives its referent.
+
+To make this more clear, we can expand the example:
+
+```rust
+fn as_str<'a>(data: &'a u32) -> &'a str {
+    'b: {
+        let s = format!("{}", data);
+        return &'a s
+    }
+}
+fn main() {
+    'c: {
+        let x: u32 = 0;
+        'd: {
+            // An anonymous scope is introduced because the borrow does not
+            // need to last for the whole scope x is valid for. The return
+            // of as_str must find a str somewhere before this function
+            // call. Obviously not happening.
+            println!("{}", as_str::<'d>(&'d x));
+        }
+    }
+}
+```
+
+This is another example that shows why Rust thinks that if a function that takes a reference to X
+(`Vec<u8>`) is called, and the function returns a reference to Y (`u8`), then there is a reference to
+X in the scope (even if we consider lines after the function).
+
+```rust
+let mut data = vec![1, 2, 3];
+let x = &data[0];
+data.push(4);
+println!("{}", x);
+
+'a: {
+    let mut data: Vec<i32> = vec![1, 2, 3];
+    'b: {
+        // 'b is as big as we need this borrow to be
+        // (just need to get to `println!`)
+        let x: &'b i32 = Index::index::<'b>(&'b data, 0);
+        'c: {
+            // Temporary scope because we don't need the
+            // &mut to last any longer.
+            Vec::push(&'c mut data, 4);
+        }
+        println!("{}", x);
+    }
+}
+```
+
+The problem here is a bit more subtle and interesting. We want Rust to reject this program for the
+following reason: We have a live shared reference x to a descendant of data when we try to take a
+mutable reference to data to push. This would create an aliased mutable reference, which would violate
+the second rule of references.
+
+However this is not at all how Rust reasons that this program is bad. Rust **doesn't understand that x is
+a reference to a part of data**. It doesn't understand Vec at all. What it does see is that x has to
+live for 'b in order to be printed. The signature of Index::index subsequently demands that the reference
+we assign to `data` **has to survive for 'b** (<--- this is exactly what makes rust think that a mutable
+reference to vector exists after the function call). When we try to call push, it then sees us try to
+make an &'c mut data. Rust knows that 'c is contained within 'b, and rejects our program because the
+&'b data reference must still be alive!
+
+
+
+#### **Lifetime Elision**
+
+* Each elided lifetime in input position becomes a distinct lifetime parameter.
+* If there is exactly one input lifetime position (elided or not), that lifetime is assigned to all elided
+  output lifetimes.
+* If there are multiple input lifetime positions, but one of them is &self or &mut self, the lifetime of
+  self is assigned to all elided output lifetimes.
+* Otherwise, it is an error to elide an output lifetime.
+
+
+
+
+#### **Drop Check**
+
+There are some checks performed by rust when a type that holds references is dropped. This code causes
+compilation error:
+
+```rust
+struct Inspector<'a>(&'a u8);
+
+impl<'a> Drop for Inspector<'a> {
+    fn drop(&mut self) {
+        println!("I was only {} days from retirement!", self.0);
+    }
+}
+
+struct World<'a> {
+    inspector: Option<Inspector<'a>>,
+    days: Box<u8>,
+}
+
+fn main() {
+    let mut world = World {
+        inspector: None,
+        days: Box::new(1),
+    };
+    world.inspector = Some(Inspector(&world.days));
+    // Let's say `days` happens to get dropped first.
+    // Then when Inspector is dropped, it will try to read free'd memory!
+}
+```
+
+because drop access the references, which is not guaranteed to live long enough.
+
+If you need circumvent this:
+
+```rust
+#![feature(dropck_eyepatch)]
+
+struct Inspector<'a>(&'a u8, &'static str);
+
+unsafe impl<#[may_dangle] 'a> Drop for Inspector<'a> {
+    fn drop(&mut self) {
+        println!("Inspector(_, {}) knows when *not* to inspect.", self.1);
+    }
+}
+
+```
+
+
+#### **PhantomData**
+
+When working with unsafe code, we can often end up in a situation where types or lifetimes are logically
+associated with a struct, but not actually part of a field. This most commonly occurs with lifetimes.
+For instance, the Iter for &'a [T] is (approximately) defined as follows:
+
+```rust
+struct Iter<'a, T: 'a> {
+    ptr: *const T,
+    end: *const T,
+}
+```
+
+PhantomData is a special marker type. PhantomData consumes no space, but simulates a field of the given type
+for the purpose of static analysis. This was deemed to be less error-prone than explicitly telling the
+type-system the kind of variance that you want, while also providing other useful things such as auto
+traits and the information needed by drop check.
+
+Iter logically contains a bunch of `&'a T`s, so this is exactly what we tell the PhantomData to simulate:
+
+```rust
+use std::marker;
+struct Iter<'a, T: 'a> {
+    ptr: *const T,
+    end: *const T,
+    _marker: marker::PhantomData<&'a T>,
+}
+```
+
+and that's it. The lifetime will be bounded, and your iterator will be covariant over 'a and T.
+
+
+
+#### **Splitting Borrows**
+
+borrowck doesn't understand arrays or slices in any way, so this doesn't work:
+
+```rust
+let mut x = [1, 2, 3];
+let a = &mut x[0];
+let b = &mut x[1];
+println!("{} {}", a, b);
+```
+
+In order to "teach" borrowck that what we're doing is ok, we need to drop down to unsafe code. For instance,
+mutable slices expose a `split_at_mut` function that consumes the slice and returns two mutable slices.
+One for everything to the left of the index, and one for everything to the right. Intuitively we know this is
+safe because the slices don't overlap, and therefore alias. However the implementation requires some unsafety:
+
+```rust
+pub fn split_at_mut(&mut self, mid: usize) -> (&mut [T], &mut [T]) {
+    let len = self.len();
+    let ptr = self.as_mut_ptr();
+
+    unsafe {
+        assert!(mid <= len);
+
+        (from_raw_parts_mut(ptr, mid),
+         from_raw_parts_mut(ptr.add(mid), len - mid))
+    }
+}
+```
+
+
+#### **The Dot Operator**
+
+Suppose we have a function `foo` that has a receiver (a `self`, `&self` or `&mut self` parameter). If we
+call `value.foo()`, the compiler needs to determine what type `Self` is before it can call the correct
+implementation of the function. For this example, we will say that `value` has type `T`.
+
+We will use fully-qualified syntax to be more clear about exactly which type we are calling a function on.
+
+* First, the compiler checks if it can call `T::foo(value)` directly. This is called a "by value" method call.
+* If it can't call this function (for example, if the function has the wrong type or a trait isn't
+  implemented for `Self`), then the compiler tries to add in an automatic reference. This means that the
+  compiler tries `<&T>::foo(value)` and `<&mut T>::foo(value)`. This is called an "autoref" method call.
+* If none of these candidates worked, it dereferences `T` and tries again. This uses the `Deref` trait - if
+  T: `Deref<Target = U>` then it tries again with type `U` instead of `T`. If it can't dereference `T`, it
+  can also try unsizing `T`. This just means that if T has a size parameter known at compile time, it
+  "forgets" it for the purpose of resolving methods. For instance, this unsizing step can convert
+  `[i32; 2]` into `[i32]` by "forgetting" the size of the array.
+
+
+Example of the method lookup algorithm:
+
+* Let's say we have this:
+
+    ```rust
+    let array: Rc<Box<[T; 3]>> = ...;
+    let first_entry = array[0];
+    ```
+
+* First, `array[0]` is really just syntax sugar for the `Index` trait - the compiler will convert `array[0]`
+  into `array.index(0)`. Now, the compiler checks to see if array implements `Index`
+
+* The compiler checks if `Rc<Box<[T; 3]>>` implements `Index`, but it does not, and neither do
+  `&Rc<Box<[T; 3]>>` or `&mut Rc<Box<[T; 3]>>`.
+* Since none of these worked, the compiler dereferences the `Rc<Box<[T; 3]>>` into `Box<[T; 3]>` and tries
+  again. `Box<[T; 3]>`, `&Box<[T; 3]>`, and `&mut Box<[T; 3]>` do not implement `Index`,
+* So it dereferences again. `[T; 3]` and its autorefs also do not implement `Index`. It can't
+  dereference `[T; 3]`, so the compiler unsizes it, giving `[T]`. Finally, `[T]` implements `Index`, so it
+  can now call the actual index function.
+
+
+#### **Transmutes** (aka reinterpret_cast)
+
+
+`mem::transmute<T, U>` takes a value of type `T` and reinterprets it to have type `U`. The only restriction
+is that the `T` and `U` are verified to have the same size. The ways to cause Undefined Behavior with this
+are mind boggling.
+
+* First and foremost, creating an instance of any type with an invalid state is going to cause arbitrary
+  chaos that can't really be predicted. Do not transmute 3 to bool. Even if you never do anything with
+  the bool. Just don't.
+
+* Transmute has an overloaded return type. If you do not specify the return type it may produce a surprising
+  type to satisfy inference.
+
+* Transmuting an `&` to `&mut` is Undefined Behavior. While certain usages may appear safe, note that the
+  Rust optimizer is free to assume that a shared reference won't change through its lifetime and thus such
+  transmutation will run afoul of those assumptions.
+
+* When transmuting between different compound types, you have to make sure they are laid out the same way!
+  If layouts differ, the wrong fields are going to get filled with the wrong data, which will make you
+  unhappy and can also be Undefined Behavior (see above).
+
+    So how do you know if the layouts are the same? For `repr(C)` types and `repr(transparent)` types, layout
+    is precisely defined. But for your run-of-the-mill `repr(Rust)`, it is not. Even different instances of
+    the same generic type can have wildly different layout. `Vec<i32>` and `Vec<u32>` *might* have their
+    fields in the same order, or they might not.
+
+
+#### **Working With Uninitialized Memory**
+
+
+Like C, all stack variables in Rust are uninitialized until a value is explicitly assigned to them.
+Unlike C, Rust statically prevents you from ever reading them until you do. Interestingly, Rust doesn't
+require the variable to be mutable to perform a delayed initialization.
+
+So this compiles:
+
+```rust
+fn main() {
+    let x: i32;
+    if true {
+        x = 1;
+    } else {
+        x = 2;
+    }
+    println!("{}", x);
+}
+```
+
+
+There is an interesting case for partially initialised arrays: Safe Rust doesn't permit you to partially
+initialize an array.
+
+Unsafe Rust gives us a powerful tool to handle this problem:
+[`MaybeUninit`](https://doc.rust-lang.org/core/mem/union.MaybeUninit.html). This type can be used to handle
+memory that has not been fully initialized yet. Example of usage:
+
+```rust
+use std::mem::{self, MaybeUninit};
+
+// Size of the array is hard-coded but easy to change (meaning, changing just the constant is
+// sufficient). This means we can't use [a, b, c] syntax to initialize the array, though, as we would
+// have to keep that in sync with `SIZE`!
+const SIZE: usize = 10;
+
+let x = {
+    // Create an uninitialized array of `MaybeUninit`. The `assume_init` is safe because the type we are
+    // claiming to have initialized here is a bunch of `MaybeUninit`s, which do not require initialization.
+    let mut x: [MaybeUninit<Box<u32>>; SIZE] = unsafe {
+        MaybeUninit::uninit().assume_init()
+    };
+
+    // Dropping a `MaybeUninit` does nothing. Thus using raw pointer assignment instead of `ptr::write`
+    // does not cause the old uninitialized value to be dropped.
+    for i in 0..SIZE {
+        x[i] = MaybeUninit::new(Box::new(i as u32));
+    }
+
+    // Everything is initialized. Transmute the array to the initialized type.
+    unsafe { mem::transmute::<_, [Box<u32>; SIZE]>(x) }
+};
+
+dbg!(x);
+```
+
+It's worth spending a bit more time on the loop in the middle, and in particular the assignment operator
+and its interaction with drop. If we wrote something like:
+
+```rust
+*x[i].as_mut_ptr() = Box::new(i as u32); // WRONG!
+```
+
+we would actually overwrite a `Box<u32>`, leading to drop of uninitialized data, which would cause much
+sadness and pain.
+
+The correct alternative, if for some reason we cannot use `MaybeUninit::new`, is to use the `ptr` module.
+In particular, it provides three functions that allow us to assign bytes to a location in memory without
+dropping the old value: `write`, `copy`, and `copy_nonoverlapping`.
+
+* `ptr::write(ptr, val)` takes a val and moves it into the address pointed to by ptr.
+* `ptr::copy(src, dest, count)` copies the bits that count T items would occupy from src to dest. (this
+  is equivalent to C's memmove -- note that the argument order is reversed!)
+* `ptr::copy_nonoverlapping(src, dest, count)` does what copy does, but a little faster on the assumption
+  that the two ranges of memory don't overlap. (this is equivalent to C's memcpy -- note that the argument
+  order is reversed!)
+
+It's worth noting that you don't need to worry about ptr::write-style shenanigans with types which don't
+implement Drop or contain Drop types, because Rust knows not to try to drop them. This is what we relied
+on in the above example.
+
+Note that, to use the ptr methods, you need to first obtain a raw pointer to the data you want to initialize.
+It is illegal to construct a reference to uninitialized data, which implies that you have to be careful when
+obtaining said raw pointer:
+
+* For an array of T, you can use `base_ptr.add(idx)` where `base_ptr: *mut T` to compute the address of array
+  index idx. This relies on how arrays are laid out in memory.
+* For a struct, however, in general we do not know how it is laid out, and we also cannot use
+  `&mut base_ptr.field` as that would be creating a reference. So, you must carefully use the `addr_of_mut`
+  macro. This creates a raw pointer to the field without creating an intermediate reference:
+
+    ```rust
+    use std::{ptr, mem::MaybeUninit};
+
+    struct Demo {
+        field: bool,
+    }
+
+    let mut uninit = MaybeUninit::<Demo>::uninit();
+    // `&uninit.as_mut().field` would create a reference to an uninitialized `bool`,
+    // and thus be Undefined Behavior!
+    let f1_ptr = unsafe { ptr::addr_of_mut!((*uninit.as_mut_ptr()).field) };
+    unsafe { f1_ptr.write(true); }
+
+    let init = unsafe { uninit.assume_init() };
+    ```
+
 
 
 
