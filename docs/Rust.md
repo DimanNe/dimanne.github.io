@@ -1628,6 +1628,24 @@ obtaining said raw pointer:
     ```
 
 
+#### **Leaking**
+
+
+Sometimes, leaking just causes... leaks. But it sometimes it leads to memory issues.
+
+* vec example: `drainer` is an entity that remembers what elements were drained, and whenever its
+  destructor (drop) is called, it shifts remaining elements of vector, overwriting "drained" ones. The
+  problem is to implement this correctly in the face of code like: `mem::forget(drainer)`: if we are not
+  careful, user can use the elements that were drained.
+
+    The solution is to temporarily set_len to 0 (and restore it in drainer's drop). Which means that if
+    user `mem::forget(drainer)`, the length of vector will be 0, and the user cannot read any element.
+
+* Another example is implementation of Rc. It has a reference counter. If we are allowed to `mem::forget`
+  then we can overflow it (which means we can make it 0 as many times as we want), but it will lead to double
+  free. The solution is NOT to overflow (but crash, for example).
+
+
 
 
 
