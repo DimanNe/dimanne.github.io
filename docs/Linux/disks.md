@@ -36,11 +36,50 @@ title: Disks
     sudo sync
     ```
 
-## Move image to flash
+
+## **Move image to a drive**
 
 ```
 dd if=./src-filename of=/dev/sdb status=progress conv=fsync
 ```
+
+## **Get the list of physical disks**
+
+```title="lsblk -d -o NAME,TYPE,SIZE -e 7,11"
+NAME    TYPE   SIZE
+sda     disk 223.6G
+nvme0n1 disk   3.6T
+```
+
+```title="sudo lshw -class disk"
+  *-namespace:2
+       description: NVMe disk
+       physical id: 1
+       bus info: nvme@0:1
+       logical name: /dev/nvme0n1
+       size: 3726GiB (4TB)
+  *-disk
+       description: ATA Disk
+       product: INTEL SSDSC2
+       physical id: 0.0.0
+       bus info: scsi@1:0.0.0
+       logical name: /dev/sda
+```
+
+## **Erase disk**
+
+
+#### **HDD & SD cards**
+
+* `sudo dd if=/dev/zero of=/dev/sdX bs=1M status=progress`
+* `sudo shred -v -n 3 /dev/sdX` (might need to install `coreutils`)
+
+
+#### **NVME**
+
+* `sudo nvme format /dev/nvme0n1 --ses=1  # or --ses=2` (might need to install `nvme-cli`)
+
+
 
 ## **Resize a GPT with a ext4**
 
@@ -52,6 +91,7 @@ dd if=./src-filename of=/dev/sdb status=progress conv=fsync
 6. Exit parted: `quit`
 7. Check the filesystem: `sudo e2fsck -f /dev/sdXX`
 8. Resize filesystem: `sudo resize2fs /dev/sdXX`
+
 
 
 ## **Add encrypted disk**
@@ -82,14 +122,14 @@ and finally in fstab:
 
 ## **Disk health checks**
 
-### Non-destructive disk health check (with `smartctl`)
+#### **Non-destructive disk health check (with `smartctl`)**
 
 * Start test: `sudo smartctl -t long /dev/sdf # or sudo smartctl -t short /dev/sdf`
 * Check results: `sudo smartctl -l selftest /dev/sdf or sudo smartctl -a /dev/sdf`
 
 Note. If `smartctl` test says that disk is healthy, it does not necessarily mean so. See the section below.
 
-### Destructive disk health check (with `badblocks`)
+#### **Destructive disk health check (with `badblocks`)**
 
 Docs: [Source1](https://superuser.com/questions/66820/full-physical-hd-check),
 [Source2](https://calomel.org/badblocks_wipe.html)
@@ -139,12 +179,11 @@ reading sector 3012759284: FAILED: Input/output error
 
 ## **mdadm & RAID**
 
-### Replacing a faulty/failing HDD in an mdadm RAID
+#### **Replacing a faulty/failing HDD in an mdadm RAID**
 Docs: [Source1](https://www.tjansson.dk/2013/12/replacing-a-failed-disk-in-a-mdadm-raid/),
 [Source2](https://georgebohnisch.com/replace-failing-drive-raid6-array-mdadm/).
 
-##### Determine removed by mdadm disk
+Determine removed by mdadm disk:
 
-[How to determine removed by mdadm disk](https://serverfault.com/questions/841115/how-do-i-determine-the-failed-removed-hdd-in-mdadm-raid).
-
-Light up the led of the failed HDD (assuming you know the failed disk, see the link above): `cat /dev/sdz >/dev/null`
+* [How to determine removed by mdadm disk](https://serverfault.com/questions/841115/how-do-i-determine-the-failed-removed-hdd-in-mdadm-raid).
+* Light up the led of the failed HDD (assuming you know the failed disk, see the link above): `cat /dev/sdz >/dev/null`
