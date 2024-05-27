@@ -80,9 +80,9 @@ Sources & Books:
 * **Get unused dependencies**: `cargo-udeps`
 * **Check for security issues, licensing conflicts**: `cargo-deny`
 * **Run**: `cargo run --bin digester -- --read-from-file $HOME/file1.txt --log-level trace`
-* **Build**: `cargo build`
+* **Build**: `cargo build`, build tests too: `cargo test --no-run`
 * **Tests**:
-    * Code coverage: `[cargo-tarpaulin`](https://lib.rs/crates/cargo-tarpaulin)
+    * Code coverage: [`cargo-tarpaulin`](https://lib.rs/crates/cargo-tarpaulin)
     * Build & run test:
         * **Run specific test with stdout**: `cargo test --release -- --nocapture decoded_reader_zstd_encoder_zstd_decoder_decoded_writer`
         * **Parallel**: `cargo test -- --test-threads=2`
