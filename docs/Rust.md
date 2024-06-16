@@ -1646,7 +1646,34 @@ Sometimes, leaking just causes... leaks. But it sometimes it leads to memory iss
   free. The solution is NOT to overflow (but crash, for example).
 
 
+#### **Exceptions**
 
+While Rust does not have exceptions in the sense of C++, code in Rust can panic, and one of the possibilities
+for what happens is exception & stack unwinding. It means that unsafe code should either use low-level C-like
+functions which cannot throw exceptions / panic, or it should be ready for an exception.
+
+Example 1: Vec::push_all
+
+```rust
+impl<T: Clone> Vec<T> {
+    fn push_all(&mut self, to_push: &[T]) {
+        self.reserve(to_push.len());
+        unsafe {
+            // can't overflow because we just reserved this
+            self.set_len(self.len() + to_push.len());
+
+            for (i, x) in to_push.iter().enumerate() {
+                self.ptr().add(i).write(x.clone());
+            }
+        }
+    }
+}
+```
+
+Need to move set_len to after the loop, as otherwise we set_len and then x.clone() can panic.
+
+There is also [an example](https://doc.rust-lang.org/nomicon/exception-safety.html#binaryheapsift_up) of how
+to "emulate" try/catch block
 
 
 --------------------------------------------------------------------------------------------------------------

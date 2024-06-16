@@ -16,6 +16,7 @@ title: Alternatives
 * `top`: `bottom`, `glances`, `gtop`
 * benchmarking --- `hyperfine`
 
+* diff: `icdiff`
 
 
 ## **Other**

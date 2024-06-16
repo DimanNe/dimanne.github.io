@@ -2,8 +2,8 @@ title: Disks
 
 # **Disks**
 
-`lsblk --fs` --- shows all block devices along with uuids.
 
+--------------------------------------------------------------------------------------------------------------
 ## **Format a disk**
 
 * **gpt partitions**:
@@ -37,12 +37,16 @@ title: Disks
     ```
 
 
+
+--------------------------------------------------------------------------------------------------------------
 ## **Move image to a drive**
 
 ```
 dd if=./src-filename of=/dev/sdb status=progress conv=fsync
 ```
 
+
+--------------------------------------------------------------------------------------------------------------
 ## **Get the list of physical disks**
 
 ```title="lsblk -d -o NAME,TYPE,SIZE -e 7,11"
@@ -66,6 +70,11 @@ nvme0n1 disk   3.6T
        logical name: /dev/sda
 ```
 
+`lsblk --fs` --- shows all block devices along with uuids.
+
+
+
+--------------------------------------------------------------------------------------------------------------
 ## **Erase disk**
 
 
@@ -94,6 +103,8 @@ nvme0n1 disk   3.6T
 
 
 
+
+--------------------------------------------------------------------------------------------------------------
 ## **Add encrypted disk**
 
 ```
@@ -120,6 +131,8 @@ and finally in fstab:
 ```
 
 
+
+--------------------------------------------------------------------------------------------------------------
 ## **Disk health checks**
 
 #### **Non-destructive disk health check (with `smartctl`)**
@@ -177,6 +190,7 @@ reading sector 3012759284: FAILED: Input/output error
 
 
 
+--------------------------------------------------------------------------------------------------------------
 ## **mdadm & RAID**
 
 #### **Replacing a faulty/failing HDD in an mdadm RAID**
