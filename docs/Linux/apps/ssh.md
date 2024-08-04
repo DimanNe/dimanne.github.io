@@ -283,7 +283,7 @@ There are several ways to make ssh work with keys on a Yubikey:
 
         2. Restart `gpg-agent`: `gpgconf --kill gpg-agent`
         3. Specify which key should be used for ssh: add keygrip of the "Auth GPG key" to `~/.gnupg/sshcontrol`:
-            * Get its keygrip: gpg -K --with-keygrip
+            * Get its keygrip: `gpg -K --with-keygrip`
             * Put it in ~/.gnupg/sshcontrol: `echo 87A342B1561ADD416AD21... > ~/.gnupg/sshcontrol`
 
 
