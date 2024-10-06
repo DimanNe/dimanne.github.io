@@ -86,6 +86,14 @@ Operations:
 * Merge strategy: `git config pull.rebase true`
 
 
+------------------------------------------------------------------------------------------------------------------------
+## **Make git use specific ssh key**
+
+```fish
+ssh-keygen -t ed25519 -f ~/asdf/priv-key
+set -x GIT_SSH_COMMAND "ssh -i $HOME/asdf/priv-key -o IdentitiesOnly=yes"
+```
+
 
 
 ------------------------------------------------------------------------------------------------------------------------
