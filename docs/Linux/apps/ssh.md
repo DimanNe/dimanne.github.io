@@ -223,20 +223,11 @@ There are several ways to make ssh work with keys on a Yubikey:
     In order to generate ssh keys directly on FIDO/U2F token, use `-t ed25519-sk` or `-t ecdsa-sk`:
 
     ```bash linenums="1"
-    ssh-keygen -t ecdsa-sk
-    Generating public/private ecdsa-sk key pair.
-    You may need to touch your authenticator to authorize key generation.
-    Enter file in which to save the key (/var/home/vorburger/.ssh/id_ecdsa_sk):
-    Enter passphrase (empty for no passphrase):
-    Enter same passphrase again:
-    Your identification has been saved in /home/<>/.ssh/id_ecdsa_sk
-    Your public key has been saved in /home/<>/.ssh/id_ecdsa_sk.pub
-    The key fingerprint is: SHA256:nwf4+ba...VM <>@<>
-    The key's randomart image is:
-    +-[ECDSA-SK 256]--+
-    ...
-    +----[SHA256]-----+
+    ssh-keygen -t ed25519-sk -O verify-required -f ~/.ssh/id_ed25519_sk
     ```
+
+    * `-O verify-required` makes the token require PIN (safer but more annoying)
+    * `-O resident` will put key handle to token. Without the option, the token alone is not usable.
 
 
 
