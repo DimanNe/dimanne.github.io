@@ -1,0 +1,2897 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../usb_udev/">
+      
+      
+        <link rel="next" href="../apps/bash/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44+insiders-4.53.14">
+    
+    
+      
+        <title>Video editing - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.12320a83.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"/></svg>');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4.72.22a.75.75 0 0 1 1.06 0l1 .999a3.5 3.5 0 0 1 2.441 0l.999-1a.748.748 0 0 1 1.265.332.75.75 0 0 1-.205.729l-.775.776c.616.63.995 1.493.995 2.444v.327q0 .15-.025.292c.408.14.764.392 1.029.722l1.968-.787a.75.75 0 0 1 .556 1.392L13 7.258V9h2.25a.75.75 0 0 1 0 1.5H13v.5q-.002.615-.141 1.186l2.17.868a.75.75 0 0 1-.557 1.392l-2.184-.873A5 5 0 0 1 8 16a5 5 0 0 1-4.288-2.427l-2.183.873a.75.75 0 0 1-.558-1.392l2.17-.868A5 5 0 0 1 3 11v-.5H.75a.75.75 0 0 1 0-1.5H3V7.258L.971 6.446a.75.75 0 0 1 .558-1.392l1.967.787c.265-.33.62-.583 1.03-.722a1.7 1.7 0 0 1-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72 1.28a.75.75 0 0 1 0-1.06m.53 6.28a.75.75 0 0 0-.75.75V11a3.5 3.5 0 1 0 7 0V7.25a.75.75 0 0 0-.75-.75ZM6.173 5h3.654A.17.17 0 0 0 10 4.827V4.5a2 2 0 1 0-4 0v.327c0 .096.077.173.173.173"/></svg>');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#video-editing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Video editing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  MkDocs
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../C%2B%2B/" class="md-tabs__link">
+        
+  
+    
+  
+  C++
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../Rust/" class="md-tabs__link">
+        
+  
+    
+  
+  Rust
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../English/Grammar/01.Infinitive/" class="md-tabs__link">
+          
+  
+  English
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../alternatives/" class="md-tabs__link">
+          
+  
+  Linux
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    MkDocs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../C%2B%2B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    C++
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Rust/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Rust
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    English
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    English
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Grammar
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Grammar
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/01.Infinitive/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Infinitive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/02.-ing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    -ing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/03.ModalVerbs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Modal Verbs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/04.SomethingFollowedBySomething/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    something followed by something rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/05.Articles/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Articles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/06.Other/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Other
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Grammar/07.UnitsFromMurphy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Some units from Murphy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulary
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Vocabulary
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/10.RareWords/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Rare Words
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/20.WordUsage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Word Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/30.PhrasesIdiomsCollacations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Phrases, Idioms & Collacations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/40.CommonWordsUncommonMeaning/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Common words with uncommon meaning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/41.ReplacementForVery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Replacement for "very"
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/42.UAndNonU/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    U and Non-U
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/43.CollectiveNouns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Collective Nouns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/44.ReportingVerbs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Reporting Verbs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/45.WaysOfMoving/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Ways of Moving
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/46.RelatedWords/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Related Words
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/50.LinkingWords/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Linking Words
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/55.Conjunctions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Conjunction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/90.Prefixes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Prefixes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../English/Vocabulary/91.Suffixes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Suffixes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alternatives/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Alternatives
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apt_repos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    apt repos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certificates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificates
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Disks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secure_boot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Secure boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../software/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Software
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tools_and_utils/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools & Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usb_udev/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    usb & udev
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    
+  
+    Video editing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Video editing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#davinci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DaVinci
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ffmpeg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ffmpeg
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mencoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recording" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recording
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codecs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Codecs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capture-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capture codecs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit codecs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export codec
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intermediate codecs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate codecs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dnxhr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNxHR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libxvid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        libxvid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ProRes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-export-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output / export codecs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output / export codecs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#h265-newbetter-codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        h.265 (new/better codec).
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vp9-produces-much-larger-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VP9 (produces much larger output)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h264-old-codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        h.264 (old codec).
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Apps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Apps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/bash/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    bash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/cmake/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    cmake
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/fail2ban/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Fail2Ban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/git/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    git
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/lldb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    lldb
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/openssl/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenSSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/qt_qtcreator/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Qt & QtCreator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/ripgrep/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ripgrep
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/screen/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    screen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/sql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/ssh/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    ssh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/strace/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    strace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps/systemd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    systemd
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Performance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/010.performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/020.concurrency/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Concurrency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/030.memory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    memory usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/040.asm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    asm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/050.Gregg/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Brendan Gregg
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/110.tools-orbit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools: orbit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/120.tools-perf/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools: perf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#davinci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DaVinci
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Other Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ffmpeg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ffmpeg
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mencoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recording" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recording
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codecs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Codecs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#capture-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capture codecs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edit codecs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export codec
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intermediate-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intermediate codecs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intermediate codecs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dnxhr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNxHR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#libxvid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        libxvid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ProRes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-export-codecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output / export codecs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output / export codecs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#h265-newbetter-codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        h.265 (new/better codec).
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vp9-produces-much-larger-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VP9 (produces much larger output)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h264-old-codec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        h.264 (old codec).
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="video-editing"><strong>Video editing</strong><a class="headerlink" href="#video-editing" title="Permanent link">&para;</a></h1>
+<h2 id="davinci"><strong>DaVinci</strong><a class="headerlink" href="#davinci" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>sudo apt install pulseaudio pulseaudio-utils pulseaudio-module-x11 libasound2-plugins</code></li>
+<li><code>LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0 /opt/resolve/bin/resolve</code></li>
+<li><a href="https://www.youtube.com/watch?v=63Ln33O4p4c&amp;ab_channel=JustinBrown-PrimalVideo">Tutorial / Intro</a>.</li>
+<li><a href="https://www.youtube.com/watch?v=MgSIDRvgwIg&amp;t=250s&amp;ab_channel=John%E2%80%99sFilms">Changing speed</a>.</li>
+</ul>
+<p>Below are stages of workflow in Davinci.</p>
+<p><strong>Re-encode</strong></p>
+<p>See intermediate codecs below.</p>
+<p><strong>New Project</strong></p>
+<ul>
+<li>Create new project.</li>
+<li>Choose resolution (UHD) &amp; fps (60fps) of timeline (this is the most important part)</li>
+<li>Choose same or lower resolution in Video Monitoring.</li>
+</ul>
+<p><strong>Import media, organise, mark</strong></p>
+<ul>
+<li>On the &ldquo;Media tab&rdquo; import media.</li>
+<li><strong>Merge multiple physical videos into a single logical one</strong>: put them on timeline (in the Edit tab) -&gt; select -&gt;
+  right click -&gt; New Compound Clip</li>
+<li>Organise &amp; Cut<ul>
+<li><strong>Use bins</strong>, for example<ul>
+<li>a bin for clips on timeline vs not-yet-on-timelne</li>
+<li>bin with timelapses</li>
+<li>etc..</li>
+</ul>
+</li>
+<li><strong>Use markers</strong>: select clip and press <code>M</code>. Press it a second time to adjust colour/text.</li>
+<li><strong>Use the blade tool</strong></li>
+</ul>
+</li>
+<li><strong>Use multiple timelines</strong>: At the upper-left corner of timeline, click &ldquo;Timeline view options&rdquo; button, press
+  &ldquo;Stacked timelines&rdquo;, at the upper-right corner, a new button with plus sign appears, press it.</li>
+</ul>
+<p><strong>Cutting</strong></p>
+<ul>
+<li><strong>Temporarily speed up video</strong>: j (speeds up backward), k, l (speeds up forward).</li>
+<li><strong>Move cursor to the edges</strong> of clips and adjust their length/start/end. You can always expand later (nothing is removed).</li>
+<li><strong>Use both viewports</strong> to adjust start/end with high precision.</li>
+<li><strong>Use Blade tool</strong>: <code>B</code>. Note, blade tool does not remove anything, you can you expand again the clip later.</li>
+<li><strong>Cut from curr pos to the right</strong>: <code>Ctrl+Shift+]</code></li>
+<li><strong>Cut from curr pos to the left</strong>: <code>Ctrl+Shift+[</code></li>
+</ul>
+<h2 id="other-tools"><strong>Other Tools</strong><a class="headerlink" href="#other-tools" title="Permanent link">&para;</a></h2>
+<h3 id="ffmpeg">ffmpeg<a class="headerlink" href="#ffmpeg" title="Permanent link">&para;</a></h3>
+<p>List available encoders: <code>ffmpeg -encoders</code></p>
+<h3 id="mencoder">Mencoder<a class="headerlink" href="#mencoder" title="Permanent link">&para;</a></h3>
+<p>Reduce resolution of video:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mencoder<span class="w"> </span>-aid<span class="w"> </span><span class="m">1</span><span class="w"> </span>-slang<span class="w"> </span>eng<span class="w">  </span>-ovc<span class="w"> </span>lavc<span class="w"> </span>-vf<span class="w"> </span>scale<span class="w"> </span>-zoom<span class="w"> </span>-xy<span class="w"> </span><span class="m">640</span><span class="w"> </span>-oac<span class="w"> </span>mp3lame<span class="w"> </span>-lameopts<span class="w"> </span>cbr:br<span class="o">=</span><span class="m">160</span><span class="w"> </span>Click.2006.720p.BluRay.ac3.x264-HqF.mkv<span class="w"> </span>-o<span class="w"> </span>click.avi
+</code></pre></div>
+<h2 id="recording"><strong>Recording</strong><a class="headerlink" href="#recording" title="Permanent link">&para;</a></h2>
+<ul>
+<li>OBS Studio</li>
+<li>SimpleScreenRecorder: a very user-friendly software which has a wizard-like setup process.</li>
+<li>Kazam</li>
+<li>VokoScreen</li>
+<li>Peek</li>
+<li>
+<p><del>recordmydesktop</del></p>
+<p>Record video from desktop:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>recordmydesktop<span class="w"> </span>--no-sound<span class="w"> </span>--v_bitrate<span class="o">=</span><span class="m">2000000</span><span class="w"> </span>--width<span class="o">=</span><span class="m">1500</span><span class="w"> </span>--height<span class="o">=</span><span class="m">1380</span><span class="w"> </span>--fps<span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">                </span>--full-shots<span class="w"> </span>--no-wm-check<span class="w"> </span>--workdir<span class="w"> </span>/mnt/freedata/home/Void<span class="w"> </span>-o<span class="w"> </span>myfile
+</code></pre></div></p>
+</li>
+</ul>
+<h2 id="codecs"><strong>Codecs</strong><a class="headerlink" href="#codecs" title="Permanent link">&para;</a></h2>
+<p><a href="https://blog.frame.io/2017/02/15/choose-the-right-codec/">Main doc</a>.
+<a href="https://blog.frame.io/2017/02/13/compare-50-intermediate-codecs/">Comparison table</a>.</p>
+<p>There are several groups of codecs for different purposes:</p>
+<h5 id="capture-codecs">Capture codecs<a class="headerlink" href="#capture-codecs" title="Permanent link">&para;</a></h5>
+<p>Codecs that are used by device that records a video:</p>
+<p>Most consumer-grade devices use H.264 codec because it is highly compressed. But it is not the best codec
+for editing because it is very computation-heavy.</p>
+<h5 id="edit-codecs">Edit codecs<a class="headerlink" href="#edit-codecs" title="Permanent link">&para;</a></h5>
+<p>Codecs that used for editing, intermediate codecs: <code>DNxHD</code>, <code>DNxHR</code>, <code>ProRes</code> and <code>Cineform</code>. If your camera
+is not using them directly, you will need to convert source video to one of them.</p>
+<p>More info:</p>
+<ul>
+<li>This means that they&rsquo;re designed to be used to trans-code footage from other sources into a form that&rsquo;s easy
+for video editing programs to work with while maintaining quality. So, unlike most h.264 implementations, they
+focus on low CPU usage, retaining as much detail as possible, and an ability to be re-compressed several times
+without significant loss in quality. They have larger bitrates than consumer video codecs, but they still
+represent a significant space savings over fully uncompressed video.</li>
+</ul>
+<h5 id="export-codec">Export codec<a class="headerlink" href="#export-codec" title="Permanent link">&para;</a></h5>
+<p>A highly compressed codec, such as H.264, should be fine.</p>
+<h2 id="intermediate-codecs"><strong>Intermediate codecs</strong><a class="headerlink" href="#intermediate-codecs" title="Permanent link">&para;</a></h2>
+<h3 id="dnxhr">DNxHR<a class="headerlink" href="#dnxhr" title="Permanent link">&para;</a></h3>
+<p>DNxHR is for resolutions bigger than 1080p (2K, 4K, and 8K) (as opposed to DNxHD).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ffmpeg<span class="w"> </span>-ss<span class="w"> </span><span class="m">00</span>:04:00<span class="w"> </span>-i<span class="w"> </span>out.mp4<span class="w"> </span>-c:v<span class="w"> </span>dnxhd<span class="w"> </span>-profile:v<span class="w"> </span>dnxhr_hq<span class="w">  </span>-pix_fmt<span class="w"> </span>yuv422p<span class="w">     </span>out_dnxhd_dnxhr.mov
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ffmpeg<span class="w"> </span>-ss<span class="w"> </span><span class="m">00</span>:04:00<span class="w"> </span>-i<span class="w"> </span>out.mp4<span class="w"> </span>-c:v<span class="w"> </span>dnxhd<span class="w"> </span>-profile:v<span class="w"> </span>dnxhr_hqx<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv422p10le<span class="w"> </span>out_dnxhd_dnxhr_444.mov
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>ffmpeg<span class="w"> </span>-ss<span class="w"> </span><span class="m">00</span>:04:00<span class="w"> </span>-i<span class="w"> </span>out.mp4<span class="w"> </span>-c:v<span class="w"> </span>dnxhd<span class="w"> </span>-profile:v<span class="w"> </span>dnxhr_444<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv444p10le<span class="w"> </span>out_dnxhr_444.mov
+</code></pre></div>
+<p>Instead of <code>_hq</code> in the name of profile, you can specify:</p>
+<ul>
+<li><code>LB</code> &mdash; Low Bandwidth. 8-bit 4:2:2 (yuv422p).</li>
+<li><code>SQ</code> &mdash; Standard Quality. 8-bit 4:2:2 (yuv422p). Suitable for delivery format.</li>
+<li><code>HQ</code> &mdash; High Quality. 8-bit 4:2:2 (yuv422p).</li>
+<li><code>HQX</code> &mdash; High Quality. 10-bit 4:2:2 (yuv422p10le). UHD/4K Broadcast-quality delivery.</li>
+<li><code>444</code> &mdash; Finishing Quality. 10-bit 4:4:4 (yuv444p10le). Cinema-quality delivery.</li>
+</ul>
+<p>Output format container for DNxHD is typically <code>MXF</code> or <code>MOV</code>.</p>
+<p>Script:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c"># cd to a dir, where you have ./source dir and ./intermediate dir</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">for</span> s <span class="k">in</span> <span class="o">(</span>ls -1 ./source<span class="o">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  <span class="k">set</span> s ./source/<span class="nv">$s</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  <span class="k">set</span> d ./intermediate/<span class="o">(</span>basename <span class="nv">$s</span><span class="o">)</span>.mov
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  <span class="k">echo</span> <span class="s2">&quot;</span><span class="nv">$s</span><span class="s2"> =&gt; </span><span class="nv">$d</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ffmpeg -i <span class="nv">$s</span> -c:v dnxhd -profile:v dnxhr_hqx -pix_fmt yuv422p10le <span class="nv">$d</span><span class="p">;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">end</span>
+</code></pre></div>
+<h3 id="libxvid">libxvid<a class="headerlink" href="#libxvid" title="Permanent link">&para;</a></h3>
+<p>ffmpeg -ss 00:04:00 -i out.mp4 -c:v libxvid -q:v 2  out_libxvid.mov</p>
+<h3 id="prores">ProRes<a class="headerlink" href="#prores" title="Permanent link">&para;</a></h3>
+<ul>
+<li>PROXY (bad): <code class="highlight">-c:v<span class="w"> </span>prores_ks<span class="w"> </span>-profile:v<span class="w"> </span><span class="m">0</span><span class="w"> </span>-qscale:v<span class="w"> </span><span class="m">5</span><span class="w"> </span>-vendor<span class="w"> </span>ap10<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv422p10le<span class="w"> </span>-acodec<span class="w"> </span>pcm_s16le</code></li>
+<li>LT: <code class="highlight">-c:v<span class="w"> </span>prores_ks<span class="w"> </span>-profile:v<span class="w"> </span><span class="m">1</span><span class="w"> </span>-qscale:v<span class="w"> </span><span class="m">5</span><span class="w"> </span>-vendor<span class="w"> </span>ap10<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv422p10le<span class="w"> </span>-acodec<span class="w"> </span>pcm_s16le</code></li>
+<li>SQ: <code class="highlight">-c:v<span class="w"> </span>prores_ks<span class="w"> </span>-profile:v<span class="w"> </span><span class="m">2</span><span class="w"> </span>-qscale:v<span class="w"> </span><span class="m">5</span><span class="w"> </span>-vendor<span class="w"> </span>ap10<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv422p10le<span class="w"> </span>-acodec<span class="w"> </span>pcm_s16le</code></li>
+<li>422 HQ: <code class="highlight">-c:v<span class="w"> </span>prores_ks<span class="w"> </span>-profile:v<span class="w"> </span><span class="m">3</span><span class="w"> </span>-qscale:v<span class="w"> </span><span class="m">5</span><span class="w"> </span>-vendor<span class="w"> </span>ap10<span class="w"> </span>-pix_fmt<span class="w"> </span>yuv422p10le<span class="w"> </span>-acodec<span class="w"> </span>pcm_s16le</code></li>
+</ul>
+<h2 id="output-export-codecs"><strong>Output / export codecs</strong><a class="headerlink" href="#output-export-codecs" title="Permanent link">&para;</a></h2>
+<h3 id="h265-newbetter-codec">h.265 (new/better codec).<a class="headerlink" href="#h265-newbetter-codec" title="Permanent link">&para;</a></h3>
+<p>See the <a href="https://trac.ffmpeg.org/wiki/Encode/H.265">guide</a>.</p>
+<details class="info">
+<summary>You can see available options with: <code>ffmpeg -h encoder=libx265</code></summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="w">    </span>Supported<span class="w"> </span>pixel<span class="w"> </span>formats:<span class="w"> </span>yuv420p<span class="w"> </span>yuvj420p<span class="w"> </span>yuv422p<span class="w"> </span>yuvj422p<span class="w"> </span>yuv444p<span class="w"> </span>yuvj444p<span class="w"> </span>gbrp<span class="w"> </span>yuv420p10le<span class="w"> </span>yuv422p10le<span class="w"> </span>yuv444p10le<span class="w"> </span>gbrp10le<span class="w"> </span>yuv420p12le<span class="w"> </span>yuv422p12le<span class="w"> </span>yuv444p12le<span class="w"> </span>gbrp12le<span class="w"> </span>gray<span class="w"> </span>gray10le<span class="w"> </span>gray12le
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>libx265<span class="w"> </span>AVOptions:
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>-crf<span class="w">               </span>&lt;float&gt;<span class="w">      </span>E..V......<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>x265<span class="w"> </span>crf<span class="w"> </span><span class="o">(</span>from<span class="w"> </span>-1<span class="w"> </span>to<span class="w"> </span>FLT_MAX<span class="o">)</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span>-1<span class="o">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>-qp<span class="w">                </span>&lt;int&gt;<span class="w">        </span>E..V......<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>x265<span class="w"> </span>qp<span class="w"> </span><span class="o">(</span>from<span class="w"> </span>-1<span class="w"> </span>to<span class="w"> </span>INT_MAX<span class="o">)</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span>-1<span class="o">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span>-forced-idr<span class="w">        </span>&lt;boolean&gt;<span class="w">    </span>E..V......<span class="w"> </span><span class="k">if</span><span class="w"> </span>forcing<span class="w"> </span>keyframes,<span class="w"> </span>force<span class="w"> </span>them<span class="w"> </span>as<span class="w"> </span>IDR<span class="w"> </span>frames<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="nb">false</span><span class="o">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span>-preset<span class="w">            </span>&lt;string&gt;<span class="w">     </span>E..V......<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>x265<span class="w"> </span>preset
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span>-tune<span class="w">              </span>&lt;string&gt;<span class="w">     </span>E..V......<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>x265<span class="w"> </span>tune<span class="w"> </span>parameter
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span>-profile<span class="w">           </span>&lt;string&gt;<span class="w">     </span>E..V......<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>x265<span class="w"> </span>profile
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span>-x265-params<span class="w">       </span>&lt;dictionary&gt;<span class="w"> </span>E..V......<span class="w"> </span><span class="nb">set</span><span class="w"> </span>the<span class="w"> </span>x265<span class="w"> </span>configuration<span class="w"> </span>using<span class="w"> </span>a<span class="w"> </span>:-separated<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span><span class="nv">key</span><span class="o">=</span>value<span class="w"> </span>parameters
+</code></pre></div>
+</details>
+<ul>
+<li>
+<p>Use <code>-ss 00:00:20 -t 00:40:00</code> before <code>-i</code> to specify start &amp; duration of the clip to encode (for faster tests)</p>
+</li>
+<li>
+<p>Add <code>-loglevel debug</code> for more info.</p>
+</li>
+<li>
+<p><strong>Choose crf</strong>:</p>
+<ul>
+<li>No difference <strong>in high-contrast areas</strong> between <code>-crf</code> 10, 14 18, 19, 20 (21 &amp; 22 barely differs, but
+  you cannot tell which one is worse).<ul>
+<li><strong>24 is still perfectly fine</strong>, but you can tell the difference.</li>
+<li>25 &mdash; this is where compression <em>starts</em> to get noticeable.</li>
+<li><strong>In other words, 24 +-1 is good for distribution</strong>.</li>
+</ul>
+</li>
+<li>As for clouds (low-contrast) regions:<ul>
+<li><code>crf</code> 16 is worse than the original.</li>
+<li><strong><code>crf</code> 12 same as the original</strong>.</li>
+<li><strong>In other words, 12-14 is good for personal use</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Example of command</strong>:</p>
+<div class="highlight"><span class="filename">do not forget to remove -ss and -t</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">cd</span> ~/Videos/export/
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">set</span> basename <span class="s2">&quot;Swiss-Part-1.2&quot;</span><span class="p">;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">set</span> codec libx265<span class="p">;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">set</span> crf 24<span class="p">;</span>          <span class="c"># Lower is better quality, 12 for internal use, 24 for sharing</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">set</span> preset veryslow<span class="p">;</span> <span class="c"># medium, slow, veryslow</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">set</span> pix_fmt yuv420p<span class="p">;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>ffmpeg -ss 00:00:40 -t 00:00:10 -i <span class="nv">$basename</span>.mov -c:v <span class="nv">$codec</span> -crf <span class="nv">$crf</span> -preset <span class="nv">$preset</span> -pix_fmt <span class="nv">$pix_fmt</span> -c:a aac -b:a 192k <span class="se">\</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nv">$basename</span>-<span class="nv">$codec</span>-crf<span class="o">=</span><span class="nv">$crf</span>-preset<span class="o">=</span><span class="nv">$preset</span>-pix_fmt<span class="o">=</span><span class="nv">$pix_fmt</span>.mkv
+</code></pre></div>
+</li>
+<li>
+<p><strong>Reduce priority</strong>: <code>sudo renice 19 -p (pgrep -x ffmpeg)</code>.</p>
+</li>
+</ul>
+<h3 id="vp9-produces-much-larger-output">VP9 (produces much larger output)<a class="headerlink" href="#vp9-produces-much-larger-output" title="Permanent link">&para;</a></h3>
+<p><strong>Single-pass</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">set</span> basename <span class="s2">&quot;Swiss-Part-3.2&quot;</span><span class="p">;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">set</span> codec libvpx-vp9<span class="p">;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">set</span> crf 38<span class="p">;</span>         <span class="c"># Lower is better quality. 0–63</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">set</span> deadline best<span class="p">;</span>  <span class="c"># realtime, good, best</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="k">set</span> passes single
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">set</span> pix_fmt yuv420p<span class="p">;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>ffmpeg -ss 00:00:20 -t 00:00:40 -i <span class="nv">$basename</span>.mov -c:v <span class="nv">$codec</span> -crf <span class="nv">$crf</span>  -b:v <span class="m">0</span> -deadline <span class="nv">$deadline</span> -cpu-used <span class="m">0</span> -pix_fmt <span class="nv">$pix_fmt</span> -c:a libopus -b:a 192k -row-mt <span class="m">1</span> <span class="nv">$basename</span>-<span class="nv">$codec</span>-crf<span class="o">=</span><span class="nv">$crf</span>-<span class="nv">$passes</span>-pass-deadline<span class="o">=</span><span class="nv">$deadline</span>-pix_fmt<span class="o">=</span><span class="nv">$pix_fmt</span>.webm
+</code></pre></div>
+<p>Comparison of qualities&rsquo; parameters of vp9 and h.265:</p>
+<ul>
+<li>crf=30 of vp9 (visual quality is better)</li>
+<li>crf=24 of h.265 is ~same as crf=38 of vp9</li>
+<li>crf=40 of vp9 (visual quality is worse)</li>
+</ul>
+<p><strong>Two-pass</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">set</span> basename <span class="s2">&quot;Swiss-Part-3.2&quot;</span><span class="p">;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">set</span> codec libvpx-vp9<span class="p">;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">set</span> crf 20<span class="p">;</span>         <span class="c"># Lower is better quality. 0–63</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">set</span> deadline best<span class="p">;</span>  <span class="c"># realtime, good, best</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">set</span> passes 2
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c"># set pix_fmt yuv420p;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>ffmpeg -ss 00:00:20 -t 00:00:40 -i <span class="nv">$basename</span>.mov -c:v <span class="nv">$codec</span> -b:v <span class="m">0</span> -crf <span class="nv">$crf</span> -pass <span class="m">1</span> -deadline <span class="nv">$deadline</span> -cpu-used <span class="m">0</span> -an -f null /dev/null
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>ffmpeg -ss 00:00:20 -t 00:00:40 -i <span class="nv">$basename</span>.mov -c:v <span class="nv">$codec</span> -b:v <span class="m">0</span> -crf <span class="nv">$crf</span> -pass <span class="m">2</span> -deadline <span class="nv">$deadline</span> -cpu-used <span class="m">0</span> -c:a libopus -b:a 192k -row-mt <span class="m">1</span> <span class="nv">$basename</span>-<span class="nv">$codec</span>-crf<span class="o">=</span><span class="nv">$crf</span>-<span class="nv">$passes</span>-pass-deadline<span class="o">=</span><span class="nv">$deadline</span>-pix_fmt<span class="o">=</span><span class="nv">$pix_fmt</span>.webm
+</code></pre></div>
+<p>Note: two-pass quality is substatially worse than 1 pass quality, so you need to take this into account by lowering the crf value.</p>
+<h3 id="h264-old-codec">h.264 (old codec).<a class="headerlink" href="#h264-old-codec" title="Permanent link">&para;</a></h3>
+<p>See the <a href="https://trac.ffmpeg.org/wiki/Encode/H.264#crf">guide</a>.</p>
+<p><code class="highlight">ffmpeg<span class="w"> </span>-i<span class="w"> </span>LakeDistrict2.mov<span class="w"> </span>-c:v<span class="w"> </span>libx264<span class="w"> </span>-crf<span class="w"> </span><span class="m">16</span><span class="w"> </span>-preset<span class="w"> </span>veryslow<span class="w"> </span>-c:a<span class="w"> </span>copy<span class="w"> </span>LakeDistrict2_crf_16_veryslow.mkv</code></p>
+<ul>
+<li>Pixel format is not supported on phones and mplayer (<code>-pix_fmt yuv420p</code> is needed?)</li>
+<li>You might want to to consider adding <code>-x264-params opencl=true</code>, but see below<ul>
+<li>But you you probably do NOT want to add <code>-hwaccel auto</code>. Hardware encoders typically generate output of
+  significantly lower quality than good software encoders like x264, but are generally faster and do not
+  use much CPU resource. (That is, they require a higher bitrate to make output with the same perceptual
+  quality, or they make output with a lower perceptual quality at the same bitrate.)</li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs", "navigation.expand", "navigation.top", "content.tabs.link", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.c7c1ca2c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.203fd0bc.min.js"></script>
+      
+        <script src="../../assets/javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
