@@ -2,6 +2,130 @@ title: Video editing
 
 # **Video editing**
 
+## Upscaling old DV footage
+
+Merge, deinterlace, stabilise:
+```
+# If there is a problematic file, split it:
+# set -l to_test dvgrab-004; ffmpeg -i $to_test.dv -c copy copy-$to_test.dv # check every file, if it can be read
+# set frame 2802; ffmpeg -i $to_test.dv -frames:v (math $frame - 3) -c copy $to_test-10.dv && dd if=$to_test.dv bs=144000 skip=(math $frame + 3) of=$to_test-20.dv
+
+set -l fn 2006-06-04-tar-home
+find . -type f -name "*.dv" | sort | xargs -I {} fish -c 'echo file {}' > files.txt
+ffmpeg -f concat -safe 0 -err_detect ignore_err -i files.txt -c copy $fn-merged.dv
+
+ffmpeg -i $fn-merged.dv -vf yadif=1 -c:v ffv1 -level 3 -c:a copy $fn-deinterlaced.mkv
+ffmpeg -i $fn-deinterlaced.mkv -vf vidstabdetect=shakiness=5:accuracy=15:result=transforms.trf -f null -
+ffmpeg -i $fn-deinterlaced.mkv -vf vidstabtransform=input=transforms.trf:smoothing=15 -c:v ffv1 -level 3 -threads 16 -c:a copy $fn-stabilised.mkv
+# If you are not planning to upscale, re-encode & compress:
+ffmpeg -i $fn-stabilised.mkv -c:v libx265 -crf 25 -preset slow -c:a aac -b:a 128k -threads 16 $fn-compressed-25-slow.mkv
+```
+
+Upscale:
+
+```bash
+sudo apt update && sudo apt install -y
+   build-essential cmake git libavcodec-dev libavformat-dev libavutil-dev libswscale-dev libopencv-dev \
+   libvulkan-dev vulkan-tools libvulkan1 libspdlog-dev qtbase5-dev qt5-qmake libqt5widgets5 libqt5gui5 \
+   libqt5core5a protobuf-compiler libprotobuf-dev clinfo libavfilter-dev libavfilter-extra spirv-tools \
+   libboost-all-dev
+
+
+cd ~
+git clone --recursive https://github.com/Tencent/ncnn.git
+cd ~/ncnn
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DNCNN_VULKAN=ON -DNCNN_BUILD_TOOLS=ON -DCMAKE_INSTALL_PREFIX=~/ncnn_install && make -j && make install
+fish_add_path ~/ncnn_install/bin
+
+# cd ~/ncnn/tools/onnx
+# mkdir build && cd build
+# cmake .. -DCMAKE_BUILD_TYPE=Release -Dncnn_DIR=~/ncnn_install/lib/cmake/ncnn
+# make -j
+
+
+cd ~/ncnn/glslang
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/ncnn_install -DALLOW_EXTERNAL_SPIRV_TOOLS=ON ..
+make -j && make install
+# Fix broken link glslangValidator
+rm ~/ncnn_install/bin/glslangValidator && ln -s ~/ncnn_install/bin/glslang ~/ncnn_install/bin/glslangValidator
+
+
+
+cd ~
+git clone --recursive https://github.com/k4yt3x/video2x.git
+cd video2x
+git checkout 6.4.0
+mkdir build && cd build
+# cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_CUDA=OFF -DUSE_QT6=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Release -DUSE_VULKAN=ON -DUSE_CUDA=OFF -DUSE_QT6=OFF -Dncnn_DIR=~/ncnn_install/lib/cmake/ncnn
+make -j
+~/video2x/build/video2x --list-devices # should work
+```
+
+This will use 4x upscaling model, which produces artifacts:
+
+```bash
+mkdir -p ~/video2x/build/models/
+cp -r ~/video2x/models/realesrgan ~/video2x/build/models/
+~/video2x/build/video2x -i ~/devel/video/upscale-test/output.mkv -o ~/devel/video/upscale-test/upscaled.mkv -p realesrgan --realesrgan-model realesrgan-plus -s 4 --benchmark
+
+```
+
+Instead, you need to prepare 2x upscaling model and use it:
+
+```bash
+mkdir -p ~/Downloads
+curl -L https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.1/RealESRGAN_x2plus.pth -o ~/Downloads/RealESRGAN_x2plus.pth
+
+sudo apt install python3.12-venv
+python3 -m venv real_esrgan_venv
+source real_esrgan_venv/bin/activate.fish
+
+
+cd ~
+git clone https://github.com/xinntao/Real-ESRGAN.git
+cd ~/Real-ESRGAN
+pip install -r requirements.txt
+pip install basicsr facexlib gfpgan onnxscript onnxsim pnnx
+python setup.py develop
+
+nano convert_to_onnx.py
+import torch
+from basicsr.archs.rrdbnet_arch import RRDBNet
+# Define the model architecture for RealESRGAN_x2plus (scale=2)
+model = RRDBNet(num_in_ch=3, num_out_ch=3, num_feat=64, num_block=23, num_grow_ch=32, scale=2)
+# Load the .pth weights
+state_dict = torch.load('/home/yulia/Downloads/RealESRGAN_x2plus.pth')['params_ema']
+model.load_state_dict(state_dict, strict=True)
+# Set to evaluation mode
+model.eval()
+# Create a dummy input tensor (batch=1, channels=3, height=64, width=64; RealESRGAN handles arbitrary sizes, but trace with small for efficiency)
+dummy_input = torch.randn(1, 3, 64, 64)
+# Trace the model (use check_trace=False if it warns about dynamic ops)
+traced_model = torch.jit.trace(model, dummy_input, check_trace=False)
+# Save as .pt file
+traced_model.save('/home/yulia/Downloads/RealESRGAN_x2plus.pt')
+print("TorchScript export complete!")
+
+
+
+python convert_to_pt.py
+pnnx ~/Downloads/RealESRGAN_x2plus.pt inputshape=[1,3,64,64] fp16=1 optlevel=2
+sed -i 's/in0/data/g' ~/video2x/models/realesrgan/realesrgan-plus-x2.param
+sed -i 's/out0/output/g' ~/video2x/models/realesrgan/realesrgan-plus-x2.param
+cp ~/Downloads/RealESRGAN_x2plus.ncnn.param ~/video2x/models/realesrgan/realesrgan-plus-x2.param
+cp ~/Downloads/RealESRGAN_x2plus.ncnn.bin ~/video2x/models/realesrgan/realesrgan-plus-x2.bin
+```
+
+Try again with 2x:
+
+```bash
+cd ~/video2x/
+~/video2x/build/video2x -i ~/devel/video/upscale-test/output.mkv -o ~/devel/video/upscale-test/upscaled.mkv -p realesrgan --realesrgan-model realesrgan-plus -s 2 -d 0 -c libx265 -e crf=18 -e preset=slow
+```
+
 
 ## **DaVinci**
 
