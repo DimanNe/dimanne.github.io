@@ -23,4 +23,4 @@ title: Alternatives
 
 * `ps`: `procs`
 * `ls`: `exa`
-* `du`: `dust`
+* `du`: `dust`: `dust -d 2 -z 10MiB /home`
