@@ -200,6 +200,9 @@ the SHA.
             git submodule update
             ```
 
+* **Clone a repo with all submodules**, even if some are failing:
+  `git clone git@github.com:DimanNe/scripts.git && cd scripts && for path in $(git submodule status --recursive | awk '{ n = split($2, a, "/") - 1; print n " " $2 }' | sort -n | cut -d' ' -f2-); do git submodule update --init "$path" || true; done`
+
 * **Show diff of submodules**: `git diff --submodule=diff` (or use the config above)
 
 * **Checkout submodules** too `git checkout --recurse-submodules` (or use the config above)
